@@ -64,3 +64,7 @@ def create_multiple_device(request):
         uploaded_file = request.FILES['upload-file']
         print(uploaded_file.read().decode())
     return render(request, 'create_multiple_device.html')
+
+
+def device_dashboard(request):
+    return render(request, template_name='device_dashboard.html')

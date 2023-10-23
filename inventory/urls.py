@@ -13,5 +13,6 @@ urlpatterns = [
     path('update-device/<int:pk>', DeviceModelUpdateView.as_view()),
     path('detail-device/<int:pk>', DeviceModelDetailView.as_view()),
     path('delete-device/<int:pk>', DeviceModelDeleteView.as_view()),
-    path('list-device', DeviceModelListView.as_view())
+    path('list-device', DeviceModelListView.as_view()),
+    path('device-dashboard', views.device_dashboard)
 ]
