@@ -1,27 +1,27 @@
 var chart = new CanvasJS.Chart("chartContainer-02", {
-    theme: "light2", // "light1", "light2", "dark1", "dark2"
-    exportEnabled: true,
-    animationEnabled: true,
-    title: {
-        text: "Desktop Browser Market Share in 2016"
-    },
-    data: [{
-        type: "pie",
-        startAngle: 25,
-        toolTipContent: "<b>{label}</b>: {y}%",
-        showInLegend: "true",
-        legendText: "{label}",
-        indexLabelFontSize: 16,
-        indexLabel: "{label} - {y}%",
-        dataPoints: [
-            { y: 51.08, label: "Chrome" },
-            { y: 27.34, label: "Internet Explorer" },
-            { y: 10.62, label: "Firefox" },
-            { y: 5.02, label: "Microsoft Edge" },
-            { y: 4.07, label: "Safari" },
-            { y: 1.22, label: "Opera" },
-            { y: 0.44, label: "Others" }
-        ]
-    }]
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title: {
+		text: "Count device by vendor"
+	},
+	axisY: {
+		title: "Device count",
+		suffix: ""
+	},
+	axisX: {
+		title: ""
+	},
+	data: [{
+		type: "column",
+		yValueFormatString: "#,##0.0#\"%\"",
+		dataPoints: [
+			{ label: "Cisco", y: 300 },	
+			{ label: "Checkpoint", y: 200 },	
+			{ label: "Fortigate", y: 10 },
+			{ label: "Symantec", y: 10 },	
+			{ label: "F5", y: 5 },
+			{ label: "Citrix", y: 4 }
+		]
+	}]
 });
 chart.render();

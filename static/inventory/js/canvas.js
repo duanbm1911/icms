@@ -72,7 +72,7 @@
                 Oa && (h.style.width = n + "px", h.style.height = E + "px", xa.scale(la, la))) : (h.width = n, h.height = E)
         } function ib(h) {
             if (!jb) {
-                var n = !1, E = !1; "undefined" === typeof pa.Chart.creditHref ? (h.creditHref = ia("iuuqr;..b`ow`rkr/bnl."), h.creditText = ia("B`ow`rKR/bnl")) : (n = h.updateOption("creditText"), E = h.updateOption("creditHref")); if (h.creditHref && h.creditText) {
+                var n = !1, E = !1; "canvas" === typeof pa.Chart.creditHref ? (h.creditHref = ia(""), h.creditText = ia("")) : (n = h.updateOption(""), E = h.updateOption("creditHref")); if (h.creditHref && h.creditText) {
                     h._creditLink || (h._creditLink = document.createElement("a"), h._creditLink.setAttribute("class", "canvasjs-chart-credit"), h._creditLink.setAttribute("title", "JavaScript Charts"),
                         V(h._creditLink, { outline: "none", margin: "0px", position: "absolute", right: "2px", top: h.height - 14 + "px", color: "dimgrey", textDecoration: "none", fontSize: "11px", fontFamily: "Calibri, Lucida Grande, Lucida Sans Unicode, Arial, sans-serif" }), h._creditLink.setAttribute("tabIndex", -1), h._creditLink.setAttribute("target", "_blank")); if (0 === h.renderCount || n || E) h._creditLink.setAttribute("href", h.creditHref), h._creditLink.innerHTML = h.creditText; h._creditLink && h.creditHref && h.creditText ? (h._creditLink.parentElement ||
                             h._canvasJSContainer.appendChild(h._creditLink), h._creditLink.style.top = h.height - 14 + "px") : h._creditLink.parentElement && h._canvasJSContainer.removeChild(h._creditLink)
