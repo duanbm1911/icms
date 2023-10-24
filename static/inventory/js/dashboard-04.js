@@ -14,13 +14,11 @@ var chart = new CanvasJS.Chart("chartContainer-04", {
         indexLabelFontSize: 16,
         indexLabel: "{label} - {y}%",
         dataPoints: [
-            { y: 51.08, label: "Chrome" },
-            { y: 27.34, label: "Internet Explorer" },
-            { y: 10.62, label: "Firefox" },
-            { y: 5.02, label: "Microsoft Edge" },
-            { y: 4.07, label: "Safari" },
-            { y: 1.22, label: "Opera" },
-            { y: 0.44, label: "Others" }
+            { y: 51.08, label: "DC/DR" },
+            { y: 27.34, label: "Branch" },
+            { y: 10.62, label: "HO-VHT" },
+            { y: 5.02, label: "HO-VAT" },
+            { y: 4.07, label: "HN-MNT" }
         ]
     }]
 });
