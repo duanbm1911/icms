@@ -14,7 +14,7 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 	data: [{
 		type: "column",
         	indexLabelPlacement: "outside",
-		yValueFormatString: "#,##0.0#\"%\"",
+		yValueFormatString: "#,##0.0#\"\"",
 		dataPoints: [
 			{ label: "DC/DR", y: 10 },	
 			{ label: "Branch", y: 40 },	
