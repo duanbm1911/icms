@@ -15,7 +15,7 @@ var chart = new CanvasJS.Chart("chartContainer-03", {
 		radius: 80,
 		indexLabel: "{label} - {y}",
 		yValueFormatString: "",
-		click: explodePie,
+		//click: explodePie,
 		dataPoints: [
 			{ y: 42, label: "DC/DR" },
 			{ y: 21, label: "Branch"},
