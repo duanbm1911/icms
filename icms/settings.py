@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'core',
     'accounts',
-    'inventory'
+    'inventory',
+    'ipplan'
 ]
 
 MIDDLEWARE = [
