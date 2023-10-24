@@ -1,9 +1,2 @@
 # device-inventory
-# device-inventory
-# device-inventory
-# device-inventory
-# device-inventory
-# device-inventory
-# device-inventory
-# icms
-# icms
+Power by DuanBM@2023
