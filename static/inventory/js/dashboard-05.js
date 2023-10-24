@@ -14,13 +14,13 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 	data: [{
 		type: "column",
         	indexLabelPlacement: "outside",
-		yValueFormatString: "#,##0.0#\"\"",
+		yValueFormatString: "",
 		dataPoints: [
 			{ label: "DC/DR", y: 10 },	
 			{ label: "Branch", y: 40 },	
-			{ label: "HO-89LH", y: 5.00 },
-			{ label: "HO-VHT", y: 2.50 },	
-			{ label: "HO-VAT", y: 2.30 }
+			{ label: "HO-89LH", y: 5 },
+			{ label: "HO-VHT", y: 2 },	
+			{ label: "HO-VAT", y: 2 }
 		]
 	}]
 });
