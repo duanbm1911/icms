@@ -30,7 +30,7 @@ class IpProject(models.Model):
 class IpSubnet(models.Model):
     """Model definition for IpSubnet."""
 
-    subnet = models.CharField(max_length=100)
+    subnet = models.CharField(max_length=100, unique=True)
     location = models.ForeignKey('IpLocation', on_delete=models.CASCADE)
     project = models.ForeignKey('IpProject', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)

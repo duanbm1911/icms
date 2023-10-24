@@ -1,6 +1,7 @@
 from django import forms
 from inventory.models import *
 
+
 class DeviceForm(forms.ModelForm):
     """Form definition for Device."""
 
