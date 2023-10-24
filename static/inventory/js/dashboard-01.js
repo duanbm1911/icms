@@ -13,7 +13,7 @@ var chart = new CanvasJS.Chart("chartContainer-01", {
 	},
 	data: [{
 		type: "column",
-		yValueFormatString: "#,##0.0#\"%\"",
+		yValueFormatString: "#,##0.0#\"Thiết bị\"",
 		dataPoints: [
 			{ label: "Switch", y: 100 },	
 			{ label: "Router", y: 200 },	
