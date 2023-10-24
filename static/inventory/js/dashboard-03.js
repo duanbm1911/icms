@@ -9,7 +9,7 @@ var chart = new CanvasJS.Chart("chartContainer-03", {
 		//fontSize: 16
 	}],
 	data: [{
-		type: "line",
+		type: "pie",
 		indexLabelFontSize: 18,
 		radius: 80,
 		indexLabel: "{label} - {y}",
