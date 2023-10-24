@@ -1,4 +1,5 @@
-var chart = new CanvasJS.Chart("chartContainer-03", {
+window.onload = function() {
+  var chart = new CanvasJS.Chart("chartContainer-03", {
 	theme: "light2",
 	animationEnabled: true,
 	exportEnabled: true,
@@ -27,5 +28,7 @@ var chart = new CanvasJS.Chart("chartContainer-03", {
 	}]
 });
 chart.render();
+
+}
 
 
