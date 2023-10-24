@@ -14,6 +14,7 @@ var chart = new CanvasJS.Chart("chartContainer-01", {
 	data: [{
 		type: "column",
 		yValueFormatString: "",
+		exportEnabled: true,
 		dataPoints: [
 			{ label: "Switch", y: 100 },	
 			{ label: "Router", y: 200 },	
