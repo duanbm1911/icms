@@ -13,6 +13,10 @@ class DeviceModelCreateView(CreateView):
     form_class = DeviceForm
     template_name = "create_device.html"
     success_url = '/inventory/list-device'
+    
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
 
 class DeviceLocationCreateView(CreateView):
     model = DeviceLocation
