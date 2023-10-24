@@ -3,7 +3,7 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 	exportEnabled: true,
 	theme: "light1", // "light1", "light2", "dark1", "dark2"
 	title:{
-		text: "Count of unuse port"
+		text: "Count of device non-compliance configuration"
 	},
   	axisY: {
       includeZero: true
@@ -15,19 +15,12 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
       	indexLabelFontSize: 16,
 		indexLabelPlacement: "outside",
 		dataPoints: [
-			{ x: 10, y: 71 },
-			{ x: 20, y: 55 },
-			{ x: 30, y: 50 },
-			{ x: 40, y: 65 },
-			{ x: 50, y: 92 },
-			{ x: 60, y: 68 },
-			{ x: 70, y: 38 },
-			{ x: 80, y: 71 },
-			{ x: 90, y: 54 },
-			{ x: 100, y: 60 },
-			{ x: 110, y: 36 },
-			{ x: 120, y: 49 },
-			{ x: 130, y: 21 }
+			{ x: "DC/DR", y: 71 },
+			{ x: "Branch", y: 55 },
+			{ x: "HO-89LH", y: 50 },
+			{ x: "HO-VHT", y: 50 },
+			{ x: "HO-VAT", y: 50 },
+			{ x: "HO-MNT", y: 50 }
 		]
 	}]
 });
