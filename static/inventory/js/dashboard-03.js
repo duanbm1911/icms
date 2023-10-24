@@ -13,7 +13,7 @@ var chart = new CanvasJS.Chart("chartContainer-03", {
 		indexLabelFontSize: 18,
 		radius: 80,
 		indexLabel: "{label} - {y}",
-		yValueFormatString: "###0.0\"%\"",
+		yValueFormatString: "",
 		click: explodePie,
 		dataPoints: [
 			{ y: 42, label: "DC/DR" },
