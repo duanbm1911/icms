@@ -84,19 +84,12 @@
 
       <div class="panel panel-default">
         <div class="panel-body">{% block content %} {% endblock content %}</div>
-        <div class="panel-footer">DuanBM@2023</div>
+        <div class="panel-footer"><center>DuanBM@2023</center></div>
       </div>
     </div>
-
     <script src="/static/core/js/jquery.js"></script>
     <script src="/static/core/js/bootstrap.js"></script>
     <script src="/static/core/js/core.js"></script>
     {% block js %}{% endblock js %}
-    <script>
-      window.onload = function() {
-        {% block js_onload_page %}
-        {% endblock js_onload_page %}
-      };
-    </script>
   </body>
 </html>
