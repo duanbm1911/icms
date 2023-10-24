@@ -3,7 +3,7 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 	exportEnabled: true,
 	theme: "light1", // "light1", "light2", "dark1", "dark2"
 	title:{
-		text: "Count of unuser port"
+		text: "Count of unuse port"
 	},
   	axisY: {
       includeZero: true
