@@ -8,7 +8,7 @@ var chart = new CanvasJS.Chart("chartContainer-04", {
     data: [{
         type: "pie",
         startAngle: 25,
-        toolTipContent: "<b>{label}</b>: {y}%",
+        toolTipContent: "<b>{label}</b>: {y}",
         showInLegend: "true",
         legendText: "{label}",
         indexLabelFontSize: 16,
