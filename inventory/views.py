@@ -24,11 +24,19 @@ class DeviceLocationCreateView(CreateView):
     template_name = "create_device_location.html"
     success_url = 'create-device-location'
 
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
+
 class DeviceTypeCreateView(CreateView):
     model = DeviceType
     form_class = DeviceTypeForm
     template_name = "create_device_type.html"
     success_url = 'create-device-type'
+
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
 
 class DeviceCategoryCreateView(CreateView):
     model = DeviceCategory
@@ -36,22 +44,38 @@ class DeviceCategoryCreateView(CreateView):
     template_name = "create_device_category.html"
     success_url = 'create-device-category'
 
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
+
 class DeviceVendorCreateView(CreateView):
     model = DeviceVendor
     form_class = DeviceVendorForm
     template_name = "create_device_vendor.html"
     success_url = 'create-device-vendor'
 
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
+
 class DeviceModelListView(ListView):
     model = DeviceModel
     context_object_name = 'devices'
     template_name = "list_device.html"
+
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
 
 class DeviceModelUpdateView(UpdateView):
     model = DeviceModel
     form_class = DeviceForm
     template_name = "update_device.html"
     success_url = '/inventory/list-device'
+
+    def form_valid(self, form):
+        form.instance.user_created = self.request.user
+        return super().form_valid(form)
 
 class DeviceModelDeleteView(DeleteView):
     model = DeviceModel
