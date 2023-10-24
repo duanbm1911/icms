@@ -1,2 +1,2 @@
 # device-inventory
-Power by DuanBM@2023
+Develop by DuanBM@2023
