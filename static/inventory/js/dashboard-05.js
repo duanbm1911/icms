@@ -1,5 +1,4 @@
-window.onload = function() {
-	  var chart = new CanvasJS.Chart("chartContainer-05", {
+var chart = new CanvasJS.Chart("chartContainer-05", {
 		animationEnabled: true,
 		exportEnabled: true,
 		theme: "light1", // "light1", "light2", "dark1", "dark2"
@@ -27,6 +26,4 @@ window.onload = function() {
 		}]
 	});
 	chart.render();
-}
-
 
