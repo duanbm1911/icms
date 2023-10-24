@@ -1,26 +1,27 @@
 var chart = new CanvasJS.Chart("chartContainer-05", {
 	animationEnabled: true,
-	exportEnabled: true,
 	theme: "light1", // "light1", "light2", "dark1", "dark2"
-	title:{
-		text: "Count of device non-compliance configuration"
+	title: {
+		text: "GDP Growth Rate - 2016"
 	},
-  	axisY: {
-      includeZero: true
-    },
+	axisY: {
+		title: "Growth Rate (in %)",
+		suffix: "%"
+	},
+	axisX: {
+		title: "Countries"
+	},
 	data: [{
-		type: "column", //change type to bar, line, area, pie, etc
-		//indexLabel: "{y}", //Shows y value on all Data Points
-		indexLabelFontColor: "#5A5757",
-      	indexLabelFontSize: 16,
-		indexLabelPlacement: "outside",
+		type: "column",
+        indexLabelPlacement: "outside",
+		yValueFormatString: "#,##0.0#\"%\"",
 		dataPoints: [
-			{ x: "DC/DR", y: 71 },
-			{ x: "Branch", y: 55 },
-			{ x: "HO-89LH", y: 50 },
-			{ x: "HO-VHT", y: 50 },
-			{ x: "HO-VAT", y: 50 },
-			{ x: "HO-MNT", y: 50 }
+			{ label: "DC/DR", y: 10 },	
+			{ label: "Branch", y: 40 },	
+			{ label: "HO-89LH", y: 5.00 },
+			{ label: "HO-VHT", y: 2.50 },	
+			{ label: "HO-VAT", y: 2.30 }
+			
 		]
 	}]
 });
