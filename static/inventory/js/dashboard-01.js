@@ -1,6 +1,7 @@
 var chart = new CanvasJS.Chart("chartContainer-01", {
 	animationEnabled: true,
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
 	title: {
 		text: "Count device by category"
 	},
@@ -14,7 +15,6 @@ var chart = new CanvasJS.Chart("chartContainer-01", {
 	data: [{
 		type: "column",
 		yValueFormatString: "",
-		exportEnabled: true,
 		dataPoints: [
 			{ label: "Switch", y: 100 },	
 			{ label: "Router", y: 200 },	
