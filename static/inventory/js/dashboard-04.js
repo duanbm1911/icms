@@ -12,13 +12,13 @@ var chart = new CanvasJS.Chart("chartContainer-04", {
         showInLegend: "true",
         legendText: "{label}",
         indexLabelFontSize: 16,
-        indexLabel: "{label} - {y}%",
+        indexLabel: "{label} - {y}",
         dataPoints: [
-            { y: 51.08, label: "DC/DR" },
-            { y: 27.34, label: "Branch" },
-            { y: 10.62, label: "HO-VHT" },
-            { y: 5.02, label: "HO-VAT" },
-            { y: 4.07, label: "HN-MNT" }
+            { y: 51, label: "DC/DR" },
+            { y: 27, label: "Branch" },
+            { y: 10, label: "HO-VHT" },
+            { y: 5, label: "HO-VAT" },
+            { y: 4, label: "HN-MNT" }
         ]
     }]
 });
