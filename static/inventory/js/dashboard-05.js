@@ -5,12 +5,12 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 		text: "Count of device non-compliance configuration"
 	},
 	axisY: {
-		title: "Số lượng thiết bị",
+		// title: "Số lượng thiết bị",
 		suffix: "Thiết bị"
 	},
-	axisX: {
-		title: "Countries"
-	},
+	// axisX: {
+	// 	title: "Countries"
+	// },
 	data: [{
 		type: "column",
         	indexLabelPlacement: "outside",
