@@ -11,21 +11,21 @@ from ipplan.forms import *
 # Create your views here.
 
 
-class IpLocationCreateView(CreateView):
-    model = IpLocation
-    form_class = IpLocationForm
-    template_name = "create_ip_location.html"
-    success_url = '/ipplan/create-ip-location'
+class IpRegoinCreateView(CreateView):
+    model = IpRegoin
+    form_class = IpRegoinForm
+    template_name = "create_ip_regoin.html"
+    success_url = '/ipplan/create-ip-regoin'
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class IpProjectCreateView(CreateView):
-    model = IpProject
-    form_class = IpProjectForm
-    template_name = "create_ip_project.html"
-    success_url = '/ipplan/create-ip-project'
+class IpLocationCreateView(CreateView):
+    model = IpLocation
+    form_class = IpLocationForm
+    template_name = "create_ip_location.html"
+    success_url = '/ipplan/create-ip-location'
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user

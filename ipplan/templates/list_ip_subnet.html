@@ -6,7 +6,7 @@
         <table class="table table-hover table-bordered" id="list-ip-subnet-table">
             <thead>
                     <th>Location</th>
-                    <th>Project</th>
+                    <th>Name</th>
                     <th>Subnet</th>
                     <th>Created time</th>
                     <th>User created</th>
@@ -18,7 +18,7 @@
                 {% for obj in subnets %}
                 <tr>
                     <td>{{ obj.location }}</td>
-                    <td>{{ obj.project }}</td>
+                    <td>{{ obj.name }}</td>
                     <td>{{ obj.subnet }}</td>
                     <td>{{ obj.created_time }}</td>
                     <td>{{ obj.user_created }}</td>

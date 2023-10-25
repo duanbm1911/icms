@@ -4,6 +4,15 @@ from src.ipplan.func import *
 from django.core.exceptions import ValidationError
 
 
+class IpRegoinForm(forms.ModelForm):
+    """Form definition for IpProject."""
+
+    class Meta:
+        """Meta definition for IpProjectform."""
+
+        model = IpRegoin
+        fields = ('regoin', 'description')
+
 class IpLocationForm(forms.ModelForm):
     """Form definition for IpLocation."""
 
@@ -11,16 +20,7 @@ class IpLocationForm(forms.ModelForm):
         """Meta definition for IpLocationform."""
 
         model = IpLocation
-        fields = ('location','description',)
-
-class IpProjectForm(forms.ModelForm):
-    """Form definition for IpProject."""
-
-    class Meta:
-        """Meta definition for IpProjectform."""
-
-        model = IpProject
-        fields = ('project', 'description')
+        fields = ('location', 'regoin', 'description',)
 
 class IpSubnetForm(forms.ModelForm):
     """Form definition for IpSubnet."""
@@ -29,7 +29,7 @@ class IpSubnetForm(forms.ModelForm):
         """Meta definition for IpSubnetform."""
 
         model = IpSubnet
-        fields = ('subnet', 'location', 'project', 'description')
+        fields = ('subnet', 'name', 'location', 'description')
 
     def clean_subnet(self):
         subnet = self.cleaned_data.get('subnet')
