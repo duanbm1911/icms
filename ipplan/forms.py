@@ -40,8 +40,9 @@ class IpSubnetForm(forms.ModelForm):
 class RequestIpAddressForm(forms.Form):
     """RequestIpAddressForm definition."""
 
-    subnet = forms.CharField(max_length=100)
+    subnet = forms.ModelChoiceField(queryset=IpSubnet.objects.all())
     count = forms.IntegerField()
+    status = forms.ModelChoiceField(queryset=IpStatus.objects.all())
     description = forms.CharField(max_length=200)
 
     def clean_subnet(self):

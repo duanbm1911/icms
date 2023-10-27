@@ -44,12 +44,22 @@ class IpSubnet(models.Model):
         """Unicode representation of IpSubnet."""
         return self.subnet
 
+class IpStatus(models.Model):
+    """Model definition for IpAddressStatus."""
+
+    status = models.CharField(max_length=100)
+
+    def __str__(self):
+        """Unicode representation of IpAddressStatus."""
+        return self.status
+
 
 class IpAddressModel(models.Model):
     """Model definition for IpModel."""
 
     ip_address = models.GenericIPAddressField()
     subnet = models.ForeignKey('IpSubnet', on_delete=models.CASCADE)
+    status = models.ForeignKey('IpStatus', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     user_request = models.CharField(max_length=100)
     created_time = models.DateTimeField(auto_now=True)
