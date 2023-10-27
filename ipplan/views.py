@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
@@ -56,10 +57,20 @@ def request_ip_form(request):
         if form.is_valid():
             subnet = form.cleaned_data.get('subnet')
             count = form.cleaned_data.get('count')
+            status = form.cleaned_data.get('status')
             description = form.cleaned_data.get('description')
             used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
             list_ips = get_available_ips(subnet=subnet, used_ips=used_ips, count=count)
-            return render(request, template_name='request_ip_result.html', context={'list_ips': list_ips, 'subnet': subnet, 'description': description})
+            for ip in list_ips:
+                model = IpAddressModel.objects.create(
+                    ip_address = ip,
+                    subnet = subnet,
+                    status = status,
+                    description = description,
+                    user_created = request.user
+                )
+                model.save
+            return render(request, template_name='request_ip_result.html', context={'list_ips': list_ips, 'subnet': subnet, 'status': status})
         else:
             return render(request, template_name='request_ip.html', context={'form': form})
     else:
@@ -69,3 +80,22 @@ def request_ip_form(request):
     
 def dashboard(request):
     return render(request, template_name='dashboard.html')
+
+
+def list_ip(request, pk):
+    list_ip = IpAddressModel.objects.filter(subnet__id=pk)
+    return render(request, template_name='list_ip.html', context={'list_ip': list_ip})
+
+
+
+class IpAddressDeleteView(DeleteView):
+    model = IpAddressModel
+    success_url = '/ipplan/list-ip-subnet'
+
+
+
+class IpSubnetUpdateView(UpdateView):
+    model = IpSubnet
+    form_class = IpSubnetForm
+    template_name = "update_ip_subnet.html"
+    success_url = '/ipplan/list-ip-subnet'

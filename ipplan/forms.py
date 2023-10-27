@@ -33,7 +33,7 @@ class IpSubnetForm(forms.ModelForm):
 
     def clean_subnet(self):
         subnet = self.cleaned_data.get('subnet')
-        if ip_address_verify(subnet) is False:
+        if is_subnet(subnet) is False:
             raise ValidationError("Subnet is not validated")
         return subnet
 

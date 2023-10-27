@@ -2,36 +2,41 @@
 {% block title %} ICMS | List IP subnet {% endblock title %}
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered" id="list-ip-subnet-table">
-            <thead>
-                    <th>Location</th>
-                    <th>Name</th>
-                    <th>Subnet</th>
-                    <th>Created time</th>
-                    <th>User created</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                {% for obj in subnets %}
-                <tr>
-                    <td>{{ obj.location }}</td>
-                    <td>{{ obj.name }}</td>
-                    <td>{{ obj.subnet }}</td>
-                    <td>{{ obj.created_time }}</td>
-                    <td>{{ obj.user_created }}</td>
-                    <td>
-                        <a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                        <a data-toggle="modal" href='#delete-ip-subnet-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                        <a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    </td>
-                </tr>
-                {% endfor %}
-
-            </tbody>
-        </table>
+    <div class="form-group">
+        <legend>List IP subnet</legend>
+    </div>
+    <div class="form-group">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered" id="list-ip-subnet-table">
+                <thead>
+                        <th>Location</th>
+                        <th>Name</th>
+                        <th>Subnet</th>
+                        <th>Created time</th>
+                        <th>User created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    {% for obj in subnets %}
+                    <tr>
+                        <td>{{ obj.location }}</td>
+                        <td>{{ obj.name }}</td>
+                        <td>{{ obj.subnet }}</td>
+                        <td>{{ obj.created_time }}</td>
+                        <td>{{ obj.user_created }}</td>
+                        <td>
+                            <a href="/ipplan/update-ip-subnet/{{obj.id}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                            <a data-toggle="modal" href='#delete-ip-subnet-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            <a href="/ipplan/list-ip/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+    
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
