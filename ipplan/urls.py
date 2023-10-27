@@ -8,5 +8,6 @@ urlpatterns = [
     path('create-ip-regoin', IpRegoinCreateView.as_view()),
     path('create-ip-subnet', IpSubnetCreateView.as_view()),
     path('list-ip-subnet', IpSubnetListView.as_view()),
-    path('request-ip', views.request_ip_form)
+    path('request-ip', views.request_ip_form),
+    path('dashboard', views.dashboard)
 ]

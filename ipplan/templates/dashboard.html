@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-group">
+    <legend><h1><center>IP resource summary</center></h1></legend>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <div id="chartContainer-01" style="height: 300px; width: 100%;"></div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-md-offset-2">
+    <div id="chartContainer-02" style="height: 300px; width: 100%;"></div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <div id="chartContainer-03"
+        style="height: 300px; width: 100%; margin-top:50px;"></div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 col-md-offset-2">
+    <div id="chartContainer-04"
+        style="height: 300px; width: 100%; margin-top:50px"></div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div id="chartContainer-05"
+        style="height: 300px; width: 100%; margin-top:50px"></div>
+</div>
+{% endblock content %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/core/css/canvas.css">
+{% endblock css %}
+
+{% block js %}
+<script src="/static/core/js/canvas.js"></script>
+<script src="/static/ipplan/js/dashboard-01.js"></script>
+<script src="/static/ipplan/js/dashboard-02.js"></script>
+<script src="/static/ipplan/js/dashboard-03.js"></script>
+<script src="/static/ipplan/js/dashboard-04.js"></script>
+<script src="/static/ipplan/js/dashboard-05.js"></script>
+{% endblock js %}

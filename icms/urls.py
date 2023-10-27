@@ -23,7 +23,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inventory/', include('inventory.urls')),
-    path('ipplan/', include('ipplan.urls'))
+    path('ipplan/', include('ipplan.urls')),
+    path('api/', include('api.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
 
 if settings.DEBUG:

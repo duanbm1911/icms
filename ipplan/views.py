@@ -67,3 +67,5 @@ def request_ip_form(request):
     return render(request, template_name='request_ip.html', context={'form': form})
 
     
+def dashboard(request):
+    return render(request, template_name='dashboard.html')
