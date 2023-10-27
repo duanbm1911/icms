@@ -18,7 +18,7 @@ ICMS | List IP Address
                         <th>IP</th>
                         <th>Subnet</th>
                         <th>Status</th>
-                        <th>Created_time</th>
+                        <th>Location</th>
                         <th>User_created</th>
                         <th>Action</th>
                     </tr>
@@ -29,12 +29,18 @@ ICMS | List IP Address
                         <td>{{ obj.ip_address }}</td>
                         <td>{{ obj.subnet }}</td>
                         <td>{{ obj.status }}</td>
-                        <td>{{ obj.created_time }}</td>
+                        <td>{{ obj.subnet.location }}</td>
                         <td>{{ obj.user_created }}</td>
                         <td>
+                            <a href="/ipplan/list-ip/{{obj.subnet.id}}/update-ip/{{obj.id}}"><span
+                                    class="glyphicon glyphicon-wrench"
+                                    aria-hidden="true"></span></a>
                             <a data-toggle="modal" href='#delete-ip-modal'
-                                id="{{ obj.id }}"><span
+                                subnet-id="{{ obj.subnet.id }}" ip-id="{{ obj.id }}"><span
                                     class="glyphicon glyphicon-trash"
+                                    aria-hidden="true"></span></a>
+                            <a href="/ipplan/list-ip/{{ obj.id }}"><span
+                                    class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span></a>
                         </td>
                     </tr>

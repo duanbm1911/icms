@@ -55,3 +55,11 @@ class RequestIpAddressForm(forms.Form):
         return subnet
 
 
+class IpAddressModelForm(forms.ModelForm):
+    """Form definition for IpAddressModel."""
+
+    class Meta:
+        """Meta definition for IpAddressModelform."""
+
+        model = IpAddressModel
+        fields = ('ip_address', 'subnet', 'status', 'description', )

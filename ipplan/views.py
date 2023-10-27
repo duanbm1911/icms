@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
@@ -87,15 +87,37 @@ def list_ip(request, pk):
     return render(request, template_name='list_ip.html', context={'list_ip': list_ip})
 
 
-
-class IpAddressDeleteView(DeleteView):
+class IpAddressModelDeleteView(DeleteView):
     model = IpAddressModel
-    success_url = '/ipplan/list-ip-subnet'
 
+    def get_object(self):
+        return IpAddressModel.objects.get(pk=self.kwargs["id"])
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        pk1 = self.kwargs['id']
+        return reverse("list-ip", kwargs={"pk": pk})
+
+
+class IpAddressModelUpdateView(UpdateView):
+    model = IpAddressModel
+    form_class = IpAddressModelForm
+    template_name = "update_ip.html"
+
+    def get_object(self):
+        return IpAddressModel.objects.get(pk=self.kwargs["id"])
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        pk1 = self.kwargs['id']
+        return reverse("list-ip", kwargs={"pk": pk})
 
 
 class IpSubnetUpdateView(UpdateView):
     model = IpSubnet
     form_class = IpSubnetForm
     template_name = "update_ip_subnet.html"
-    success_url = '/ipplan/list-ip-subnet'
+
+
+
+

@@ -10,7 +10,8 @@ urlpatterns = [
     path('list-ip-subnet', IpSubnetListView.as_view()),
     path('request-ip', views.request_ip_form),
     path('dashboard', views.dashboard),
-    path('list-ip/<int:pk>', views.list_ip),
-    path('delete-ip/<int:pk>', IpAddressDeleteView.as_view()),
-    path('update-ip-subnet/<int:pk>', IpSubnetUpdateView.as_view())
+    path('list-ip/<int:pk>', views.list_ip, name='list-ip'),
+    path('update-ip-subnet/<int:pk>', IpSubnetUpdateView.as_view()),
+    path('list-ip/<int:pk>/delete-ip/<int:id>', IpAddressModelDeleteView.as_view()),
+    path('list-ip/<int:pk>/update-ip/<int:id>', IpAddressModelUpdateView.as_view())
 ]

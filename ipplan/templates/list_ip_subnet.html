@@ -9,10 +9,10 @@
         <div class="table-responsive">
             <table class="table table-hover table-bordered" id="list-ip-subnet-table">
                 <thead>
-                        <th>Location</th>
                         <th>Name</th>
                         <th>Subnet</th>
-                        <th>Created time</th>
+                        <th>Location</th>
+                        <th>Regoin</th>
                         <th>User created</th>
                         <th>Action</th>
                     </tr>
@@ -21,10 +21,10 @@
     
                     {% for obj in subnets %}
                     <tr>
-                        <td>{{ obj.location }}</td>
                         <td>{{ obj.name }}</td>
                         <td>{{ obj.subnet }}</td>
-                        <td>{{ obj.created_time }}</td>
+                        <td>{{ obj.location }}</td>
+                        <td>{{ obj.location.regoin }}</td>
                         <td>{{ obj.user_created }}</td>
                         <td>
                             <a href="/ipplan/update-ip-subnet/{{obj.id}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
