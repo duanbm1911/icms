@@ -37,3 +37,20 @@ class IpSubnetForm(forms.ModelForm):
             raise ValidationError("Subnet is not validated")
         return subnet
 
+class RequestIpAddressForm(forms.Form):
+    """RequestIpAddressForm definition."""
+
+    subnet = forms.CharField(max_length=100)
+    count = forms.IntegerField()
+    description = forms.CharField(max_length=200)
+
+    def clean_subnet(self):
+        subnet = self.cleaned_data.get('subnet')
+        is_subnet_exists = IpSubnet.objects.filter(subnet=subnet).exists()
+        if not is_subnet(subnet):
+            raise ValidationError("Subnet is not validated")
+        elif not is_subnet_exists:
+            raise ValidationError("This subnet is not in database")
+        return subnet
+
+

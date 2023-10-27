@@ -45,7 +45,7 @@ class IpSubnet(models.Model):
         return self.subnet
 
 
-class IpModel(models.Model):
+class IpAddressModel(models.Model):
     """Model definition for IpModel."""
 
     ip_address = models.GenericIPAddressField()

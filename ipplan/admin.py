@@ -6,4 +6,4 @@ from ipplan.models import *
 admin.site.register(IpRegoin)
 admin.site.register(IpLocation)
 admin.site.register(IpSubnet)
-admin.site.register(IpModel)
+admin.site.register(IpAddressModel)

@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
+from django.views.generic.edit import FormView
 from django.http import JsonResponse
 from ipplan.models import *
 from ipplan.forms import *
@@ -45,3 +47,23 @@ class IpSubnetListView(ListView):
     model = IpSubnet
     context_object_name = 'subnets'
     template_name = "list_ip_subnet.html"
+
+
+def request_ip_form(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if request.method == 'POST':
+        form = RequestIpAddressForm(request.POST)
+        if form.is_valid():
+            subnet = form.cleaned_data.get('subnet')
+            count = form.cleaned_data.get('count')
+            description = form.cleaned_data.get('description')
+            used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
+            list_ips = get_available_ips(subnet=subnet, used_ips=used_ips, count=count)
+            return render(request, template_name='request_ip_result.html', context={'list_ips': list_ips, 'subnet': subnet, 'description': description})
+        else:
+            return render(request, template_name='request_ip.html', context={'form': form})
+    else:
+        form = RequestIpAddressForm()
+    return render(request, template_name='request_ip.html', context={'form': form})
+
+    
