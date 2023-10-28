@@ -117,7 +117,13 @@ class IpSubnetUpdateView(UpdateView):
     model = IpSubnet
     form_class = IpSubnetForm
     template_name = "update_ip_subnet.html"
+    success_url = '/ipplan/list-ip-subnet'
 
 
+class IpAddressModelDetailView(DetailView):
+    model = IpAddressModel
+    form_class = IpAddressModelForm
+    template_name = "detail_ip.html"
 
-
+    def get_object(self):
+        return IpAddressModel.objects.get(pk=self.kwargs["id"])
