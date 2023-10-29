@@ -115,7 +115,7 @@ class IpAddressModelUpdateView(UpdateView):
 
 class IpSubnetUpdateView(UpdateView):
     model = IpSubnet
-    form_class = IpSubnetForm
+    form_class = IpSubnetUpdateForm
     template_name = "update_ip_subnet.html"
     success_url = '/ipplan/list-ip-subnet'
 

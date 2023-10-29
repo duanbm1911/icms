@@ -15,7 +15,6 @@ class IpRegoin(models.Model):
         return self.regoin
 
 
-
 class IpLocation(models.Model):
     """Model definition for IpLocation."""
 

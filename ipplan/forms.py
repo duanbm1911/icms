@@ -37,6 +37,17 @@ class IpSubnetForm(forms.ModelForm):
             raise ValidationError("Subnet is not validated")
         return subnet
 
+
+class IpSubnetUpdateForm(forms.ModelForm):
+    """Form definition for IpSubnet."""
+
+    class Meta:
+        """Meta definition for IpSubnetform."""
+
+        model = IpSubnet
+        fields = ('name', 'location', 'description')
+        
+
 class RequestIpAddressForm(forms.Form):
     """RequestIpAddressForm definition."""
 

@@ -15,5 +15,4 @@ urlpatterns = [
     path('list-ip/<int:pk>/delete-ip/<int:id>', IpAddressModelDeleteView.as_view()),
     path('list-ip/<int:pk>/update-ip/<int:id>', IpAddressModelUpdateView.as_view()),
     path('list-ip/<int:pk>/detail-ip/<int:id>', IpAddressModelDetailView.as_view())
-
 ]
