@@ -3,7 +3,7 @@ var chart = new CanvasJS.Chart("chartContainer-04", {
         exportEnabled: true,
         animationEnabled: true,
         title: {
-            text: "Count of device end of date"
+            text: "Count of device EoD"
         },
         data: [{
             type: "pie",

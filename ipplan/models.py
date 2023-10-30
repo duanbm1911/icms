@@ -5,7 +5,7 @@ from django.db import models
 class IpRegoin(models.Model):
     """Model definition for IpRegoin."""
 
-    regoin = models.CharField(max_length=100)
+    regoin = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
@@ -18,7 +18,7 @@ class IpRegoin(models.Model):
 class IpLocation(models.Model):
     """Model definition for IpLocation."""
 
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, unique=True)
     regoin = models.ForeignKey('IpRegoin', on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
@@ -56,7 +56,7 @@ class IpStatus(models.Model):
 class IpAddressModel(models.Model):
     """Model definition for IpModel."""
 
-    ip_address = models.GenericIPAddressField()
+    ip_address = models.GenericIPAddressField(unique=True)
     subnet = models.ForeignKey('IpSubnet', on_delete=models.CASCADE)
     status = models.ForeignKey('IpStatus', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)

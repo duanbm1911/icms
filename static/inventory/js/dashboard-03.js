@@ -3,7 +3,7 @@ theme: "light2",
 animationEnabled: true,
 exportEnabled: true,
 title: {
-	text: "Count of error log"
+	text: "Count of device EoL"
 },
 subtitles: [{
 	//text: "United Kingdom, 2016",
