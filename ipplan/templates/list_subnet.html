@@ -27,8 +27,8 @@
                         <td>{{ obj.location.regoin }}</td>
                         <td>{{ obj.user_created }}</td>
                         <td>
-                            <a href="/ipplan/update-ip-subnet/{{obj.id}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                            <a data-toggle="modal" href='#delete-ip-subnet-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                            <a href="/ipplan/update-subnet/{{obj.id}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                            <a data-toggle="modal" href='#delete-subnet-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                             <a href="/ipplan/list-ip/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         </td>
                     </tr>
@@ -41,10 +41,10 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="delete-ip-subnet-modal">
+<div class="modal fade" id="delete-subnet-modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action method="post" id='delete-ip-subnet-from'>
+            <form action method="post" id='delete-subnet-from'>
                 {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -71,5 +71,5 @@
 
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
-<script src="/static/ipplan/js/list-ip-subnet.js"></script>
+<script src="/static/ipplan/js/list-subnet.js"></script>
 {% endblock js %}

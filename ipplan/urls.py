@@ -4,14 +4,15 @@ from ipplan.views import *
 
 
 urlpatterns = [
-    path('create-ip-location', IpLocationCreateView.as_view()),
-    path('create-ip-regoin', IpRegoinCreateView.as_view()),
-    path('create-ip-subnet', IpSubnetCreateView.as_view()),
-    path('list-ip-subnet', IpSubnetListView.as_view()),
+    path('create-location', LocationCreateView.as_view()),
+    path('create-region', RegionCreateView.as_view()),
+    path('create-subnet', SubnetCreateView.as_view()),
+    path('delete-subnet/<int:pk>', SubnetDeleteView.as_view()),
+    path('list-subnet', SubnetListView.as_view()),
     path('request-ip', views.request_ip_form),
     path('dashboard', views.dashboard),
     path('list-ip/<int:pk>', views.list_ip, name='list-ip'),
-    path('update-ip-subnet/<int:pk>', IpSubnetUpdateView.as_view()),
+    path('update-subnet/<int:pk>', SubnetUpdateView.as_view()),
     path('list-ip/<int:pk>/delete-ip/<int:id>', IpAddressModelDeleteView.as_view()),
     path('list-ip/<int:pk>/update-ip/<int:id>', IpAddressModelUpdateView.as_view()),
     path('list-ip/<int:pk>/detail-ip/<int:id>', IpAddressModelDetailView.as_view())

@@ -2,45 +2,45 @@ from django.db import models
 
 # Create your models here.
 
-class IpRegoin(models.Model):
-    """Model definition for IpRegoin."""
+class Region(models.Model):
+    """Model definition for Region."""
 
-    regoin = models.CharField(max_length=100, unique=True)
+    region = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        """Unicode representation of IpRegoin."""
-        return self.regoin
+        """Unicode representation of Region."""
+        return self.region
 
 
-class IpLocation(models.Model):
-    """Model definition for IpLocation."""
+class Location(models.Model):
+    """Model definition for Location."""
 
     location = models.CharField(max_length=100, unique=True)
-    regoin = models.ForeignKey('IpRegoin', on_delete=models.CASCADE)
+    region = models.ForeignKey('Region', on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        """Unicode representation of IpLocation."""
+        """Unicode representation of Location."""
         return self.location
 
 
-class IpSubnet(models.Model):
-    """Model definition for IpSubnet."""
+class Subnet(models.Model):
+    """Model definition for Subnet."""
 
     subnet = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    location = models.ForeignKey('IpLocation', on_delete=models.CASCADE)
+    location = models.ForeignKey('Location', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        """Unicode representation of IpSubnet."""
+        """Unicode representation of Subnet."""
         return self.subnet
 
 class IpStatus(models.Model):
@@ -57,7 +57,7 @@ class IpAddressModel(models.Model):
     """Model definition for IpModel."""
 
     ip_address = models.GenericIPAddressField(unique=True)
-    subnet = models.ForeignKey('IpSubnet', on_delete=models.CASCADE)
+    subnet = models.ForeignKey('Subnet', on_delete=models.CASCADE)
     status = models.ForeignKey('IpStatus', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     created_time = models.DateTimeField(auto_now=True)

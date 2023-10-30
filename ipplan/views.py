@@ -14,40 +14,40 @@ from ipplan.forms import *
 # Create your views here.
 
 
-class IpRegoinCreateView(CreateView):
-    model = IpRegoin
-    form_class = IpRegoinForm
-    template_name = "create_ip_regoin.html"
-    success_url = '/ipplan/create-ip-regoin'
+class RegionCreateView(CreateView):
+    model = Region
+    form_class = RegionForm
+    template_name = "create_region.html"
+    success_url = '/ipplan/create-Region'
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class IpLocationCreateView(CreateView):
-    model = IpLocation
-    form_class = IpLocationForm
-    template_name = "create_ip_location.html"
-    success_url = '/ipplan/create-ip-location'
+class LocationCreateView(CreateView):
+    model = Location
+    form_class = LocationForm
+    template_name = "create_location.html"
+    success_url = '/ipplan/create-location'
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class IpSubnetCreateView(CreateView):
-    model = IpSubnet
-    form_class = IpSubnetForm
-    template_name = "create_ip_subnet.html"
-    success_url = '/ipplan/list-ip-subnet'
+class SubnetCreateView(CreateView):
+    model = Subnet
+    form_class = SubnetForm
+    template_name = "create_subnet.html"
+    success_url = '/ipplan/list-subnet'
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class IpSubnetListView(ListView):
-    model = IpSubnet
+class SubnetListView(ListView):
+    model = Subnet
     context_object_name = 'subnets'
-    template_name = "list_ip_subnet.html"
+    template_name = "list_subnet.html"
 
 
 def request_ip_form(request):
@@ -102,7 +102,7 @@ class IpAddressModelDeleteView(DeleteView):
 
 class IpAddressModelUpdateView(UpdateView):
     model = IpAddressModel
-    form_class = IpAddressModelForm
+    form_class = IpAddressModelUpdatelForm
     template_name = "update_ip.html"
 
     def get_object(self):
@@ -114,11 +114,11 @@ class IpAddressModelUpdateView(UpdateView):
         return reverse("list-ip", kwargs={"pk": pk})
 
 
-class IpSubnetUpdateView(UpdateView):
-    model = IpSubnet
-    form_class = IpSubnetUpdateForm
-    template_name = "update_ip_subnet.html"
-    success_url = '/ipplan/list-ip-subnet'
+class SubnetUpdateView(UpdateView):
+    model = Subnet
+    form_class = SubnetUpdateForm
+    template_name = "update_subnet.html"
+    success_url = '/ipplan/list-subnet'
 
 
 class IpAddressModelDetailView(DetailView):
@@ -128,3 +128,10 @@ class IpAddressModelDetailView(DetailView):
 
     def get_object(self):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
+
+
+
+class SubnetDeleteView(DeleteView):
+    model = Subnet
+    template_name = "list-subnet.html"
+    success_url = '/ipplan/list-subnet'
