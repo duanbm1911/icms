@@ -2,13 +2,13 @@ from django import forms
 from inventory.models import *
 
 
-class DeviceForm(forms.ModelForm):
+class DeviceBasicInfoForm(forms.ModelForm):
     """Form definition for Device."""
 
     class Meta:
-        """Meta definition for Deviceform."""
+        """Meta definition for DeviceBasicInfoForm."""
 
-        model = DeviceBaseInfo
+        model = DeviceBasicInfo
         fields = ['device_name', 'device_ip', 'device_location', 'device_type', 'device_category', 'device_vendor', 'device_description']
 
 class DeviceLocationForm(forms.ModelForm):
@@ -47,7 +47,7 @@ class DeviceVendorForm(forms.ModelForm):
         model = DeviceVendor
         fields = ['device_vendor', 'description']
 
-class CreateDeviceForm(forms.Form):
-    """CreateDeviceForm definition."""
+class CreateDeviceBasicInfoForm(forms.Form):
+    """CreateDeviceBasicInfoForm definition."""
 
     upload_file = forms.FileField()

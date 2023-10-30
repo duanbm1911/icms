@@ -12,7 +12,7 @@ def inventory_dashboard_01(request):
     category_count = list()
     list_category = list(DeviceCategory.objects.values_list('device_category', flat=True))
     for obj in list_category:
-        count = DeviceBaseInfo.objects.filter(device_category__device_category=obj).count()
+        count = DeviceBasicInfo.objects.filter(device_category__device_category=obj).count()
         category_count.append({
             'label': str(obj),
             'y': count
@@ -27,7 +27,7 @@ def inventory_dashboard_02(request):
     vendor_count = list()
     list_vendor = list(DeviceVendor.objects.values_list('device_vendor', flat=True))
     for obj in list_vendor:
-        count = DeviceBaseInfo.objects.filter(device_vendor__device_vendor=obj).count()
+        count = DeviceBasicInfo.objects.filter(device_vendor__device_vendor=obj).count()
         vendor_count.append({
             'label': str(obj),
             'y': count
@@ -42,7 +42,7 @@ def inventory_dashboard_03(request):
     location_count = list()
     list_vendor = list(DeviceLocation.objects.values_list('device_location', flat=True))
     for obj in list_vendor:
-        count = DeviceBaseInfo.objects.filter(device_location__device_location=obj).count()
+        count = DeviceBasicInfo.objects.filter(device_location__device_location=obj).count()
         location_count.append({
             'label': str(obj),
             'y': count
@@ -57,7 +57,7 @@ def inventory_dashboard_04(request):
     type_count = list()
     list_vendor = list(DeviceType.objects.values_list('device_type', flat=True))
     for obj in list_vendor:
-        count = DeviceBaseInfo.objects.filter(device_type__device_type=obj).count()
+        count = DeviceBasicInfo.objects.filter(device_type__device_type=obj).count()
         type_count.append({
             'label': str(obj),
             'y': count

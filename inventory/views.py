@@ -8,14 +8,14 @@ from inventory.models import *
 from inventory.forms import *
 # Create your views here.
 
-class DeviceBaseInfoCreateView(CreateView):
-    model = DeviceBaseInfo
-    form_class = DeviceForm
+class DeviceBasicInfoCreateView(CreateView):
+    model = DeviceBasicInfo
+    form_class = DeviceBasicInfoForm
     template_name = "create_device.html"
-    success_url = '/inventory/list-device'
+    success_url = '/inventory/list-device/basic-information'
     
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
 class DeviceLocationCreateView(CreateView):
@@ -25,7 +25,7 @@ class DeviceLocationCreateView(CreateView):
     success_url = 'create-device-location'
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
 class DeviceTypeCreateView(CreateView):
@@ -35,7 +35,7 @@ class DeviceTypeCreateView(CreateView):
     success_url = 'create-device-type'
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
 class DeviceCategoryCreateView(CreateView):
@@ -45,7 +45,7 @@ class DeviceCategoryCreateView(CreateView):
     success_url = 'create-device-category'
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
 class DeviceVendorCreateView(CreateView):
@@ -55,37 +55,37 @@ class DeviceVendorCreateView(CreateView):
     success_url = 'create-device-vendor'
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
-class DeviceBaseInfoListView(ListView):
-    model = DeviceBaseInfo
+class DeviceBasicInfoListView(ListView):
+    model = DeviceBasicInfo
     context_object_name = 'devices'
-    template_name = "list_device.html"
+    template_name = "list_device_basic_info.html"
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
-class DeviceBaseInfoUpdateView(UpdateView):
-    model = DeviceBaseInfo
-    form_class = DeviceForm
+class DeviceBasicInfoUpdateView(UpdateView):
+    model = DeviceBasicInfo
+    form_class = DeviceBasicInfoForm
     template_name = "update_device.html"
-    success_url = '/inventory/list-device'
+    success_url = '/inventory/list-device/basic-information'
 
     def form_valid(self, form):
-        form.instance.user_created = self.request.user
+        form.instance.user_created = str(self.request.user)
         return super().form_valid(form)
 
-class DeviceBaseInfoDeleteView(DeleteView):
-    model = DeviceBaseInfo
+class DeviceBasicInfoDeleteView(DeleteView):
+    model = DeviceBasicInfo
     template_name = 'list_device.html'
     success_url = '/inventory/list-device'
 
 
-class DeviceBaseInfoDetailView(DetailView):
-    model = DeviceBaseInfo
-    template_name = "detail_device.html"
+class DeviceBasicInfoDetailView(DetailView):
+    model = DeviceBasicInfo
+    template_name = "detail_device_basic_info.html"
 
 
 def create_multiple_device(request):
