@@ -79,6 +79,7 @@ class DeviceBaseInfoUpdateView(UpdateView):
 
 class DeviceBaseInfoDeleteView(DeleteView):
     model = DeviceBaseInfo
+    template_name = 'list_device.html'
     success_url = '/inventory/list-device'
 
 

@@ -89,6 +89,7 @@ def list_ip(request, pk):
 
 class IpAddressModelDeleteView(DeleteView):
     model = IpAddressModel
+    template_name = 'list_ip.html'
 
     def get_object(self):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
