@@ -8,8 +8,8 @@ from inventory.models import *
 from inventory.forms import *
 # Create your views here.
 
-class DeviceModelCreateView(CreateView):
-    model = DeviceModel
+class DeviceBaseInfoCreateView(CreateView):
+    model = DeviceBaseInfo
     form_class = DeviceForm
     template_name = "create_device.html"
     success_url = '/inventory/list-device'
@@ -58,8 +58,8 @@ class DeviceVendorCreateView(CreateView):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class DeviceModelListView(ListView):
-    model = DeviceModel
+class DeviceBaseInfoListView(ListView):
+    model = DeviceBaseInfo
     context_object_name = 'devices'
     template_name = "list_device.html"
 
@@ -67,8 +67,8 @@ class DeviceModelListView(ListView):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class DeviceModelUpdateView(UpdateView):
-    model = DeviceModel
+class DeviceBaseInfoUpdateView(UpdateView):
+    model = DeviceBaseInfo
     form_class = DeviceForm
     template_name = "update_device.html"
     success_url = '/inventory/list-device'
@@ -77,13 +77,13 @@ class DeviceModelUpdateView(UpdateView):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
 
-class DeviceModelDeleteView(DeleteView):
-    model = DeviceModel
+class DeviceBaseInfoDeleteView(DeleteView):
+    model = DeviceBaseInfo
     success_url = '/inventory/list-device'
 
 
-class DeviceModelDetailView(DetailView):
-    model = DeviceModel
+class DeviceBaseInfoDetailView(DetailView):
+    model = DeviceBaseInfo
     template_name = "detail_device.html"
 
 

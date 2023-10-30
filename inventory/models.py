@@ -38,7 +38,7 @@ class DeviceVendor(models.Model):
     def __str__(self):
         return self.device_vendor
     
-class DeviceModel(models.Model):
+class DeviceBaseInfo(models.Model):
     device_name = models.CharField(max_length=1000)
     device_ip = models.GenericIPAddressField(unique=True)
     device_location = models.ForeignKey('DeviceLocation', on_delete=models.CASCADE)
@@ -55,14 +55,14 @@ class DeviceModel(models.Model):
 class DeviceManagement(models.Model):
     """Model definition for DeviceManagement."""
 
-    device_ip = models.ForeignKey('DeviceModel', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('DeviceBaseInfo', on_delete=models.CASCADE)
     start_ma_date = models.DateField()
     end_ma_date = models.DateField()
     start_license_date = models.DateField()
     end_license_date = models.DateField()
     end_sw_support_date = models.DateField()
     end_hw_support_date = models.DateField()
-    start_date_used = models.DateField()
+    start_used_date = models.DateField()
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
@@ -71,14 +71,14 @@ class DeviceManagement(models.Model):
 class DeviceInterface(models.Model):
     """Model definition for DeviceInterface."""
 
-    device_ip = models.ForeignKey('DeviceModel', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('DeviceBaseInfo', on_delete=models.CASCADE)
     list_interface = models.CharField(max_length=500)
-    list_interface_inuse = models.IntegerField()
-    list_interface_unuse = models.IntegerField()
+    count_interface = models.IntegerField()
+    list_interface_inuse = models.CharField(max_length=500)
+    list_interface_unuse = models.CharField(max_length=500)
     list_interface_neighbor = models.CharField(max_length=500)
     list_interface_speed = models.CharField(max_length=500)
-    count_interface = models.IntegerField()
-
+    
     def __str__(self):
         """Unicode representation of DeviceInterface."""
         self.device_ip

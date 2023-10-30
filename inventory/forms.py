@@ -8,7 +8,7 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         """Meta definition for Deviceform."""
 
-        model = DeviceModel
+        model = DeviceBaseInfo
         fields = ['device_name', 'device_ip', 'device_location', 'device_type', 'device_category', 'device_vendor', 'device_description']
 
 class DeviceLocationForm(forms.ModelForm):
