@@ -12,7 +12,7 @@ $.ajax({
 				text: "Count device by vendor"
 			},
 			axisY: {
-				title: "Device count",
+				title: "Device",
 				suffix: ""
 			},
 			axisX: {

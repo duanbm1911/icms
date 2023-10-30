@@ -1,31 +1,29 @@
-var chart = new CanvasJS.Chart("chartContainer-03", {
-theme: "light2",
-animationEnabled: true,
-exportEnabled: true,
-title: {
-	text: "Count of device EoL"
-},
-subtitles: [{
-	//text: "United Kingdom, 2016",
-	//fontSize: 16
-}],
-data: [{
-	type: "pie",
-	indexLabelFontSize: 18,
-	radius: 80,
-	indexLabel: "{label} - {y}",
-	yValueFormatString: "",
-	//click: explodePie,
-	dataPoints: [
-		{ y: 42, label: "DC/DR" },
-		{ y: 21, label: "Branch"},
-		{ y: 24.5, label: "HO-89LH" },
-		{ y: 9, label: "HO-VHT" },
-		{ y: 3.1, label: "HO-VAT" },
-		{ y: 3.1, label: "HO-MNT" }
-	]
-}]
-});
-chart.render();
-
-
+$.ajax({
+	url: '/api/inventory/dashboard-03',
+	dataType: 'json',
+	type: 'GET',
+	success: function (data) {
+		console.log(data)
+		var chart = new CanvasJS.Chart("chartContainer-03", {
+			animationEnabled: true,
+			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			exportEnabled: true,
+			title: {
+				text: "Count device by location"
+			},
+			axisY: {
+				title: "Device",
+				suffix: ""
+			},
+			axisX: {
+				title: ""
+			},
+			data: [{
+				type: "column",
+				yValueFormatString: "",
+				dataPoints: data.data
+			}]
+		});
+		chart.render();
+	}
+})

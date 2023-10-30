@@ -33,3 +33,33 @@ def inventory_dashboard_02(request):
             'y': count
         })
     return JsonResponse({'data': vendor_count})
+
+
+def inventory_dashboard_03(request):
+    """
+    This dashboard will be display count of device by vendor
+    """
+    location_count = list()
+    list_vendor = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    for obj in list_vendor:
+        count = DeviceBaseInfo.objects.filter(device_location__device_location=obj).count()
+        location_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': location_count})
+
+
+def inventory_dashboard_04(request):
+    """
+    This dashboard will be display count of device by vendor
+    """
+    type_count = list()
+    list_vendor = list(DeviceType.objects.values_list('device_type', flat=True))
+    for obj in list_vendor:
+        count = DeviceBaseInfo.objects.filter(device_type__device_type=obj).count()
+        type_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': type_count})

@@ -81,7 +81,7 @@ class DeviceInterface(models.Model):
     
     def __str__(self):
         """Unicode representation of DeviceInterface."""
-        self.device_ip
+        return self.device_ip
 
 
 

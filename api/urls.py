@@ -5,5 +5,7 @@ from api.views import *
 
 urlpatterns = [
     path('inventory/dashboard-01', views.inventory_dashboard_01),
-    path('inventory/dashboard-02', views.inventory_dashboard_02)
+    path('inventory/dashboard-02', views.inventory_dashboard_02),
+    path('inventory/dashboard-03', views.inventory_dashboard_03),
+    path('inventory/dashboard-04', views.inventory_dashboard_04),
 ]
