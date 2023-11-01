@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#list-device-table').DataTable();
+    $('#list-device-basic-info-table').DataTable();
     $('[data-toggle="modal"]').click(function() {
         var id = $(this).attr('id');
         var href = "/inventory/delete-device/" + id

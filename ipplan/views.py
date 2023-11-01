@@ -135,3 +135,5 @@ class SubnetDeleteView(DeleteView):
     model = Subnet
     template_name = "list-subnet.html"
     success_url = '/ipplan/list-subnet'
+
+

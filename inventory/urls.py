@@ -13,6 +13,10 @@ urlpatterns = [
     path('update-device/<int:pk>', DeviceBasicInfoUpdateView.as_view()),
     path('detail-device/<int:pk>', DeviceBasicInfoDetailView.as_view()),
     path('delete-device/<int:pk>', DeviceBasicInfoDeleteView.as_view()),
-    path('list-device/basic-information', DeviceBasicInfoListView.as_view()),
+    path('list-device/device-basic-info', DeviceBasicInfoListView.as_view()),
+    path('list-device/device-management', DeviceManagementListView.as_view()),
+    path('list-device/device-interface', DeviceInterfaceListView.as_view()),
+    path('list-device/device-topology', DeviceTopologyListView.as_view()),
+    path('list-device/device-configuration', DeviceConfigurationListView.as_view()),
     path('device-dashboard', views.device_dashboard)
 ]

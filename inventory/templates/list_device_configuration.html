@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} ICMS | List device configuration {% endblock title %}
+{% block content %}
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="list-device-configuration-table">
+            <thead>
+                    <th>Device IP</th>
+                    <th>Config standardized</th>
+                    <th>Device monitored</th>
+                    <th>Device Backup config</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for obj in devices %}
+                <tr>
+                    <td>{{ obj.device_ip }}</td>
+                    <td>{{ obj.device_config_standardized }}</td>
+                    <td>{{ obj.device_monitored }}</td>
+                    <td>{{ obj.device_backup_config }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/core/css/jquery-datatable.css">
+{% endblock css %}
+
+{% block js %}
+<script src="/static/core/js/jquery-datatable.js"></script>
+<script src="/static/inventory/js/list-device-configuration.js"></script>
+{% endblock js %}

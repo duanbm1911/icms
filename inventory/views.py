@@ -97,3 +97,27 @@ def create_multiple_device(request):
 
 def device_dashboard(request):
     return render(request, template_name='device_dashboard.html')
+
+
+class DeviceManagementListView(ListView):
+    model = DeviceManagement
+    form_class = DeviceManagementForm
+    template_name = "list_device_management.html"
+
+
+class DeviceInterfaceListView(ListView):
+    model = DeviceInterface
+    form_class = DeviceInterfaceForm
+    template_name = "list_device_interface.html"
+
+
+class DeviceTopologyListView(ListView):
+    model = DeviceTopology
+    form_class = DeviceTopologyForm
+    template_name = "list_device_topology.html"
+
+
+class DeviceConfigurationListView(ListView):
+    model = DeviceConfiguration
+    form_class = DeviceConfigurationForm
+    template_name = "list_device_configuration.html"
