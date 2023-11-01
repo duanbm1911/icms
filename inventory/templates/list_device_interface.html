@@ -20,7 +20,7 @@
                     <td>{{ obj.list_interface_name.data | length }}</td>
                     <td>{{ obj.list_interface_inuse.data | length }}</td>
                     <td>{{ obj.list_interface_unuse.data | length }}</td>
-                    <td><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
+                    <td><a href="/inventory/list-device/device-interface/detail/{{obj.id}}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
                 </tr>
                 {% endfor %}
 

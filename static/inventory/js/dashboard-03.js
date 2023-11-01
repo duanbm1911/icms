@@ -9,7 +9,9 @@ $.ajax({
 			exportEnabled: true,
 			title: {
 				text: "Count device by location",
-				fontFamily: "tahoma"
+				fontFamily: "tahoma",
+				fontSize: 20,
+				fontWeight: "normal"
 			},
 			axisX: {
 				interval: 1

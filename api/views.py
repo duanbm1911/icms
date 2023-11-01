@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from inventory.models import *
 from ipplan.models import *
+import random
 
 # Create your views here.
 
@@ -65,18 +66,67 @@ def inventory_dashboard_04(request):
     return JsonResponse({'data': type_count})
 
 
-# def inventory_dashboard_05(request):
-#     """
-#     This dashboard will be display count of configuration management
-#     """
-#     data = list()
-#     list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
-    
-#     non_config_compliance = DeviceConfiguration.objects.filter(device_config_standardized=False).count()
-#     device_no_monitor = DeviceConfiguration.objects.filter(device_monitored=False).count()
-#     device_np_backup_cfg = DeviceConfiguration.objects.filter(device_backup_config=False).count()
-#     data.append({
-
-#     })
+def inventory_dashboard_05(request):
+    """
+    This dashboard will be display count of configuration management
+    """
+    data_point_01 = list()
+    data_point_02 = list()
+    data_point_03 = list()
+    list_data_point = [
+    {
+        "name": data_point_01,
+        "desc": "Non-compliance configuration"
+    },
+    {
+        "name": data_point_02,
+        "desc": "Device no monitor"
+    },
+    {
+        "name": data_point_03,
+        "desc": "Device no backup configuration"
+    }
+    ]
+    chart_data = list()
+    list_vendor = list(DeviceVendor.objects.values_list('device_vendor', flat=True))
+    for obj in list_vendor:
+        point_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_vendor__device_vendor=obj).count()
+        point_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_vendor__device_vendor=obj).count()
+        point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_vendor__device_vendor=obj).count()
+        data_point_01.append({
+            'label': obj,
+            'y': point_01
+        })
+        data_point_02.append({
+            'label': obj,
+            'y': point_02
+        })
+        data_point_03.append({
+            'label': obj,
+            'y': point_03
+        })
+    list_data_point = [{
+        "name": data_point_01,
+        "desc": "Non-compliance configuration"
+    },
+    {
+        "name": data_point_02,
+        "desc": "Device no monitor"
+    },
+    {
+        "name": data_point_03,
+        "desc": "Device no backup configuration"
+    }]
+    color = lambda: random.randint(0,255)
+    for data_point in list_data_point:
+        chart_data.append({
+            "type": "line",
+            "showInLegend": "false",
+            "name": data_point['desc'],
+            "markerType": "square",
+            "color": '#%02X%02X%02X' % (color(),color(),color()),
+            "dataPoints": data_point['name']
+        })
+    return JsonResponse({'data': chart_data})
 
     

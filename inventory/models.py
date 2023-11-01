@@ -81,7 +81,7 @@ class DeviceInterface(models.Model):
     list_interface_speed = models.JSONField()
     list_interface_type = models.JSONField()
     list_interface_state = models.JSONField()
-    list_interface_neghbor = models.JSONField()
+    list_interface_neighbor = models.JSONField()
     
     def __str__(self):
         """Unicode representation of DeviceInterface."""

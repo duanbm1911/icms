@@ -93,7 +93,7 @@ class DeviceInterfaceForm(forms.ModelForm):
             'list_interface_speed',
             'list_interface_type',
             'list_interface_state',
-            'list_interface_neghbor'
+            'list_interface_neighbor'
         ]
 
 

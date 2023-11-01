@@ -125,3 +125,9 @@ class DeviceConfigurationListView(ListView):
     form_class = DeviceConfigurationForm
     context_object_name = 'devices'
     template_name = "list_device_configuration.html"
+
+
+
+class DeviceInterfaceDetailView(DetailView):
+    model = DeviceInterface
+    template_name = "detail_device_interface.html"

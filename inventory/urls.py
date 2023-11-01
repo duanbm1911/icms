@@ -18,5 +18,6 @@ urlpatterns = [
     path('list-device/device-interface', DeviceInterfaceListView.as_view()),
     path('list-device/device-topology', DeviceTopologyListView.as_view()),
     path('list-device/device-configuration', DeviceConfigurationListView.as_view()),
+    path('list-device/device-interface/detail/<int:pk>', DeviceInterfaceDetailView.as_view()),
     path('device-dashboard', views.device_dashboard)
 ]

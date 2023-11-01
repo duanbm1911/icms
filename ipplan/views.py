@@ -130,7 +130,6 @@ class IpAddressModelDetailView(DetailView):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
 
 
-
 class SubnetDeleteView(DeleteView):
     model = Subnet
     template_name = "list-subnet.html"

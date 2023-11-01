@@ -10,7 +10,9 @@ $.ajax({
 			exportEnabled: true,
 			title: {
 				text: "Count device by type",
-				fontFamily: "tahoma"
+				fontFamily: "tahoma",
+				fontSize: 20,
+				fontWeight: "normal"
 			},
 			axisY: {
 				title: "Device",
