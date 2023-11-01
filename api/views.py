@@ -40,8 +40,8 @@ def inventory_dashboard_03(request):
     This dashboard will be display count of device by vendor
     """
     location_count = list()
-    list_vendor = list(DeviceLocation.objects.values_list('device_location', flat=True))
-    for obj in list_vendor:
+    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    for obj in list_location:
         count = DeviceBasicInfo.objects.filter(device_location__device_location=obj).count()
         location_count.append({
             'label': str(obj),
@@ -63,3 +63,20 @@ def inventory_dashboard_04(request):
             'y': count
         })
     return JsonResponse({'data': type_count})
+
+
+# def inventory_dashboard_05(request):
+#     """
+#     This dashboard will be display count of configuration management
+#     """
+#     data = list()
+#     list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    
+#     non_config_compliance = DeviceConfiguration.objects.filter(device_config_standardized=False).count()
+#     device_no_monitor = DeviceConfiguration.objects.filter(device_monitored=False).count()
+#     device_np_backup_cfg = DeviceConfiguration.objects.filter(device_backup_config=False).count()
+#     data.append({
+
+#     })
+
+    

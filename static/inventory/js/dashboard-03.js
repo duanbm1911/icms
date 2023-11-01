@@ -6,24 +6,28 @@ $.ajax({
 		console.log(data)
 		var chart = new CanvasJS.Chart("chartContainer-03", {
 			animationEnabled: true,
-			theme: "light2", // "light1", "light2", "dark1", "dark2"
 			exportEnabled: true,
 			title: {
-				text: "Count device by location"
-			},
-			axisY: {
-				title: "Device",
-				suffix: ""
+				text: "Count device by location",
+				fontFamily: "tahoma"
 			},
 			axisX: {
-				title: ""
+				interval: 1
+			},
+			axisY2: {
+				interlacedColor: "rgba(1,77,101,.2)",
+				gridColor: "rgba(1,77,101,.1)"
 			},
 			data: [{
-				type: "column",
-				yValueFormatString: "",
+				type: "bar",
+				name: "companies",
+				axisYType: "secondary",
+				color: "#014D65",
 				dataPoints: data.data
 			}]
 		});
 		chart.render();
 	}
 })
+
+

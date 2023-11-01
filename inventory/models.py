@@ -74,7 +74,7 @@ class DeviceInterface(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     count_interface = models.IntegerField()
-    list_interface_name = models.JSONField(max_length=1000)
+    list_interface_name = models.JSONField()
     list_interface_desc = models.JSONField()
     list_interface_inuse = models.JSONField()
     list_interface_unuse = models.JSONField()

@@ -3,7 +3,8 @@ var chart = new CanvasJS.Chart("chartContainer-05", {
 		exportEnabled: true,
 		theme: "light1", // "light1", "light2", "dark1", "dark2"
 		title: {
-			text: "Count of device non-compliance configuration"
+			text: "Count of device non-compliance configuration",
+			fontFamily: "tahoma"
 		},
 		axisY: {
 			// title: "Số lượng thiết bị",

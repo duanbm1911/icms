@@ -4,7 +4,8 @@ animationEnabled: true,
 theme: "light2", // "light1", "light2", "dark1", "dark2"
 exportEnabled: true,
 title: {
-	text: "Count device by vendor"
+	text: "Count device by vendor",
+	fontFamily: "tahoma"
 },
 axisY: {
 	title: "Device count",

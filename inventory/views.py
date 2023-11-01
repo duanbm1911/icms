@@ -71,7 +71,7 @@ class DeviceBasicInfoUpdateView(UpdateView):
     model = DeviceBasicInfo
     form_class = DeviceBasicInfoForm
     template_name = "update_device.html"
-    success_url = '/inventory/list-device/basic-information'
+    success_url = '/inventory/list-device/device-basic-info'
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -102,22 +102,26 @@ def device_dashboard(request):
 class DeviceManagementListView(ListView):
     model = DeviceManagement
     form_class = DeviceManagementForm
+    context_object_name = 'devices'
     template_name = "list_device_management.html"
 
 
 class DeviceInterfaceListView(ListView):
     model = DeviceInterface
     form_class = DeviceInterfaceForm
+    context_object_name = 'devices'
     template_name = "list_device_interface.html"
 
 
 class DeviceTopologyListView(ListView):
     model = DeviceTopology
     form_class = DeviceTopologyForm
+    context_object_name = 'devices'
     template_name = "list_device_topology.html"
 
 
 class DeviceConfigurationListView(ListView):
     model = DeviceConfiguration
     form_class = DeviceConfigurationForm
+    context_object_name = 'devices'
     template_name = "list_device_configuration.html"
