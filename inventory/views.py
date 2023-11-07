@@ -125,9 +125,23 @@ class DeviceConfigurationListView(ListView):
     form_class = DeviceConfigurationForm
     context_object_name = 'devices'
     template_name = "list_device_configuration.html"
-
-
+    
 
 class DeviceInterfaceDetailView(DetailView):
     model = DeviceInterface
     template_name = "detail_device_interface.html"
+
+
+class DeviceManagementUpdateView(UpdateView):
+    model = DeviceManagement
+    form_class = DeviceManagementForm
+    template_name = 'update_device_management.html'
+    success_url = '/inventory/list-device/device-management'
+    
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        return super().form_valid(form)
+    
+class DeviceManagementDetailView(DetailView):
+    model = DeviceManagement
+    template_name = 'detail_device_management.html'

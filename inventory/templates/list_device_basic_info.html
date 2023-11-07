@@ -23,9 +23,9 @@
                     <td>{{ obj.device_type }}</td>
                     <td>{{ obj.device_category }}</td>
                     <td>
-                        <a href="/inventory/update-device/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-basic-info/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                        <a href="/inventory/detail-device/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-basic-info/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 {% endfor %}
