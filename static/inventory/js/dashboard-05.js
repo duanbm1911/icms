@@ -6,50 +6,30 @@ $.ajax({
 		console.log(data)
 		var chart = new CanvasJS.Chart("chartContainer-05", {
 			animationEnabled: true,
-			theme: "light2",
 			exportEnabled: true,
-			title:{
-				text: "Device configuration report",
+			title: {
+				text: "Count device by location",
 				fontFamily: "tahoma",
 				fontSize: 20,
 				fontWeight: "normal"
-
 			},
-			axisX:{
-				valueFormatString: "",
-				crosshair: {
-					enabled: true,
-					snapToDataPoint: true
-				}
+			axisX: {
+				interval: 1
 			},
-			axisY: {
-				title: "Count of Device",
-				includeZero: true,
-				crosshair: {
-					enabled: true
-				}
+			axisY2: {
+				interlacedColor: "rgba(1,77,101,.2)",
+				gridColor: "rgba(1,77,101,.1)"
 			},
-			toolTip:{
-				shared:true
-			},  
-			legend:{
-				cursor:"pointer",
-				verticalAlign: "bottom",
-				horizontalAlign: "left",
-				dockInsidePlotArea: true,
-				itemclick: toogleDataSeries
-			},
-			data: data.data
+			data: [{
+				type: "bar",
+				name: "companies",
+				axisYType: "secondary",
+				color: "#014D65",
+				dataPoints: data.data
+			}]
 		});
 		chart.render();
-
-		function toogleDataSeries(e){
-			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-				e.dataSeries.visible = false;
-			} else{
-				e.dataSeries.visible = true;
-			}
-			chart.render();
-		}
 	}
 })
+
+
