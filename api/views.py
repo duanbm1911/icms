@@ -35,38 +35,7 @@ def inventory_dashboard_02(request):
         })
     return JsonResponse({'data': vendor_count})
 
-
 def inventory_dashboard_03(request):
-    """
-    This dashboard will be display count of device by vendor
-    """
-    location_count = list()
-    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
-    for obj in list_location:
-        count = DeviceBasicInfo.objects.filter(device_location__device_location=obj).count()
-        location_count.append({
-            'label': str(obj),
-            'y': count
-        })
-    return JsonResponse({'data': location_count})
-
-
-def inventory_dashboard_04(request):
-    """
-    This dashboard will be display count of device by vendor
-    """
-    type_count = list()
-    list_vendor = list(DeviceType.objects.values_list('device_type', flat=True))
-    for obj in list_vendor:
-        count = DeviceBasicInfo.objects.filter(device_type__device_type=obj).count()
-        type_count.append({
-            'label': str(obj),
-            'y': count
-        })
-    return JsonResponse({'data': type_count})
-
-
-def inventory_dashboard_05(request):
     """
     This dashboard will be display count of configuration management
     """
@@ -121,12 +90,67 @@ def inventory_dashboard_05(request):
     for data_point in list_data_point:
         chart_data.append({
             "type": "line",
-            "showInLegend": "false",
+            "showInLegend": "true",
             "name": data_point['desc'],
+            "markerSize": 0,
             "markerType": "square",
             "color": '#%02X%02X%02X' % (color(),color(),color()),
             "dataPoints": data_point['name']
         })
     return JsonResponse({'data': chart_data})
 
+def inventory_dashboard_04(request):
+    """
+    This dashboard will be display count of device by vendor
+    """
+    type_count = list()
+    list_vendor = list(DeviceType.objects.values_list('device_type', flat=True))
+    for obj in list_vendor:
+        count = DeviceBasicInfo.objects.filter(device_type__device_type=obj).count()
+        type_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': type_count})
+
+def inventory_dashboard_05(request):
+    """
+    This dashboard will be display count of device by vendor
+    """
+    location_count = list()
+    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    for obj in list_location:
+        count = DeviceBasicInfo.objects.filter(device_location__device_location=obj).count()
+        location_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': location_count})
     
+def ipplan_dashboard_01(request):
+    """
+    This dashboard will be display count of location by regoin
+    """
+    location_count = list()
+    list_region = list(Region.objects.values_list('region', flat=True))
+    for obj in list_region:
+        count = Location.objects.filter(region__region=obj).count()
+        location_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': location_count})
+
+def ipplan_dashboard_02(request):
+    """
+    This dashboard will be display count of subnet by location
+    """
+    subnet_count = list()
+    list_location = list(Location.objects.values_list('location', flat=True))
+    for obj in list_location:
+        count = Subnet.objects.filter(location__location=obj).count()
+        subnet_count.append({
+            'label': str(obj),
+            'y': count
+        })
+    return JsonResponse({'data': subnet_count})
