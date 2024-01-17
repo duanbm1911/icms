@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from inventory.models import *
 from ipplan.models import *
 import random
 
 # Create your views here.
 
+@login_required()
 def inventory_dashboard_01(request):
     """
     This dashboard will be display count of device by category
@@ -20,7 +22,7 @@ def inventory_dashboard_01(request):
         })
     return JsonResponse({'data': category_count})
 
-
+@login_required()
 def inventory_dashboard_02(request):
     """
     This dashboard will be display count of device by vendor
@@ -35,6 +37,7 @@ def inventory_dashboard_02(request):
         })
     return JsonResponse({'data': vendor_count})
 
+@login_required()
 def inventory_dashboard_03(request):
     """
     This dashboard will be display count of configuration management
@@ -99,6 +102,7 @@ def inventory_dashboard_03(request):
         })
     return JsonResponse({'data': chart_data})
 
+@login_required()
 def inventory_dashboard_04(request):
     """
     This dashboard will be display count of device by vendor
@@ -113,6 +117,7 @@ def inventory_dashboard_04(request):
         })
     return JsonResponse({'data': type_count})
 
+@login_required()
 def inventory_dashboard_05(request):
     """
     This dashboard will be display count of device by vendor
@@ -126,7 +131,8 @@ def inventory_dashboard_05(request):
             'y': count
         })
     return JsonResponse({'data': location_count})
-    
+  
+@login_required()  
 def ipplan_dashboard_01(request):
     """
     This dashboard will be display count of location by regoin
@@ -141,6 +147,7 @@ def ipplan_dashboard_01(request):
         })
     return JsonResponse({'data': location_count})
 
+@login_required()
 def ipplan_dashboard_02(request):
     """
     This dashboard will be display count of subnet by location

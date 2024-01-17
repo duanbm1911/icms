@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
@@ -20,6 +22,10 @@ class RegionCreateView(CreateView):
     template_name = "create_region.html"
     success_url = '/ipplan/create-Region'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
@@ -29,6 +35,10 @@ class LocationCreateView(CreateView):
     form_class = LocationForm
     template_name = "create_location.html"
     success_url = '/ipplan/create-location'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = self.request.user
@@ -40,6 +50,10 @@ class SubnetCreateView(CreateView):
     template_name = "create_subnet.html"
     success_url = '/ipplan/list-subnet'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def form_valid(self, form):
         form.instance.user_created = self.request.user
         return super().form_valid(form)
@@ -49,7 +63,11 @@ class SubnetListView(ListView):
     context_object_name = 'subnets'
     template_name = "list_subnet.html"
 
-
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+@login_required()
 def request_ip_form(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if request.method == 'POST':
@@ -77,11 +95,11 @@ def request_ip_form(request):
         form = RequestIpAddressForm()
     return render(request, template_name='request_ip.html', context={'form': form})
 
-    
+@login_required()
 def dashboard(request):
     return render(request, template_name='dashboard.html')
 
-
+@login_required()
 def list_ip(request, pk):
     list_ip = IpAddressModel.objects.filter(subnet__id=pk)
     return render(request, template_name='list_ip.html', context={'list_ip': list_ip})
@@ -90,6 +108,10 @@ def list_ip(request, pk):
 class IpAddressModelDeleteView(DeleteView):
     model = IpAddressModel
     template_name = 'list_ip.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_object(self):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
@@ -104,6 +126,10 @@ class IpAddressModelUpdateView(UpdateView):
     model = IpAddressModel
     form_class = IpAddressModelUpdatelForm
     template_name = "update_ip.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_object(self):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
@@ -120,11 +146,18 @@ class SubnetUpdateView(UpdateView):
     template_name = "update_subnet.html"
     success_url = '/ipplan/list-subnet'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class IpAddressModelDetailView(DetailView):
     model = IpAddressModel
     form_class = IpAddressModelForm
     template_name = "detail_ip.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_object(self):
         return IpAddressModel.objects.get(pk=self.kwargs["id"])
@@ -135,4 +168,7 @@ class SubnetDeleteView(DeleteView):
     template_name = "list-subnet.html"
     success_url = '/ipplan/list-subnet'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
