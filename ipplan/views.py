@@ -20,7 +20,7 @@ class RegionCreateView(CreateView):
     model = Region
     form_class = RegionForm
     template_name = "create_region.html"
-    success_url = '/ipplan/create-Region'
+    success_url = '/ipplan/create-region'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
