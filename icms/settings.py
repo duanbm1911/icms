@@ -137,4 +137,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
-CSRF_TRUSTED_ORIGINS = ['icms.onprem.vpbank.dev', 'icms.vpbank.com.vn', '10.16.183.252']
+CSRF_TRUSTED_ORIGINS = ['https://icms.onprem.vpbank.dev', 'https://icms.vpbank.com.vn', 'https://10.16.183.252']
