@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class DeviceLocation(models.Model):
-    device_location = models.CharField(max_length=1000, unique=True)
+    device_location = models.CharField(max_length=250, unique=True)
     description = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
@@ -12,7 +12,7 @@ class DeviceLocation(models.Model):
         return self.device_location
     
 class DeviceType(models.Model):
-    device_type = models.CharField(max_length=1000, unique=True)
+    device_type = models.CharField(max_length=250, unique=True)
     description = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
@@ -21,7 +21,7 @@ class DeviceType(models.Model):
         return self.device_type
     
 class DeviceCategory(models.Model):
-    device_category = models.CharField(max_length=1000, unique=True)
+    device_category = models.CharField(max_length=250, unique=True)
     description = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
@@ -30,7 +30,7 @@ class DeviceCategory(models.Model):
         return self.device_category
     
 class DeviceVendor(models.Model):
-    device_vendor = models.CharField(max_length=1000, unique=True)
+    device_vendor = models.CharField(max_length=250, unique=True)
     description = models.CharField(max_length=1000)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
@@ -39,7 +39,7 @@ class DeviceVendor(models.Model):
         return self.device_vendor
     
 class DeviceBasicInfo(models.Model):
-    device_name = models.CharField(max_length=1000, blank=True)
+    device_name = models.CharField(max_length=250, blank=True)
     device_ip = models.GenericIPAddressField(unique=True)
     device_location = models.ForeignKey('DeviceLocation', on_delete=models.CASCADE)
     device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
