@@ -35,7 +35,7 @@ class Subnet(models.Model):
     subnet = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     location = models.ForeignKey('Location', on_delete=models.CASCADE)
-    description = models.CharField(max_length=250)
+    description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -59,7 +59,7 @@ class IpAddressModel(models.Model):
     ip_address = models.GenericIPAddressField(unique=True)
     subnet = models.ForeignKey('Subnet', on_delete=models.CASCADE)
     status = models.ForeignKey('IpStatus', on_delete=models.CASCADE)
-    description = models.CharField(max_length=250)
+    description = models.CharField(max_length=200)
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
