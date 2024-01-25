@@ -8,6 +8,11 @@ class DeviceLocation(models.Model):
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
+
     def __str__(self):
         return self.device_location
     
@@ -16,6 +21,11 @@ class DeviceType(models.Model):
     description = models.CharField(max_length=200)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
 
     def __str__(self):
         return self.device_type
@@ -26,6 +36,11 @@ class DeviceCategory(models.Model):
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
+
     def __str__(self):
         return self.device_category
     
@@ -34,6 +49,11 @@ class DeviceVendor(models.Model):
     description = models.CharField(max_length=200)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
 
     def __str__(self):
         return self.device_vendor
@@ -48,6 +68,11 @@ class DeviceBasicInfo(models.Model):
     device_description = models.CharField(max_length=200, blank=True)
     device_creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
 
     def __str__(self):
         return self.device_ip
@@ -64,6 +89,11 @@ class DeviceManagement(models.Model):
     end_sw_support_date = models.DateField()
     end_hw_support_date = models.DateField()
     start_used_date = models.DateField()
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
@@ -83,6 +113,11 @@ class DeviceInterface(models.Model):
     list_interface_state = models.JSONField()
     list_interface_neighbor = models.JSONField()
     
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
+
     def __str__(self):
         """Unicode representation of DeviceInterface."""
         return str(self.device_ip)
@@ -94,7 +129,12 @@ class DeviceTopology(models.Model):
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200)
     device_rack_unit = models.CharField(max_length=200)
-    
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
+
     def __str__(self):
         """Unicode representation of DeviceTopology."""
         return str(self.device_ip)
@@ -107,6 +147,11 @@ class DeviceConfiguration(models.Model):
     device_config_standardized = models.BooleanField()
     device_monitored = models.BooleanField()
     device_backup_config = models.BooleanField()
+
+    class Meta:
+        options = {
+            'mysql': {'charset': 'utf8mb4'},
+        }
 
     def __str__(self):
         """Unicode representation of DeviceConfiguration."""
