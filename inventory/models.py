@@ -73,15 +73,15 @@ class DeviceInterface(models.Model):
     """Model definition for DeviceInterface."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    # count_interface = models.IntegerField()
-    # list_interface_name = models.JSONField()
-    # list_interface_desc = models.JSONField()
-    # list_interface_inuse = models.JSONField()
-    # list_interface_unuse = models.JSONField()
-    # list_interface_speed = models.JSONField()
-    # list_interface_type = models.JSONField()
-    # list_interface_state = models.JSONField()
-    # list_interface_neighbor = models.JSONField()
+    count_interface = models.IntegerField()
+    list_interface_name = models.CharField(max_length=200, blank=True)
+    list_interface_desc = models.CharField(max_length=200, blank=True)
+    list_interface_inuse = models.CharField(max_length=200, blank=True)
+    list_interface_unuse = models.CharField(max_length=200, blank=True)
+    list_interface_speed = models.CharField(max_length=200, blank=True)
+    list_interface_type = models.CharField(max_length=200, blank=True)
+    list_interface_state = models.CharField(max_length=200, blank=True)
+    list_interface_neighbor = models.CharField(max_length=200, blank=True)
     
     def __str__(self):
         """Unicode representation of DeviceInterface."""
