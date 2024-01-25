@@ -4,7 +4,7 @@ from django.db import models
 
 class DeviceLocation(models.Model):
     device_location = models.CharField(max_length=250, unique=True)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=250)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -13,7 +13,7 @@ class DeviceLocation(models.Model):
     
 class DeviceType(models.Model):
     device_type = models.CharField(max_length=250, unique=True)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=250)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -22,7 +22,7 @@ class DeviceType(models.Model):
     
 class DeviceCategory(models.Model):
     device_category = models.CharField(max_length=250, unique=True)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=250)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -31,7 +31,7 @@ class DeviceCategory(models.Model):
     
 class DeviceVendor(models.Model):
     device_vendor = models.CharField(max_length=250, unique=True)
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=250)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -45,7 +45,7 @@ class DeviceBasicInfo(models.Model):
     device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
     device_category = models.ForeignKey('DeviceCategory', on_delete=models.CASCADE)
     device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.CASCADE)
-    device_description = models.CharField(max_length=1000, blank=True)
+    device_description = models.CharField(max_length=250, blank=True)
     device_creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
@@ -92,8 +92,8 @@ class DeviceTopology(models.Model):
     """Model definition for DeviceTopology."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_rack_name = models.CharField(max_length=1000)
-    device_rack_unit = models.CharField(max_length=1000)
+    device_rack_name = models.CharField(max_length=250)
+    device_rack_unit = models.CharField(max_length=250)
     
     def __str__(self):
         """Unicode representation of DeviceTopology."""
