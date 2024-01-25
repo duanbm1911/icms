@@ -8,6 +8,7 @@ from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from inventory.models import *
 from inventory.forms import *
+import openpyxl
 # Create your views here.
 
 class DeviceBasicInfoCreateView(CreateView):
@@ -128,13 +129,39 @@ class DeviceBasicInfoDetailView(DetailView):
 def create_multiple_device(request):
     if request.method == 'POST' and request.FILES.get('upload-file'):
         uploaded_file = request.FILES['upload-file']
-        print(uploaded_file.read().decode())
+        wb = openpyxl.load_workbook(uploaded_file)
+        sheets = wb.sheetnames
+        worksheet_01 = wb["Device basic info"]
+        worksheet_02 = wb["Device management"]
+        worksheet_03 = wb["Device topology"]
+        excel_data = list()
+        device_basic_info_model = DeviceBasicInfo()
+        for item in worksheet_01.iter_rows(min_row=2, values_only=True):
+            item = list(item)
+            filter_obj = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+            print(item[1])
+            if filter_obj == 0:
+                device_location_obj = DeviceLocation.objects.filter(device_location=item[2]).count()
+                if device_location_obj == 0:
+                    device_location_model = DeviceLocation(device_location=item[2])
+                    device_location_model.save()
+                device_basic_info_model.device_name = item[0],
+                device_basic_info_model.device_ip = item[1],
+                device_basic_info_model.device_location = DeviceLocation.objects.get(device_location=item[2]),
+                device_basic_info_model.device_type = DeviceType.objects.get(device_type=item[3]),
+                device_basic_info_model.device_category = DeviceCategory.objects.get(device_category=item[4]),
+                device_basic_info_model.device_vendor = DeviceVendor.objects.get(device_vendor=item[5]),
+                device_basic_info_model.device_description = item[6]
+        device_basic_info_model.save()
+        # for row in worksheet_02.iter_rows(min_row=2, values_only=True):
+        #     print(row)
+        # for row in worksheet_03.iter_rows(min_row=2, values_only=True):
+        #     print(row)
     return render(request, 'create_multiple_device.html')
 
 @login_required()
 def device_dashboard(request):
     return render(request, template_name='device_dashboard.html')
-
 
 class DeviceManagementListView(ListView):
     model = DeviceManagement
