@@ -10,7 +10,7 @@ class Region(models.Model):
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation of Region."""
         return self.region
 
@@ -24,7 +24,7 @@ class Location(models.Model):
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation of Location."""
         return self.location
 
@@ -39,7 +39,7 @@ class Subnet(models.Model):
     created_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation of Subnet."""
         return self.subnet
 
@@ -48,7 +48,7 @@ class IpStatus(models.Model):
 
     status = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation of IpAddressStatus."""
         return self.status
 
@@ -64,7 +64,7 @@ class IpAddressModel(models.Model):
     user_created = models.CharField(max_length=100)
 
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation of IpModel."""
         return self.ip_address
 

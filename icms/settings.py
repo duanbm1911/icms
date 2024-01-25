@@ -95,7 +95,10 @@ DATABASES = {
         'PASSWORD': 'qEnN5P#W6XdRRr+2',
         'HOST':'localhost',
         'PORT':'3306',
-    }
+    },
+    'OPTIONS': { 
+        'init_command': 'SET storage_engine=INNODB;' 
+        }
 }
 
 # Password validation
