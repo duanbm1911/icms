@@ -93,7 +93,7 @@ class DeviceTopology(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200)
-    device_rack_unit = models.IntegerField(max_length=200)
+    device_rack_unit = models.IntegerField()
     
     def __str__(self):
         """Unicode representation of DeviceTopology."""
