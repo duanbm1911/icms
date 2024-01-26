@@ -56,14 +56,14 @@ class DeviceManagement(models.Model):
     """Model definition for DeviceManagement."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_serial_number = models.CharField(max_length=100)
-    start_ma_date = models.DateField()
-    end_ma_date = models.DateField()
-    start_license_date = models.DateField()
-    end_license_date = models.DateField()
-    end_sw_support_date = models.DateField()
-    end_hw_support_date = models.DateField()
-    start_used_date = models.DateField()
+    device_serial_number = models.CharField(max_length=100, blank=True)
+    start_ma_date = models.DateField(blank=True)
+    end_ma_date = models.DateField(blank=True)
+    start_license_date = models.DateField(blank=True)
+    end_license_date = models.DateField(blank=True)
+    end_sw_support_date = models.DateField(blank=True)
+    end_hw_support_date = models.DateField(blank=True)
+    start_used_date = models.DateField(blank=True)
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
@@ -93,7 +93,7 @@ class DeviceTopology(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200)
-    device_rack_unit = models.CharField(max_length=200)
+    device_rack_unit = models.IntegerField(max_length=200)
     
     def __str__(self):
         """Unicode representation of DeviceTopology."""

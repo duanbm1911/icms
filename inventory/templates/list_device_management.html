@@ -27,8 +27,8 @@
                     <td>{{ obj.end_hw_support_date }}</td>
                     <td>{{ obj.start_used_date }}</td>
                     <td>
-                        <a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                        <a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-management/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-management/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 {% endfor %}

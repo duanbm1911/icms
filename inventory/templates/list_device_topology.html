@@ -8,6 +8,7 @@
                     <th>Device IP</th>
                     <th>Device rack name</th>
                     <th>Device rack unit</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,10 @@
                     <td>{{ obj.device_ip }}</td>
                     <td>{{ obj.device_rack_name }}</td>
                     <td>{{ obj.device_rack_unit }}</td>
+                    <td>
+                        <a href="/inventory/list-device/device-topology/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-topology/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    </td>
                 </tr>
                 {% endfor %}
 
