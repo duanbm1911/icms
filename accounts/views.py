@@ -7,9 +7,10 @@ from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-@login_required()
+
 def logout(request):
-    request.user(auth_logout)
+    auth_logout(request)
+    return redirect('/accounts/login')
 
 @login_required()
 def change_password(request):

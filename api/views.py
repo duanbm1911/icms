@@ -1,27 +1,63 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from inventory.models import *
 from ipplan.models import *
 import random
+import base64
 
 # Create your views here.
 
+def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
+
+    if test_func(request.user):
+        return view(request, *args, **kwargs)
+
+    if 'HTTP_AUTHORIZATION' in request.META:
+        auth = request.META['HTTP_AUTHORIZATION'].split()
+        if len(auth) == 2:
+
+            if auth[0].lower() == "basic":
+                string = auth[1].encode('utf-8')
+                secret = base64.b64decode(string).decode('utf-8')
+                uname, passwd = secret.split(':')
+                user = authenticate(username=uname, password=passwd)
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        request.user = user
+                        return view(request, *args, **kwargs)
+
+    response = HttpResponse()
+    response.status_code = 401
+    response['WWW-Authenticate'] = 'Basic realm="%s"' % realm
+    return response
+
 def logged_in_or_basicauth(realm = ""):
+
     def view_decorator(func):
         def wrapper(request, *args, **kwargs):
             return view_or_basicauth(func, request,
-                                     lambda u: u.is_authenticated(),
+                                     lambda u: u.is_authenticated,
+                                     realm, *args, **kwargs)
+        return wrapper
+    return view_decorator
+
+def has_perm_or_basicauth(perm, realm = ""):
+
+    def view_decorator(func):
+        def wrapper(request, *args, **kwargs):
+            return view_or_basicauth(func, request,
+                                     lambda u: u.has_perm(perm),
                                      realm, *args, **kwargs)
         return wrapper
     return view_decorator
 
 @login_required()
 def inventory_dashboard_01(request):
-    """
-    This dashboard will be display count of device by category
-    """
+
     category_count = list()
     list_category = list(DeviceCategory.objects.values_list('device_category', flat=True))
     for obj in list_category:
