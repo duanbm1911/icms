@@ -1,11 +1,21 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from inventory.models import *
 from ipplan.models import *
 import random
 
 # Create your views here.
+
+def logged_in_or_basicauth(realm = ""):
+    def view_decorator(func):
+        def wrapper(request, *args, **kwargs):
+            return view_or_basicauth(func, request,
+                                     lambda u: u.is_authenticated(),
+                                     realm, *args, **kwargs)
+        return wrapper
+    return view_decorator
 
 @login_required()
 def inventory_dashboard_01(request):
@@ -162,7 +172,7 @@ def ipplan_dashboard_02(request):
         })
     return JsonResponse({'data': subnet_count})
 
-@login_required()
+@logged_in_or_basicauth()
 def jenkins_get_list_device(request):
     if request.method == 'GET':
         if request.GET.get('device_type') is not None:
