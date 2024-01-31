@@ -161,3 +161,20 @@ def ipplan_dashboard_02(request):
             'y': count
         })
     return JsonResponse({'data': subnet_count})
+
+@login_required()
+def jenkins_get_list_device(request):
+    if request.method == 'GET':
+        if request.GET.get('device_type') is not None:
+            device_type = request.GET['device_type']
+            datalist = list()
+            queryset = DeviceBasicInfo.objects.filter(device_type__device_type=device_type)
+            if len(queryset) > 0:
+                for item in queryset:
+                    datalist.append({
+                        'device_ip': item.device_ip,
+                        'device_name': item.device_name
+                    })
+            return JsonResponse({'datalist': datalist}, status=200)
+        else:
+            return JsonResponse({'error_message': 'missing device_type'}, status=401)
