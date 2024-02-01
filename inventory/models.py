@@ -37,6 +37,15 @@ class DeviceVendor(models.Model):
 
     def __str__(self):
         return self.device_vendor
+
+class DeviceOS(models.Model):
+    device_os = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=200)
+    creation_time = models.DateTimeField(auto_now=True)
+    user_created = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.device_os
     
 class DeviceBasicInfo(models.Model):
     device_name = models.CharField(max_length=200, blank=True)
@@ -45,6 +54,7 @@ class DeviceBasicInfo(models.Model):
     device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
     device_category = models.ForeignKey('DeviceCategory', on_delete=models.CASCADE)
     device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.CASCADE)
+    device_os = models.ForeignKey('DeviceOS', on_delete=models.CASCADE)
     device_description = models.CharField(max_length=200, blank=True)
     device_creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)

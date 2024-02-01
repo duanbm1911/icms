@@ -10,6 +10,7 @@
                     <th>Location</th>
                     <th>Device type</th>
                     <th>Category</th>
+                    <th>Device OS</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                     <td>{{ obj.device_location }}</td>
                     <td>{{ obj.device_type }}</td>
                     <td>{{ obj.device_category }}</td>
+                    <td>{{ obj.device_os }}</td>
                     <td>
                         <a href="/inventory/list-device/device-basic-info/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>

@@ -143,6 +143,7 @@ def create_multiple_device(request):
                 obj_count_02 = DeviceType.objects.filter(device_type=item[3]).count()
                 obj_count_03 = DeviceCategory.objects.filter(device_category=item[4]).count()
                 obj_count_04 = DeviceVendor.objects.filter(device_vendor=item[5]).count()
+                obj_count_05 = DeviceOS.objects.filter(device_os=item[6]).count()
                 if obj_count_01 == 0:
                     model_01 = DeviceLocation(device_location=item[2])
                     model_01.save()
@@ -155,6 +156,9 @@ def create_multiple_device(request):
                 if obj_count_04 == 0:
                     model_04 = DeviceVendor(device_vendor=item[5])
                     model_04.save()
+                if obj_count_05 == 0:
+                    model_05 = DeviceOS(device_os=item[6])
+                    model_05.save()
                 model = DeviceBasicInfo(
                     device_name=item[0],
                     device_ip=item[1],
@@ -162,7 +166,8 @@ def create_multiple_device(request):
                     device_type=DeviceType.objects.get(device_type=item[3]),
                     device_category=DeviceCategory.objects.get(device_category=item[4]),
                     device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
-                    device_description=item[6]
+                    device_os=DeviceOS.objects.get(device_os=item[6]),
+                    device_description=item[7]
                 ) 
                 model.save()
         for item in worksheet_02.iter_rows(min_row=2, values_only=True):
