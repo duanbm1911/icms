@@ -67,13 +67,13 @@ class DeviceManagement(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_serial_number = models.CharField(max_length=100, blank=True)
-    start_ma_date = models.DateField(blank=True)
-    end_ma_date = models.DateField(blank=True)
-    start_license_date = models.DateField(blank=True)
-    end_license_date = models.DateField(blank=True)
-    end_sw_support_date = models.DateField(blank=True)
-    end_hw_support_date = models.DateField(blank=True)
-    start_used_date = models.DateField(blank=True)
+    start_ma_date = models.DateField(blank=True, null=True)
+    end_ma_date = models.DateField(blank=True, null=True)
+    start_license_date = models.DateField(blank=True, null=True)
+    end_license_date = models.DateField(blank=True, null=True)
+    end_sw_support_date = models.DateField(blank=True, null=True)
+    end_hw_support_date = models.DateField(blank=True, null=True)
+    start_used_date = models.DateField(blank=True, null=True)
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
@@ -84,14 +84,14 @@ class DeviceInterface(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     count_interface = models.IntegerField()
-    list_interface_name = models.CharField(max_length=200, blank=True)
-    list_interface_desc = models.CharField(max_length=200, blank=True)
-    list_interface_inuse = models.CharField(max_length=200, blank=True)
-    list_interface_unuse = models.CharField(max_length=200, blank=True)
-    list_interface_speed = models.CharField(max_length=200, blank=True)
-    list_interface_type = models.CharField(max_length=200, blank=True)
-    list_interface_state = models.CharField(max_length=200, blank=True)
-    list_interface_neighbor = models.CharField(max_length=200, blank=True)
+    list_interface_name = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_desc = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_inuse = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_unuse = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_speed = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_type = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_state = models.CharField(max_length=200, blank=True, null=True)
+    list_interface_neighbor = models.CharField(max_length=200, blank=True, null=True)
     
     def __str__(self):
         """Unicode representation of DeviceInterface."""
@@ -102,8 +102,8 @@ class DeviceTopology(models.Model):
     """Model definition for DeviceTopology."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_rack_name = models.CharField(max_length=200)
-    device_rack_unit = models.IntegerField()
+    device_rack_name = models.CharField(max_length=200, blank=True, null=True)
+    device_rack_unit = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         """Unicode representation of DeviceTopology."""

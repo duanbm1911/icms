@@ -171,35 +171,35 @@ def create_multiple_device(request):
                 ) 
                 model.save()
         for item in worksheet_02.iter_rows(min_row=2, values_only=True):
-            item = ["" if i is None else i for i in item]
-            obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
-            if obj_count != 0:
-                obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                if obj_count_01 == 0:
-                    model = DeviceManagement(
-                        device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
-                        device_serial_number=item[2],
-                        start_ma_date=item[3],
-                        end_ma_date=item[4],
-                        start_license_date=item[5],
-                        end_license_date=item[6],
-                        end_sw_support_date=item[7],
-                        end_hw_support_date=item[8],
-                        start_used_date=item[9]
-                    )
-                    model.save()
+            if item[0] is not None and item[1] is not None:
+                obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                if obj_count != 0:
+                    obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                    if obj_count_01 == 0:
+                        model = DeviceManagement(
+                            device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                            device_serial_number=item[2],
+                            start_ma_date=item[3],
+                            end_ma_date=item[4],
+                            start_license_date=item[5],
+                            end_license_date=item[6],
+                            end_sw_support_date=item[7],
+                            end_hw_support_date=item[8],
+                            start_used_date=item[9]
+                        )
+                        model.save()
         for item in worksheet_03.iter_rows(min_row=2, values_only=True):
-            item = ["" if i is None else i for i in item]
-            obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
-            if obj_count != 0:
-                obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                if obj_count_01 == 0:
-                    model = DeviceTopology(
-                        device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
-                        device_rack_name=item[2],
-                        device_rack_unit=item[3]
-                    )
-                    model.save()
+            if item[0] is not None and item[1] is not None:
+                obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                if obj_count != 0:
+                    obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                    if obj_count_01 == 0:
+                        model = DeviceTopology(
+                            device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                            device_rack_name=item[2],
+                            device_rack_unit=item[3]
+                        )
+                        model.save()
     return render(request, 'create_multiple_device.html')
 
 @login_required()
