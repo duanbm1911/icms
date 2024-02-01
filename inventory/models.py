@@ -67,13 +67,13 @@ class DeviceManagement(models.Model):
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_serial_number = models.CharField(max_length=100, blank=True)
-    start_ma_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    end_ma_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    start_license_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    end_license_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    end_sw_support_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    end_hw_support_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
-    start_used_date = models.DateField(blank=True, null=True, input_formats=settings.DATE_INPUT_FORMATS)
+    start_ma_date = models.DateField(blank=True, null=True)
+    end_ma_date = models.DateField(blank=True, null=True)
+    start_license_date = models.DateField(blank=True, null=True)
+    end_license_date = models.DateField(blank=True, null=True)
+    end_sw_support_date = models.DateField(blank=True, null=True)
+    end_hw_support_date = models.DateField(blank=True, null=True)
+    start_used_date = models.DateField(blank=True, null=True)
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
