@@ -110,8 +110,8 @@ class DeviceBasicInfoUpdateView(UpdateView):
 
 class DeviceBasicInfoDeleteView(DeleteView):
     model = DeviceBasicInfo
-    template_name = 'list_device.html'
-    success_url = '/inventory/list-device'
+    template_name = 'list_device_basic_info.html'
+    success_url = '/inventory/list-device/device-basic-info'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
