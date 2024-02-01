@@ -151,6 +151,4 @@ LOGIN_REDIRECT_URL = '/'
 
 CSRF_TRUSTED_ORIGINS = ['https://icms.onprem.vpbank.dev', 'https://icms.vpbank.com.vn']
 
-SESSION_EXPIRE_SECONDS = 300
-
-DATE_INPUT_FORMATS = ['%DD-%MM-%YYYY']
+SESSION_EXPIRE_SECONDS = 900

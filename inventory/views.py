@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.messages import constants
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
@@ -10,6 +12,11 @@ from inventory.models import *
 from inventory.forms import *
 import openpyxl
 # Create your views here.
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
+
 
 class DeviceBasicInfoCreateView(CreateView):
     model = DeviceBasicInfo
@@ -127,79 +134,85 @@ class DeviceBasicInfoDetailView(DetailView):
     
 @login_required()
 def create_multiple_device(request):
-    if request.method == 'POST' and request.FILES.get('upload-file'):
-        uploaded_file = request.FILES['upload-file']
-        wb = openpyxl.load_workbook(uploaded_file)
-        sheets = wb.sheetnames
-        worksheet_01 = wb["Device_basic_info"]
-        worksheet_02 = wb["Device_management"]
-        worksheet_03 = wb["Device_topology"]
-        excel_data = list()
-        for item in worksheet_01.iter_rows(min_row=2, values_only=True):
-            item = ["" if i is None else i for i in item]
-            obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
-            if obj_count == 0:
-                obj_count_01 = DeviceLocation.objects.filter(device_location=item[2]).count()
-                obj_count_02 = DeviceType.objects.filter(device_type=item[3]).count()
-                obj_count_03 = DeviceCategory.objects.filter(device_category=item[4]).count()
-                obj_count_04 = DeviceVendor.objects.filter(device_vendor=item[5]).count()
-                obj_count_05 = DeviceOS.objects.filter(device_os=item[6]).count()
-                if obj_count_01 == 0:
-                    model_01 = DeviceLocation(device_location=item[2])
-                    model_01.save()
-                if obj_count_02 == 0:
-                    model_02 = DeviceType(device_type=item[3])
-                    model_02.save()
-                if obj_count_03 == 0:
-                    model_03 = DeviceCategory(device_category=item[4])
-                    model_03.save()
-                if obj_count_04 == 0:
-                    model_04 = DeviceVendor(device_vendor=item[5])
-                    model_04.save()
-                if obj_count_05 == 0:
-                    model_05 = DeviceOS(device_os=item[6])
-                    model_05.save()
-                model = DeviceBasicInfo(
-                    device_name=item[0],
-                    device_ip=item[1],
-                    device_location=DeviceLocation.objects.get(device_location=item[2]),
-                    device_type=DeviceType.objects.get(device_type=item[3]),
-                    device_category=DeviceCategory.objects.get(device_category=item[4]),
-                    device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
-                    device_os=DeviceOS.objects.get(device_os=item[6]),
-                    device_description=item[7]
-                )
-                model.save()
-        for item in worksheet_02.iter_rows(min_row=2, values_only=True):
-            if item[0] is not None and item[1] is not None:
+    try:
+        if request.method == 'POST' and request.FILES.get('upload-file'):
+            uploaded_file = request.FILES['upload-file']
+            wb = openpyxl.load_workbook(uploaded_file)
+            sheets = wb.sheetnames
+            worksheet_01 = wb["Device_basic_info"]
+            worksheet_02 = wb["Device_management"]
+            worksheet_03 = wb["Device_topology"]
+            excel_data = list()
+            for item in worksheet_01.iter_rows(min_row=2, values_only=True):
+                item = ["" if i is None else i for i in item]
                 obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
-                if obj_count != 0:
-                    obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                if obj_count == 0:
+                    obj_count_01 = DeviceLocation.objects.filter(device_location=item[2]).count()
+                    obj_count_02 = DeviceType.objects.filter(device_type=item[3]).count()
+                    obj_count_03 = DeviceCategory.objects.filter(device_category=item[4]).count()
+                    obj_count_04 = DeviceVendor.objects.filter(device_vendor=item[5]).count()
+                    obj_count_05 = DeviceOS.objects.filter(device_os=item[6]).count()
                     if obj_count_01 == 0:
-                        model = DeviceManagement(
-                            device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
-                            device_serial_number=item[2],
-                            start_ma_date=item[3],
-                            end_ma_date=item[4],
-                            start_license_date=item[5],
-                            end_license_date=item[6],
-                            end_sw_support_date=item[7],
-                            end_hw_support_date=item[8],
-                            start_used_date=item[9]
-                        )
-                        model.save()
-        for item in worksheet_03.iter_rows(min_row=2, values_only=True):
-            if item[0] is not None and item[1] is not None:
-                obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
-                if obj_count != 0:
-                    obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                    if obj_count_01 == 0:
-                        model = DeviceTopology(
-                            device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
-                            device_rack_name=item[2],
-                            device_rack_unit=item[3]
-                        )
-                        model.save()
+                        model_01 = DeviceLocation(device_location=item[2])
+                        model_01.save()
+                    if obj_count_02 == 0:
+                        model_02 = DeviceType(device_type=item[3])
+                        model_02.save()
+                    if obj_count_03 == 0:
+                        model_03 = DeviceCategory(device_category=item[4])
+                        model_03.save()
+                    if obj_count_04 == 0:
+                        model_04 = DeviceVendor(device_vendor=item[5])
+                        model_04.save()
+                    if obj_count_05 == 0:
+                        model_05 = DeviceOS(device_os=item[6])
+                        model_05.save()
+                    model = DeviceBasicInfo(
+                        device_name=item[0],
+                        device_ip=item[1],
+                        device_location=DeviceLocation.objects.get(device_location=item[2]),
+                        device_type=DeviceType.objects.get(device_type=item[3]),
+                        device_category=DeviceCategory.objects.get(device_category=item[4]),
+                        device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
+                        device_os=DeviceOS.objects.get(device_os=item[6]),
+                        device_stack=item[7],
+                        device_description=item[8]
+                    )
+                    model.save()
+            for item in worksheet_02.iter_rows(min_row=2, values_only=True):
+                if item[0] is not None and item[1] is not None:
+                    obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                    if obj_count == 1:
+                        get_obj = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
+                        obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                        if obj_count_01 == 0 or (obj_count_01 == 1 and get_obj == True):
+                            model = DeviceManagement(
+                                device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                device_serial_number=item[2],
+                                start_ma_date=item[3],
+                                end_ma_date=item[4],
+                                start_license_date=item[5],
+                                end_license_date=item[6],
+                                end_sw_support_date=item[7],
+                                end_hw_support_date=item[8],
+                                start_used_date=item[9]
+                            )
+                            model.save()
+            for item in worksheet_03.iter_rows(min_row=2, values_only=True):
+                if item[0] is not None and item[1] is not None:
+                    obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                    if obj_count != 0:
+                        obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                        if obj_count_01 == 0:
+                            model = DeviceTopology(
+                                device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                device_rack_name=item[2],
+                                device_rack_unit=item[3]
+                            )
+                            model.save()
+            messages.add_message(request, constants.SUCCESS, 'Import devices success')
+    except Exception as error:
+        messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
     return render(request, 'create_multiple_device.html')
 
 @login_required()

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-  <form action="/inventory/create-multiple-device" method="POST"
+  <form action="/inventory/create-multiple-device" method="POST" class="form-group"
     class="form-horizontal" role="form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
@@ -24,6 +24,21 @@
           class="btn btn-warning">Back</button></a>
     </div>
   </form>
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+      {% else %}
+        <div class="alert alert-success" role="alert">
+          <strong>{{ message }}</strong>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
+
+
 
 {% endblock content %}

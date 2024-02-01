@@ -67,7 +67,7 @@ class DeviceManagement(models.Model):
     """Model definition for DeviceManagement."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_serial_number = models.CharField(max_length=100, blank=True)
+    device_serial_number = models.CharField(max_length=100, blank=True, unique=True)
     start_ma_date = models.DateField(blank=True, null=True)
     end_ma_date = models.DateField(blank=True, null=True)
     start_license_date = models.DateField(blank=True, null=True)

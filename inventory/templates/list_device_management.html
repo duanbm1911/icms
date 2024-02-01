@@ -21,11 +21,11 @@
                 <tr>
                     <td>{{ obj.device_ip }}</td>
                     <td>{{ obj.device_serial_number }}</td>
-                    <td>{{ obj.end_ma_date }}</td>
-                    <td>{{ obj.end_license_date }}</td>
-                    <td>{{ obj.end_sw_support_date }}</td>
-                    <td>{{ obj.end_hw_support_date }}</td>
-                    <td>{{ obj.start_used_date }}</td>
+                    <td>{{ obj.end_ma_date | date:"d/m/Y" }}</td>
+                    <td>{{ obj.end_license_date | date:"d/m/Y" }}</td>
+                    <td>{{ obj.end_sw_support_date | date:"d/m/Y"}}</td>
+                    <td>{{ obj.end_hw_support_date | date:"d/m/Y"}}</td>
+                    <td>{{ obj.start_used_date | date:"d/m/Y"}}</td>
                     <td>
                         <a href="/inventory/list-device/device-management/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         <a href="/inventory/list-device/device-management/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
