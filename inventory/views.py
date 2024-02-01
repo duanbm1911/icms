@@ -168,7 +168,7 @@ def create_multiple_device(request):
                     device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
                     device_os=DeviceOS.objects.get(device_os=item[6]),
                     device_description=item[7]
-                ) 
+                )
                 model.save()
         for item in worksheet_02.iter_rows(min_row=2, values_only=True):
             if item[0] is not None and item[1] is not None:
