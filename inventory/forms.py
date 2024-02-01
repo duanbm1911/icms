@@ -14,6 +14,7 @@ class DeviceBasicInfoForm(forms.ModelForm):
             'device_type', 
             'device_category', 
             'device_vendor', 
+            'device_os',
             'device_description'
         ]
 
