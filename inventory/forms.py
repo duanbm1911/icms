@@ -1,6 +1,6 @@
 from django import forms
 from inventory.models import *
-
+from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
 
 class DeviceBasicInfoForm(forms.ModelForm):
 
@@ -79,7 +79,15 @@ class DeviceManagementForm(forms.ModelForm):
             'end_hw_support_date', 
             'start_used_date'
             ]
-
+        widgets = {
+            'start_ma_date': AdminDateWidget(),
+            'end_ma_date': AdminDateWidget(),
+            'start_license_date': AdminDateWidget(),
+            'end_license_date': AdminDateWidget(),
+            'end_sw_support_date': AdminDateWidget(),
+            'end_hw_support_date': AdminDateWidget(),
+            'start_used_date': AdminDateWidget()
+        }
 
 class DeviceInterfaceForm(forms.ModelForm):
 

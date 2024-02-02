@@ -1,6 +1,7 @@
 from django.urls import path
 from inventory import views
 from inventory.views import *
+from django.views.i18n import JavaScriptCatalog
 
 
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
     path('list-device/device-configuration', DeviceConfigurationListView.as_view()),
     path('list-device/device-interface', DeviceInterfaceListView.as_view()),
     path('list-device/device-interface/detail/<int:pk>', DeviceInterfaceDetailView.as_view()),
-    path('device-dashboard', views.device_dashboard)
+    path('device-dashboard', views.device_dashboard),
+    path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog')
 ]
