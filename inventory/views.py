@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
@@ -30,6 +31,7 @@ class DeviceBasicInfoCreateView(CreateView):
     
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
 class DeviceLocationCreateView(CreateView):
@@ -44,6 +46,7 @@ class DeviceLocationCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
 class DeviceTypeCreateView(CreateView):
@@ -58,6 +61,7 @@ class DeviceTypeCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
 class DeviceCategoryCreateView(CreateView):
@@ -72,6 +76,7 @@ class DeviceCategoryCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
 class DeviceVendorCreateView(CreateView):
@@ -86,6 +91,7 @@ class DeviceVendorCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
 class DeviceBasicInfoListView(ListView):
@@ -113,6 +119,7 @@ class DeviceBasicInfoUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
 
 class DeviceBasicInfoDeleteView(DeleteView):
@@ -183,9 +190,9 @@ def create_multiple_device(request):
                 if item[0] is not None and item[1] is not None:
                     obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
                     if obj_count == 1:
-                        get_obj = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
+                        device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
                         obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                        if obj_count_01 == 0 or (obj_count_01 == 1 and get_obj == True):
+                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
                             model = DeviceManagement(
                                 device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
                                 device_serial_number=item[2],
@@ -279,6 +286,7 @@ class DeviceManagementUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
     
 class DeviceManagementDetailView(DetailView):
@@ -301,6 +309,7 @@ class DeviceTopologyUpdateView(UpdateView):
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
     
 class DeviceTopologyDetailView(DetailView):

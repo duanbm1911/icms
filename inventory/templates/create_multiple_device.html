@@ -4,15 +4,15 @@
 
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-  <form action="/inventory/create-multiple-device" method="POST" class="form-group"
-    class="form-horizontal" role="form" enctype="multipart/form-data">
+  <form action="/inventory/create-multiple-device" method="POST" class="form-group" class="form-horizontal" role="form"
+    enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">
       <label for="upload-file">Create device from file</label>
     </div>
     <div class="form-group">
-      <a href="/media/inventory/create-multiple-device-example.xlsx">Download sample file upload 
-      <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+      <a href="/media/inventory/create-multiple-device-example.xlsx">Download sample file upload
+        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
       </a>
     </div>
     <div class="form-group">
@@ -20,25 +20,32 @@
     </div>
     <div class="form-group">
       <button type="submit" id="upload-file-btn" class="btn btn-primary">Upload</button>
-      <a href="/inventory/create-device"><button type="button"
-          class="btn btn-warning">Back</button></a>
+      <a href="/inventory/create-device"><button type="button" class="btn btn-warning">Back</button></a>
     </div>
   </form>
-  {% if messages %}
-    {% for message in messages %}
-      {% if message.tags == 'error' %}
-        <div class="alert alert-danger" role="alert">
-            <strong>{{ message }}</strong>
-        </div>
-      {% else %}
-        <div class="alert alert-success" role="alert">
-          <strong>{{ message }}</strong>
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
 </div>
-
-
-
 {% endblock content %}
+
+
+{% block js %}
+<script src="/static/core/js/sweet-alert.js"></script>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<script>
+  Swal.fire({
+    text: "{{ message }}",
+    icon: "error"
+  });
+</script>
+{% else %}
+<script>
+  Swal.fire({
+    text: "{{ message }}",
+    icon: "success"
+  });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock js %}

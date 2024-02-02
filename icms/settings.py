@@ -89,16 +89,16 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ICMS',
-#         'USER': 'root',
-#         'PASSWORD': 'qEnN5P#W6XdRRr+2',
-#         'HOST':'localhost',
-#         'PORT':'3306',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ICMS',
+        'USER': 'root',
+        'PASSWORD': 'qEnN5P#W6XdRRr+2',
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -149,6 +149,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
-CSRF_TRUSTED_ORIGINS = ['https://icms.onprem.vpbank.dev', 'https://icms.vpbank.com.vn']
+CSRF_TRUSTED_ORIGINS = ['https://icms.onprem.vpbank.dev', 'https://icms.vpbank.com.vn', 'https://localhost:8000']
 
 SESSION_EXPIRE_SECONDS = 900

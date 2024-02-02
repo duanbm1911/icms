@@ -5,14 +5,14 @@
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-basic-info-table">
             <thead>
-                    <th>Device name</th>
-                    <th>IP</th>
-                    <th>Location</th>
-                    <th>Device type</th>
-                    <th>Category</th>
-                    <th>Device OS</th>
-                    <th>Stack</th>
-                    <th>Action</th>
+                <th>Device name</th>
+                <th>IP</th>
+                <th>Location</th>
+                <th>Device type</th>
+                <th>Category</th>
+                <th>Device OS</th>
+                <th>Stack</th>
+                <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,9 +27,12 @@
                     <td>{{ obj.device_os }}</td>
                     <td>{{ obj.device_stack }}</td>
                     <td>
-                        <a href="/inventory/list-device/device-basic-info/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                        <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-                        <a href="/inventory/list-device/device-basic-info/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-basic-info/update/{{ obj.id }}"><span
+                                class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span
+                                class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-basic-info/detail/{{ obj.id }}"><span
+                                class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -71,4 +74,24 @@
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
 <script src="/static/inventory/js/list-device-basic-info.js"></script>
+<script src="/static/core/js/sweet-alert.js"></script>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<script>
+    Swal.fire({
+        text: "{{ message }}",
+        icon: "error"
+    });
+</script>
+{% else %}
+<script>
+    Swal.fire({
+        text: "{{ message }}",
+        icon: "success"
+    });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endblock js %}
