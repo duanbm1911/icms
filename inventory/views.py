@@ -183,7 +183,8 @@ def create_multiple_device(request):
                         device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
                         device_os=DeviceOS.objects.get(device_os=item[6]),
                         device_stack=item[7],
-                        device_description=item[8]
+                        device_description=item[8],
+                        user_created=request.user
                     )
                     model.save()
             for item in worksheet_02.iter_rows(min_row=2, values_only=True):
@@ -202,7 +203,8 @@ def create_multiple_device(request):
                                 end_license_date=item[6],
                                 end_sw_support_date=item[7],
                                 end_hw_support_date=item[8],
-                                start_used_date=item[9]
+                                start_used_date=item[9],
+                                user_created=request.user
                             )
                             model.save()
             for item in worksheet_03.iter_rows(min_row=2, values_only=True):
@@ -214,7 +216,8 @@ def create_multiple_device(request):
                             model = DeviceTopology(
                                 device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
                                 device_rack_name=item[2],
-                                device_rack_unit=item[3]
+                                device_rack_unit=item[3],
+                                user_created=request.user
                             )
                             model.save()
             messages.add_message(request, constants.SUCCESS, 'Import devices success')

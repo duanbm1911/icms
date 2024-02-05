@@ -65,7 +65,13 @@ class CreateDeviceBasicInfoForm(forms.Form):
 
 
 class DeviceManagementForm(forms.ModelForm):
-    
+    start_ma_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_ma_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    start_license_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_license_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_sw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_hw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    start_used_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     class Meta:
         model = DeviceManagement
         fields = [

@@ -55,8 +55,9 @@ class DeviceBasicInfo(models.Model):
     device_category = models.ForeignKey('DeviceCategory', on_delete=models.CASCADE)
     device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.CASCADE)
     device_os = models.ForeignKey('DeviceOS', on_delete=models.CASCADE)
-    device_stack = models.BooleanField(default=False)
-    device_description = models.CharField(max_length=200, blank=True)
+    device_firmware = models.CharField(max_length=200, blank=True, null=True)
+    device_stack = models.BooleanField(default=False, blank=True, null=True)
+    device_description = models.CharField(max_length=200, blank=True, null=True)
     device_creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
