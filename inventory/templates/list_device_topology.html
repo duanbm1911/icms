@@ -41,18 +41,18 @@
 <script src="/static/inventory/js/list-device-topology.js"></script>
 <script src="/static/core/js/sweet-alert.js"></script>
 {% if messages %}
-{% for message in messages %}
+{% for mes in messages %}
 {% if message.tags == 'error' %}
 <script>
     Swal.fire({
-        text: "{{ message }}",
+        text: "{{ mes }}",
         icon: "error"
     });
 </script>
 {% else %}
 <script>
     Swal.fire({
-        text: "{{ message }}",
+        text: "{{ mes }}",
         icon: "success"
     });
 </script>
