@@ -59,7 +59,7 @@ class DeviceBasicInfo(models.Model):
     device_stack = models.BooleanField(default=False, blank=True, null=True)
     device_description = models.CharField(max_length=200, blank=True, null=True)
     device_creation_time = models.DateTimeField(auto_now=True)
-    user_created = models.CharField(max_length=100)
+    user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.device_ip
@@ -76,6 +76,7 @@ class DeviceManagement(models.Model):
     end_sw_support_date = models.DateField(blank=True, null=True)
     end_hw_support_date = models.DateField(blank=True, null=True)
     start_used_date = models.DateField(blank=True, null=True)
+    user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         """Unicode representation of DeviceManagement."""
@@ -94,6 +95,7 @@ class DeviceInterface(models.Model):
     list_interface_type = models.CharField(max_length=200, blank=True, null=True)
     list_interface_state = models.CharField(max_length=200, blank=True, null=True)
     list_interface_neighbor = models.CharField(max_length=200, blank=True, null=True)
+    user_created = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         """Unicode representation of DeviceInterface."""
@@ -106,6 +108,7 @@ class DeviceTopology(models.Model):
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200, blank=True, null=True)
     device_rack_unit = models.IntegerField(blank=True, null=True)
+    user_created = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         """Unicode representation of DeviceTopology."""
@@ -119,6 +122,7 @@ class DeviceConfiguration(models.Model):
     device_config_standardized = models.BooleanField()
     device_monitored = models.BooleanField()
     device_backup_config = models.BooleanField()
+    user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         """Unicode representation of DeviceConfiguration."""
