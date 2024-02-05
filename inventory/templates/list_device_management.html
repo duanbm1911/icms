@@ -28,6 +28,8 @@
                     <td>{{ obj.start_used_date | date:"d/m/Y"}}</td>
                     <td>
                         <a href="/inventory/list-device/device-management/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span
+                            class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
                         <a href="/inventory/list-device/device-management/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 </tr>
@@ -35,6 +37,28 @@
 
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-device-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action method="post" id='delete-device-from'>
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Delete Device</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete this device?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

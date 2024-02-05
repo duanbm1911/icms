@@ -17,6 +17,7 @@ urlpatterns = [
     path('list-device/device-management', DeviceManagementListView.as_view()),
     path('list-device/device-management/update/<int:pk>', DeviceManagementUpdateView.as_view()),
     path('list-device/device-management/detail/<int:pk>', DeviceManagementDetailView.as_view()),
+    path('list-device/device-management/delete/<int:pk>', DeviceManagementDeleteView.as_view()),
     path('list-device/device-topology', DeviceTopologyListView.as_view()),
     path('list-device/device-topology/update/<int:pk>', DeviceTopologyUpdateView.as_view()),
     path('list-device/device-topology/detail/<int:pk>', DeviceTopologyDetailView.as_view()),

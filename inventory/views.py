@@ -238,6 +238,15 @@ class DeviceManagementListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+class DeviceManagementDeleteView(DeleteView):
+    model = DeviceManagement
+    template_name = 'list_device_basic_info.html'
+    success_url = '/inventory/list-device/device-management'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class DeviceInterfaceListView(ListView):
     model = DeviceInterface
