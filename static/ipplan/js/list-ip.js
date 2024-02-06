@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    $('#list-ip-table').DataTable();
+    $('#list-ip-table').DataTable({
+      'pageLength': 50
+    });
     $(document.body).on('click', '[data-toggle="modal"]', function() {
         var ip_id = $(this).attr('ip-id');
         var subnet_id = $(this).attr('subnet-id')
