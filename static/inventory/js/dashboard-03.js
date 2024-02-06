@@ -3,7 +3,6 @@ $.ajax({
 	dataType: 'json',
 	type: 'GET',
 	success: function (data) {
-		console.log(data)
 		var chart = new CanvasJS.Chart("chartContainer-03", {
 			animationEnabled: true,
 			theme: "light2",
