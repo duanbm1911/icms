@@ -20,7 +20,6 @@ class DeviceBasicInfoForm(forms.ModelForm):
         ]
 
 class DeviceLocationForm(forms.ModelForm):
-
     class Meta:
 
         model = DeviceLocation

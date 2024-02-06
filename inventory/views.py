@@ -1,4 +1,6 @@
+from django.db.models import ProtectedError
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.http import HttpResponseRedirect
@@ -38,7 +40,7 @@ class DeviceLocationCreateView(CreateView):
     model = DeviceLocation
     form_class = DeviceLocationForm
     template_name = "create_device_location.html"
-    success_url = 'create-device-location'
+    success_url = '/inventory/list-device-location'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -48,6 +50,49 @@ class DeviceLocationCreateView(CreateView):
         form.instance.user_created = str(self.request.user)
         messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
+
+class DeviceLocationUpdateView(UpdateView):
+    model = DeviceLocation
+    form_class = DeviceLocationForm
+    template_name = "update_device_location.html"
+    success_url = '/inventory/list-device-location'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class DeviceLocationDeleteView(DeleteView):
+    model = DeviceLocation
+    template_name = 'list_device_location.html'
+    success_url = '/inventory/list-device-location'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class DeviceLocationListView(ListView):
+    model = DeviceLocation
+    context_object_name = 'objects'
+    template_name = "list_device_location.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class DeviceTypeCreateView(CreateView):
     model = DeviceType
@@ -103,10 +148,6 @@ class DeviceBasicInfoListView(ListView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-    def form_valid(self, form):
-        form.instance.user_created = str(self.request.user)
-        return super().form_valid(form)
-
 class DeviceBasicInfoUpdateView(UpdateView):
     model = DeviceBasicInfo
     form_class = DeviceBasicInfoForm
@@ -130,6 +171,14 @@ class DeviceBasicInfoDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
 
 class DeviceBasicInfoDetailView(DetailView):
     model = DeviceBasicInfo
@@ -238,6 +287,21 @@ class DeviceManagementListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+class DeviceManagementCreateView(CreateView):
+    model = DeviceManagement
+    form_class = DeviceManagementForm
+    template_name = "create_device_management.html"
+    success_url = '/inventory/list-device/device-management'
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
     
 class DeviceManagementDeleteView(DeleteView):
     model = DeviceManagement
@@ -247,6 +311,14 @@ class DeviceManagementDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
 
 class DeviceInterfaceListView(ListView):
     model = DeviceInterface
@@ -267,6 +339,21 @@ class DeviceTopologyListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+class DeviceTopologyCreateView(CreateView):
+    model = DeviceTopology
+    form_class = DeviceTopologyForm
+    template_name = "create_device_topology.html"
+    success_url = '/inventory/list-device/device-topology'
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
 
 class DeviceConfigurationListView(ListView):
     model = DeviceConfiguration
