@@ -58,15 +58,15 @@ def has_perm_or_basicauth(perm, realm = ""):
 @login_required()
 def inventory_dashboard_01(request):
 
-    category_count = list()
-    list_category = list(DeviceCategory.objects.values_list('device_category', flat=True))
-    for obj in list_category:
-        count = DeviceBasicInfo.objects.filter(device_category__device_category=obj).count()
-        category_count.append({
+    device_os_count = list()
+    list_device_os = list(DeviceOS.objects.values_list('device_os', flat=True))
+    for obj in list_device_os:
+        count = DeviceBasicInfo.objects.filter(device_os__device_os=obj).count()
+        device_os_count.append({
             'label': str(obj),
             'y': count
         })
-    return JsonResponse({'data': category_count})
+    return JsonResponse({'data': device_os_count})
 
 @login_required()
 def inventory_dashboard_02(request):

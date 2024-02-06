@@ -21,7 +21,7 @@ $.ajax({
 				title: ""
 			},
 			data: [{
-				type: "column",
+				type: "line",
 				yValueFormatString: "",
 				dataPoints: data.data
 			}]
