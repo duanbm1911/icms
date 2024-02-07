@@ -7,7 +7,10 @@ $.ajax({
 			animationEnabled: true,
 			theme: "light2",
 			title:{
-				text: "Count device by location"
+				text: "Count device by location",
+				fontFamily: "tahoma",
+				fontSize: 20,
+				fontWeight: "normal"
 			},
 			data: [{        
 				type: "line",
