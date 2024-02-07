@@ -19,7 +19,7 @@ class DeviceType(models.Model):
 
     def __str__(self):
         return self.device_type
-    
+
 class DeviceCategory(models.Model):
     device_category = models.CharField(max_length=200, unique=True)
     description = models.CharField(max_length=200)
@@ -50,11 +50,11 @@ class DeviceOS(models.Model):
 class DeviceBasicInfo(models.Model):
     device_name = models.CharField(max_length=200, blank=True)
     device_ip = models.GenericIPAddressField(unique=True)
-    device_location = models.ForeignKey('DeviceLocation', on_delete=models.CASCADE)
-    device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
-    device_category = models.ForeignKey('DeviceCategory', on_delete=models.CASCADE)
-    device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.CASCADE)
-    device_os = models.ForeignKey('DeviceOS', on_delete=models.CASCADE)
+    device_location = models.ForeignKey('DeviceLocation', on_delete=models.PROTECT)
+    device_type = models.ForeignKey('DeviceType', on_delete=models.PROTECT)
+    device_category = models.ForeignKey('DeviceCategory', on_delete=models.PROTECT)
+    device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.PROTECT)
+    device_os = models.ForeignKey('DeviceOS', on_delete=models.PROTECT)
     device_firmware = models.CharField(max_length=200, blank=True, null=True)
     device_stack = models.BooleanField(default=False, blank=True, null=True)
     device_description = models.CharField(max_length=200, blank=True, null=True)
