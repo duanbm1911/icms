@@ -22,7 +22,7 @@ $.ajax({
 				}
 			},
 			axisY: {
-				title: "Count of Device",
+				title: "Device",
 				includeZero: true,
 				crosshair: {
 					enabled: true

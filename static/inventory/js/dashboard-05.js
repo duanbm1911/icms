@@ -12,6 +12,10 @@ $.ajax({
 				fontSize: 20,
 				fontWeight: "normal"
 			},
+			axisY: {
+				title: "Device",
+				suffix: ""
+			},
 			data: [{        
 				type: "line",
 				indexLabelFontSize: 16,
