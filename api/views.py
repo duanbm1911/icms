@@ -224,4 +224,4 @@ def jenkins_get_list_device(request):
                     })
             return JsonResponse({'datalist': datalist}, status=200)
         else:
-            return JsonResponse({'error_message': 'missing device_os parameter'}, status=401)
+            return JsonResponse({'error_message': 'missing request parameter'}, status=401)
