@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -225,3 +225,22 @@ def jenkins_get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         else:
             return JsonResponse({'error_message': 'missing request parameter'}, status=401)
+
+@csrf_exempt        
+def jenkins_update_check_device_config(request):
+    if request.method == 'POST':
+        datalist = request.POST.getlist('datalist')
+        print(datalist)
+        for item in datalist:
+            device_ip = item['device_ip']
+            device_config_standardized = item['device_config_standardized']
+            check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+            if check_device_exists > 0:
+                if device_config_standardized == 'true':
+                    model = DeviceConfiguration.objects.update_or_create(device_ip=DeviceBasicInfo.objects.get(device_ip=device_ip), device_config_standardized=True)
+                else:
+                    model = DeviceConfiguration.objects.update_or_create(device_ip=DeviceBasicInfo.objects.get(device_ip=device_ip), device_config_standardized=False)
+                model.save()
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'missing request parameter'}, status=401)
