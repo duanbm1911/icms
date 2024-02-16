@@ -1,10 +1,14 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from inventory.models import *
 from ipplan.models import *
+from inventory.serializers import *
+from rest_framework import permissions
+from rest_framework import renderers
+from rest_framework.response import Response
+from rest_framework import viewsets
 import random
 import base64
 
@@ -225,3 +229,11 @@ def jenkins_get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         else:
             return JsonResponse({'error_message': 'missing request parameter'}, status=401)
+    else:
+        return JsonResponse({'error_message': 'method is not allowed'}, status=405)
+
+
+class TestApi(viewsets.ModelViewSet):
+    queryset = DeviceConfiguration.objects.all()
+    serializer_class = DeviceConfigurationSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

@@ -11,5 +11,17 @@ urlpatterns = [
     path('inventory/dashboard-05', views.inventory_dashboard_05),
     path('ipplan/dashboard-01', views.ipplan_dashboard_01),
     path('ipplan/dashboard-02', views.ipplan_dashboard_02),
-    path('jenkins/get-list-device', views.jenkins_get_list_device)
+    path('jenkins/get-list-device', views.jenkins_get_list_device),
+    path('jenkins/check-device-config', TestApi.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+    })),
+    path('jenkins/check-device-config/<int:pk>', TestApi.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+    }))
 ]
