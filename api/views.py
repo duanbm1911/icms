@@ -211,10 +211,11 @@ def ipplan_dashboard_02(request):
 @logged_in_or_basicauth()
 def jenkins_get_list_device(request):
     if request.method == 'GET':
-        if request.GET.get('device_os') is not None:
+        if request.GET.get('device_os') is not None and request.GET.get('device_category') is not None:
             device_os = request.GET['device_os']
+            device_category = request.GET['device_category']
             datalist = list()
-            queryset = DeviceBasicInfo.objects.filter(device_os__device_os=device_os)
+            queryset = DeviceBasicInfo.objects.filter(device_os__device_os=device_os, device_category__device_category=device_category)
             if len(queryset) > 0:
                 for item in queryset:
                     datalist.append({
