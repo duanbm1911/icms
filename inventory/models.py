@@ -119,9 +119,9 @@ class DeviceConfiguration(models.Model):
     """Model definition for DeviceConfiguration."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_config_standardized = models.BooleanField()
-    device_monitored = models.BooleanField()
-    device_backup_config = models.BooleanField()
+    device_config_standardized = models.BooleanField(null=True)
+    device_monitored = models.BooleanField(null=True)
+    device_backup_config = models.BooleanField(null=True)
     user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
