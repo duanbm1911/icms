@@ -113,15 +113,14 @@ class DeviceTopology(models.Model):
     def __str__(self):
         """Unicode representation of DeviceTopology."""
         return str(self.device_ip)
-    
 
 class DeviceConfiguration(models.Model):
     """Model definition for DeviceConfiguration."""
 
     device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
-    device_config_standardized = models.BooleanField(null=True, default=None)
-    device_monitored = models.BooleanField(null=True, default=None)
-    device_backup_config = models.BooleanField(null=True, default=None)
+    device_config_standardized = models.CharField(max_length=100, default="UNKNOW")
+    device_monitored = models.CharField(max_length=100, default="UNKNOW")
+    device_backup_config = models.CharField(max_length=100, default="UNKNOW")
     user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):

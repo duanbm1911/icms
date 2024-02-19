@@ -240,7 +240,7 @@ def update_device_check_config_failed(request):
                 DeviceConfiguration.objects.update_or_create(
                     device_ip=obj,
                     defaults={
-                        'device_config_standardized': False
+                        'device_config_standardized': "NO"
                     })
         return JsonResponse({'status': 'success'}, status=200)
     else:
@@ -258,7 +258,7 @@ def update_device_check_config_success(request):
                 DeviceConfiguration.objects.update_or_create(
                     device_ip=obj,
                     defaults={
-                        'device_config_standardized': True
+                        'device_config_standardized': "YES"
                     })
         return JsonResponse({'status': 'success'}, status=200)
     else:
