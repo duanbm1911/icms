@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -225,4 +225,39 @@ def get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         else:
             return JsonResponse({'error_message': 'missing request parameter'}, status=401)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
         
+@csrf_exempt
+def update_device_check_config_failed(request):
+    if request.method == 'POST':
+        datalist = request.POST.getlist('datalist')
+        for device_ip in datalist:
+            check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+            if check_device_exists > 0:
+                obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                DeviceConfiguration.objects.update_or_create(
+                    device_ip=obj,
+                    defaults={
+                        'device_config_standardized': False
+                    })
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+    
+@csrf_exempt
+def update_device_check_config_success(request):
+    if request.method == 'POST':
+        datalist = request.POST.getlist('datalist')
+        for device_ip in datalist:
+            check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+            if check_device_exists > 0:
+                obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                DeviceConfiguration.objects.update_or_create(
+                    device_ip=obj,
+                    defaults={
+                        'device_config_standardized': True
+                    })
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
