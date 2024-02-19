@@ -371,26 +371,29 @@ def create_multiple_device(request):
                     if obj_count == 1:
                         device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
                         obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                        obj_count_02 = DeviceManagement.objects.filter(device_serial_number=item[2]).count()
                         if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
-                            model = DeviceManagement(
-                                device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
-                                device_serial_number=item[2],
-                                start_ma_date=item[3],
-                                end_ma_date=item[4],
-                                start_license_date=item[5],
-                                end_license_date=item[6],
-                                end_sw_support_date=item[7],
-                                end_hw_support_date=item[8],
-                                start_used_date=item[9],
-                                user_created=request.user
-                            )
-                            model.save()
+                            if obj_count_02 == 0:
+                                model = DeviceManagement(
+                                    device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                    device_serial_number=item[2],
+                                    start_ma_date=item[3],
+                                    end_ma_date=item[4],
+                                    start_license_date=item[5],
+                                    end_license_date=item[6],
+                                    end_sw_support_date=item[7],
+                                    end_hw_support_date=item[8],
+                                    start_used_date=item[9],
+                                    user_created=request.user
+                                )
+                                model.save()
             for item in worksheet_03.iter_rows(min_row=2, values_only=True):
                 if item[0] is not None and item[1] is not None:
                     obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
                     if obj_count != 0:
+                        device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
                         obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                        if obj_count_01 == 0:
+                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
                             model = DeviceTopology(
                                 device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
                                 device_rack_name=item[2],
