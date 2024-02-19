@@ -229,6 +229,7 @@ def get_list_device(request):
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
         
 @csrf_exempt
+@logged_in_or_basicauth()
 def update_device_check_config_failed(request):
     if request.method == 'POST':
         datalist = request.POST.getlist('datalist')
@@ -246,6 +247,7 @@ def update_device_check_config_failed(request):
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
 @csrf_exempt
+@logged_in_or_basicauth()
 def update_device_check_config_success(request):
     if request.method == 'POST':
         datalist = request.POST.getlist('datalist')
