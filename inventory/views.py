@@ -393,7 +393,7 @@ def create_multiple_device(request):
                     if obj_count != 0:
                         device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
                         obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
-                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
+                        if obj_count_01 == 0:
                             model = DeviceTopology(
                                 device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
                                 device_rack_name=item[2],
@@ -401,6 +401,18 @@ def create_multiple_device(request):
                                 user_created=request.user
                             )
                             model.save()
+                        elif obj_count_01 == 1 and device_is_stack == True:
+                            obj = DeviceTopology.objects.get(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]))
+                            rack_name = obj.device_rack_name
+                            rack_unit = obj.device_rack_unit
+                            if rack_name != item[2] or rack_unit != item[3]:
+                                model = DeviceTopology(
+                                    device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                    device_rack_name=item[2],
+                                    device_rack_unit=item[3],
+                                    user_created=request.user
+                                )
+                                model.save()
             messages.add_message(request, constants.SUCCESS, 'Import devices success')
     except Exception as error:
         messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
