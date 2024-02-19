@@ -106,11 +106,11 @@ def inventory_dashboard_03(request):
     }
     ]
     chart_data = list()
-    list_vendor = list(DeviceVendor.objects.values_list('device_vendor', flat=True))
-    for obj in list_vendor:
-        point_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_vendor__device_vendor=obj).count()
-        point_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_vendor__device_vendor=obj).count()
-        point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_vendor__device_vendor=obj).count()
+    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    for obj in list_location:
+        point_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_location__device_location=obj).count()
+        point_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_location__device_location=obj).count()
+        point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_location__device_location=obj).count()
         data_point_01.append({
             'label': obj,
             'y': point_01
@@ -209,7 +209,7 @@ def ipplan_dashboard_02(request):
     return JsonResponse({'data': subnet_count})
 
 @logged_in_or_basicauth()
-def jenkins_get_list_device(request):
+def get_list_device(request):
     if request.method == 'GET':
         if request.GET.get('device_os') is not None and request.GET.get('device_category') is not None:
             device_os = request.GET['device_os']
@@ -225,3 +225,4 @@ def jenkins_get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         else:
             return JsonResponse({'error_message': 'missing request parameter'}, status=401)
+        
