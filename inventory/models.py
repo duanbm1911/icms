@@ -122,7 +122,7 @@ class DeviceConfiguration(models.Model):
     device_config_standardized = models.BooleanField()
     device_monitored = models.BooleanField()
     device_backup_config = models.BooleanField()
-    user_created = models.CharField(max_length=100)
+    user_created = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         """Unicode representation of DeviceConfiguration."""
