@@ -314,3 +314,19 @@ def update_device_check_monitor(request):
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+    
+@csrf_exempt
+@logged_in_or_basicauth()
+def update_device_firmware(request):
+    if request.method == 'POST':
+        dataset = request.POST.dict()
+        for device_ip, firmware in dataset:
+            obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+            DeviceBasicInfo.objects.update_or_create(
+                device_ip=obj,
+                defaults={
+                    'device_firmware': firmware
+                })
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
