@@ -224,7 +224,14 @@ def get_list_device(request):
                     })
             return JsonResponse({'datalist': datalist}, status=200)
         else:
-            return JsonResponse({'error_message': 'missing request parameter'}, status=401)
+            queryset = DeviceBasicInfo.objects.all()
+            if len(queryset) > 0:
+                for item in queryset:
+                    datalist.append({
+                        'device_ip': item.device_ip,
+                        'device_name': item.device_name
+                    })
+            return JsonResponse({'datalist': datalist}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
         
