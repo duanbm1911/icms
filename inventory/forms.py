@@ -28,6 +28,15 @@ class DeviceLocationForm(forms.ModelForm):
             'description'
             ]
 
+class DeviceOSForm(forms.ModelForm):
+    class Meta:
+
+        model = DeviceOS
+        fields = [
+            'device_os', 
+            'description'
+            ]
+
 class DeviceTypeForm(forms.ModelForm):
 
     class Meta:

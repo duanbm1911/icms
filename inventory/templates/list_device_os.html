@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %} ICMS | List Device Type{% endblock title %}
+{% block title %} ICMS | List Device OS{% endblock title %}
 
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="table-responsive">
-        <table class="table table-hover table-bordered" id="list-device-type-table">
+        <table class="table table-hover table-bordered" id="list-device-os-table">
             <thead>
-                <th>Device type</th>
+                <th>Device OS</th>
                 <th>Description</th>
                 <th>Creation time</th>
                 <th>User created</th>
@@ -18,12 +18,12 @@
 
                 {% for obj in objects %}
                 <tr>
-                    <td>{{ obj.device_type }}</td>
+                    <td>{{ obj.device_os }}</td>
                     <td>{{ obj.description }}</td>
                     <td>{{ obj.creation_time | date:"d/m/Y" }}</td>
                     <td>{{ obj.user_created }}</td>
                     <td>
-                        <a href="/inventory/list-device-type/update/{{ obj.id }}"><span
+                        <a href="/inventory/list-device-os/update/{{ obj.id }}"><span
                                 class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span
                                 class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
@@ -44,10 +44,10 @@
                 {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Delete Type</h4>
+                    <h4 class="modal-title">Delete OS</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure to delete this type?</p>
+                    <p>Are you sure to delete this OS?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -67,7 +67,7 @@
 
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
-<script src="/static/inventory/js/list-device-type.js"></script>
+<script src="/static/inventory/js/list-device-os.js"></script>
 <script src="/static/core/js/sweet-alert.js"></script>
 {% if messages %}
 {% for message in messages %}

@@ -579,3 +579,63 @@ class DeviceTopologyDeleteView(DeleteView):
         except Exception as error:
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
+    
+###
+
+class DeviceOSCreateView(CreateView):
+    model = DeviceOS
+    form_class = DeviceOSForm
+    template_name = "create_device_os.html"
+    success_url = '/inventory/list-device-os'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
+
+class DeviceOSListView(ListView):
+    model = DeviceOS
+    context_object_name = 'objects'
+    template_name = "list_device_os.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+class DeviceOSUpdateView(UpdateView):
+    model = DeviceOS
+    form_class = DeviceOSForm
+    template_name = "update_device_os.html"
+    success_url = '/inventory/list-device-os'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class DeviceOSDeleteView(DeleteView):
+    model = DeviceOS
+    template_name = 'list_device_os.html'
+    success_url = '/inventory/list-device-os'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
