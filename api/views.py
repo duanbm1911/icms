@@ -223,6 +223,26 @@ def get_list_device(request):
                         'device_name': item.device_name
                     })
             return JsonResponse({'datalist': datalist}, status=200)
+        elif request.GET.get('device_os') is not None:
+            device_os = request.GET['device_os']
+            queryset = DeviceBasicInfo.objects.filter(device_os__device_os=device_os)
+            if len(queryset) > 0:
+                for item in queryset:
+                    datalist.append({
+                        'device_ip': item.device_ip,
+                        'device_name': item.device_name
+                    })
+            return JsonResponse({'datalist': datalist}, status=200)
+        elif request.GET.get('device_category') is not None:
+            device_category = request.GET['device_category']
+            queryset = DeviceBasicInfo.objects.filter(device_category__device_category=device_category)
+            if len(queryset) > 0:
+                for item in queryset:
+                    datalist.append({
+                        'device_ip': item.device_ip,
+                        'device_name': item.device_name
+                    })
+            return JsonResponse({'datalist': datalist}, status=200)
         else:
             queryset = DeviceBasicInfo.objects.all()
             if len(queryset) > 0:
