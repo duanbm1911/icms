@@ -257,36 +257,60 @@ def get_list_device(request):
         
 @csrf_exempt
 @logged_in_or_basicauth()
-def update_device_check_config_failed(request):
+def update_device_check_config(request):
     if request.method == 'POST':
-        datalist = request.POST.getlist('datalist')
-        for device_ip in datalist:
-            check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
-            if check_device_exists > 0:
-                obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
-                DeviceConfiguration.objects.update_or_create(
-                    device_ip=obj,
-                    defaults={
-                        'device_config_standardized': False
-                    })
+        datalist01 = request.POST.getlist('datalist01')
+        datalist02 = request.POST.getlist('datalist02')
+        if datalist01:
+            for device_ip in datalist01:
+                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                if check_device_exists > 0:
+                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    DeviceConfiguration.objects.update_or_create(
+                        device_ip=obj,
+                        defaults={
+                            'device_config_standardized': True
+                        })
+        if datalist02:
+            for device_ip in datalist02:
+                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                if check_device_exists > 0:
+                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    DeviceConfiguration.objects.update_or_create(
+                        device_ip=obj,
+                        defaults={
+                            'device_config_standardized': False
+                        })
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
 @csrf_exempt
 @logged_in_or_basicauth()
-def update_device_check_config_success(request):
+def update_device_check_monitor(request):
     if request.method == 'POST':
-        datalist = request.POST.getlist('datalist')
-        for device_ip in datalist:
-            check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
-            if check_device_exists > 0:
-                obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
-                DeviceConfiguration.objects.update_or_create(
-                    device_ip=obj,
-                    defaults={
-                        'device_config_standardized': True
-                    })
+        datalist01 = request.POST.getlist('datalist01')
+        datalist02 = request.POST.getlist('datalist02')
+        if datalist01:
+            for device_ip in datalist01:
+                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                if check_device_exists > 0:
+                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    DeviceConfiguration.objects.update_or_create(
+                        device_ip=obj,
+                        defaults={
+                            'device_monitored': True
+                        })
+        if datalist02:
+            for device_ip in datalist02:
+                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                if check_device_exists > 0:
+                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    DeviceConfiguration.objects.update_or_create(
+                        device_ip=obj,
+                        defaults={
+                            'device_monitored': False
+                        })
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
