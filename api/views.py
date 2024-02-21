@@ -320,7 +320,7 @@ def update_device_check_monitor(request):
 def update_device_firmware(request):
     if request.method == 'POST':
         dataset = request.POST.dict()
-        for device_ip, firmware in dataset:
+        for device_ip, firmware in dataset.items():
             obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
             DeviceBasicInfo.objects.update_or_create(
                 device_ip=obj,
