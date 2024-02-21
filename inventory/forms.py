@@ -138,7 +138,7 @@ class DeviceConfigurationForm(forms.ModelForm):
 
 class DeviceExportForm(forms.Form):
     CHOICES = (
-        ('0', '-----------------')
+        ('0', '-----------------'),
         ('1', 'Device basic info'),
         ('2', 'Device management'),
         ('3', 'Device topology'),
