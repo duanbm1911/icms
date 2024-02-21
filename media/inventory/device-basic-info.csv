@@ -1,3 +1,0 @@
-﻿,device_name,device_ip,device_location,device_type,device_category,device_vendor,device_os,device_firmware,device_stack,device_description,device_creation_time,user_created
-0,example,10.36.11.222,DC,SRX1400,Firewall,Juniper,JunOS,,True,Thiết bị ở DC sử dụng cho…,2024-02-21 02:28:17.681094+00:00,admin
-1,examplexxx,10.36.11.226,DC,SRX1400,Firewall,Juniper,JunOS,,True,Thiết bị ở DC sử dụng cho…,2024-02-21 02:42:40.045890+00:00,admin
