@@ -661,7 +661,7 @@ def device_export(request):
             form = DeviceExportForm(request.POST)
             if form.is_valid():
                 device_table_id = form.data['database_table']
-                if device_table_id == '0':
+                if device_table_id == '1':
                     datalist = list()
                     queryset = DeviceBasicInfo.objects.all()
                     for item in queryset:
@@ -682,7 +682,7 @@ def device_export(request):
                     df = pandas.DataFrame(datalist)
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-basic-info.csv'
-                elif device_table_id == '1':
+                elif device_table_id == '2':
                     datalist = list()
                     queryset = DeviceManagement.objects.all()
                     for item in queryset:
@@ -703,7 +703,7 @@ def device_export(request):
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-management.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
-                elif device_table_id == '2':
+                elif device_table_id == '3':
                     datalist = list()
                     queryset = DeviceTopology.objects.all()
                     for item in queryset:
@@ -718,7 +718,7 @@ def device_export(request):
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-topology.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-topology.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
-                elif device_table_id == '3':
+                elif device_table_id == '4':
                     datalist = list()
                     queryset = DeviceConfiguration.objects.all()
                     for item in queryset:

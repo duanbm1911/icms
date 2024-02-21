@@ -138,8 +138,9 @@ class DeviceConfigurationForm(forms.ModelForm):
 
 class DeviceExportForm(forms.Form):
     CHOICES = (
-        ('0', 'Device basic info'),
-        ('1', 'Device management'),
-        ('2', 'Device topology'),
-        ('3', 'Device configuration'))
+        ('0', '-----------------')
+        ('1', 'Device basic info'),
+        ('2', 'Device management'),
+        ('3', 'Device topology'),
+        ('4', 'Device configuration'))
     database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES)
