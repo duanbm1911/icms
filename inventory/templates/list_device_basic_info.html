@@ -7,15 +7,16 @@
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-basic-info-table">
             <thead>
-                <th>Device name</th>
-                <th>IP</th>
-                <th>Location</th>
-                <th>Type</th>
-                <th>Vendor</th>
-                <th>Category</th>
-                <th>OS</th>
-                <th>Stack</th>
-                <th>Action</th>
+                <tr>
+                    <th>Device name</th>
+                    <th>IP</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Vendor</th>
+                    <th>Category</th>
+                    <th>OS</th>
+                    <th>Stack</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +74,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/core/css/jquery-datatable.css">
+<link rel="stylesheet" href="/static/inventory/css/list-device-basic-info.css">
 {% endblock css %}
 
 {% block js %}

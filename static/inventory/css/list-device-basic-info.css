@@ -1,0 +1,13 @@
+thead input {
+    width: 100%;
+    padding: 0px;
+}
+
+/* table.dataTable thead th, table.dataTable thead td {
+    padding: 10px;
+    text-align: left;
+} */
+
+.filters th {
+    padding: 0px;
+}
