@@ -656,50 +656,86 @@ class DeviceOSDeleteView(DeleteView):
 def device_export(request):
     form = DeviceExportForm
     data = {'form': form}
-    if request.method == 'POST':
-        form = DeviceExportForm(request.POST)
-        if form.is_valid():
-            device_table_id = form.data['database_table']
-            if device_table_id == '0':
-                datalist = list()
-                queryset = DeviceBasicInfo.objects.all()
-                for item in queryset:
-                    datalist.append({
-                        'device_name': item.device_name,
-                        'device_ip': item.device_ip,
-                        'device_location': item.device_location.device_location,
-                        'device_type': item.device_type.device_type,
-                        'device_category': item.device_category.device_category,
-                        'device_vendor': item.device_vendor.device_vendor,
-                        'device_os': item.device_os.device_os,
-                        'device_firmware': item.device_firmware,
-                        'device_stack': item.device_stack,
-                        'device_description': item.device_description,
-                        'device_creation_time': str(item.device_creation_time),
-                        'user_created': item.user_created
-                    })
-                df = pandas.DataFrame(datalist)
-                df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
-                download_url = '/media/inventory/device-basic-info.csv'
-            elif device_table_id == '1':
-                datalist = list()
-                queryset = DeviceManagement.objects.all()
-                for item in queryset:
-                    datalist.append({
-                        'device_name': item.device_ip.device_name,
-                        'device_ip': item.device_ip,
-                        'device_serial_number': item.device_serial_number,
-                        'start_ma_date': str(item.start_ma_date),
-                        'end_ma_date': str(item.end_ma_date),
-                        'start_license_date': str(item.start_license_date),
-                        'end_license_date': str(item.end_license_date),
-                        'end_sw_support_date': str(item.end_sw_support_date),
-                        'end_hw_support_date': str(item.end_hw_support_date),
-                        'start_used_date': str(item.start_used_date),
-                        'user_created': item.user_created
-                    })
-                df = pandas.DataFrame(datalist)
-                df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
-                download_url = '/media/inventory/device-management.csv'
-                messages.add_message(request, constants.SUCCESS, download_url)
+    try:
+        if request.method == 'POST':
+            form = DeviceExportForm(request.POST)
+            if form.is_valid():
+                device_table_id = form.data['database_table']
+                if device_table_id == '0':
+                    datalist = list()
+                    queryset = DeviceBasicInfo.objects.all()
+                    for item in queryset:
+                        datalist.append({
+                            'device_name': item.device_name,
+                            'device_ip': item.device_ip,
+                            'device_location': item.device_location.device_location,
+                            'device_type': item.device_type.device_type,
+                            'device_category': item.device_category.device_category,
+                            'device_vendor': item.device_vendor.device_vendor,
+                            'device_os': item.device_os.device_os,
+                            'device_firmware': item.device_firmware,
+                            'device_stack': item.device_stack,
+                            'device_description': item.device_description,
+                            'device_creation_time': str(item.device_creation_time),
+                            'user_created': item.user_created
+                        })
+                    df = pandas.DataFrame(datalist)
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-basic-info.csv'
+                elif device_table_id == '1':
+                    datalist = list()
+                    queryset = DeviceManagement.objects.all()
+                    for item in queryset:
+                        datalist.append({
+                            'device_name': item.device_ip.device_name,
+                            'device_ip': item.device_ip,
+                            'device_serial_number': item.device_serial_number,
+                            'start_ma_date': str(item.start_ma_date),
+                            'end_ma_date': str(item.end_ma_date),
+                            'start_license_date': str(item.start_license_date),
+                            'end_license_date': str(item.end_license_date),
+                            'end_sw_support_date': str(item.end_sw_support_date),
+                            'end_hw_support_date': str(item.end_hw_support_date),
+                            'start_used_date': str(item.start_used_date),
+                            'user_created': item.user_created
+                        })
+                    df = pandas.DataFrame(datalist)
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-management.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
+                elif device_table_id == '2':
+                    datalist = list()
+                    queryset = DeviceTopology.objects.all()
+                    for item in queryset:
+                        datalist.append({
+                            'device_name': item.device_ip.device_name,
+                            'device_ip': item.device_ip,
+                            'device_rack_name': item.device_rack_name,
+                            'device_rack_unit': item.device_rack_unit,
+                            'user_created': item.user_created
+                        })
+                    df = pandas.DataFrame(datalist)
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-topology.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-topology.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
+                elif device_table_id == '3':
+                    datalist = list()
+                    queryset = DeviceConfiguration.objects.all()
+                    for item in queryset:
+                        datalist.append({
+                            'device_name': item.device_ip.device_name,
+                            'device_ip': item.device_ip,
+                            'device_config_standardized': item.device_config_standardized,
+                            'device_monitored': item.device_monitored,
+                            'device_backup_config': item.device_backup_config,
+                            'user_created': item.user_created
+                        })
+                    df = pandas.DataFrame(datalist)
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-configuration.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-configuration.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
+                else:
+                    messages.add_message(request, constants.ERROR, 'Database selected is not validate')
+    except Exception as error:
+        messages.add_message(request, constants.ERROR, error)
     return render(request, template_name='device_export.html', context=data)
