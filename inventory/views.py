@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.messages import constants
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
@@ -11,8 +10,10 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
+from django.conf import settings
 from inventory.models import *
 from inventory.forms import *
+import pandas
 import openpyxl
 # Create your views here.
 
@@ -651,3 +652,54 @@ class DeviceOSDeleteView(DeleteView):
         except Exception as error:
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
+    
+def device_export(request):
+    form = DeviceExportForm
+    data = {'form': form}
+    if request.method == 'POST':
+        form = DeviceExportForm(request.POST)
+        if form.is_valid():
+            device_table_id = form.data['database_table']
+            if device_table_id == '0':
+                datalist = list()
+                queryset = DeviceBasicInfo.objects.all()
+                for item in queryset:
+                    datalist.append({
+                        'device_name': item.device_name,
+                        'device_ip': item.device_ip,
+                        'device_location': item.device_location.device_location,
+                        'device_type': item.device_type.device_type,
+                        'device_category': item.device_category.device_category,
+                        'device_vendor': item.device_vendor.device_vendor,
+                        'device_os': item.device_os.device_os,
+                        'device_firmware': item.device_firmware,
+                        'device_stack': item.device_stack,
+                        'device_description': item.device_description,
+                        'device_creation_time': str(item.device_creation_time),
+                        'user_created': item.user_created
+                    })
+                df = pandas.DataFrame(datalist)
+                df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
+                download_url = '/media/inventory/device-basic-info.csv'
+            elif device_table_id == '1':
+                datalist = list()
+                queryset = DeviceManagement.objects.all()
+                for item in queryset:
+                    datalist.append({
+                        'device_name': item.device_ip.device_name,
+                        'device_ip': item.device_ip,
+                        'device_serial_number': item.device_serial_number,
+                        'start_ma_date': str(item.start_ma_date),
+                        'end_ma_date': str(item.end_ma_date),
+                        'start_license_date': str(item.start_license_date),
+                        'end_license_date': str(item.end_license_date),
+                        'end_sw_support_date': str(item.end_sw_support_date),
+                        'end_hw_support_date': str(item.end_hw_support_date),
+                        'start_used_date': str(item.start_used_date),
+                        'user_created': item.user_created
+                    })
+                df = pandas.DataFrame(datalist)
+                df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
+                download_url = '/media/inventory/device-management.csv'
+                messages.add_message(request, constants.SUCCESS, download_url)
+    return render(request, template_name='device_export.html', context=data)
