@@ -143,4 +143,4 @@ class DeviceExportForm(forms.Form):
         ('2', 'Device management'),
         ('3', 'Device topology'),
         ('4', 'Device configuration'))
-    database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES)
+    database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES, required=False)

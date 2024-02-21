@@ -682,6 +682,7 @@ def device_export(request):
                     df = pandas.DataFrame(datalist)
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-basic-info.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
                 elif device_table_id == '2':
                     datalist = list()
                     queryset = DeviceManagement.objects.all()
