@@ -365,6 +365,18 @@ def create_multiple_device(request):
                         user_created=request.user
                     )
                     model.save()
+                elif obj_count == 1:
+                    model = DeviceBasicInfo.objects.get(device_ip=item[1])
+                    model.device_name = item[0]
+                    model.device_location = DeviceLocation.objects.get(device_location=item[2])
+                    model.device_type = DeviceType.objects.get(device_type=item[3])
+                    model.device_category = DeviceCategory.objects.get(device_category=item[4])
+                    model.device_vendor = DeviceVendor.objects.get(device_vendor=item[5])
+                    model.device_os = DeviceOS.objects.get(device_os=item[6])
+                    model.device_stack = item[7]
+                    model.device_description = item[8]
+                    model.user_created = str(request.user)
+                    model.save()
             for item in worksheet_02.iter_rows(min_row=2, values_only=True):
                 if item[0] is not None and item[1] is not None:
                     obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
