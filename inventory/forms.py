@@ -14,16 +14,26 @@ class DeviceBasicInfoForm(forms.ModelForm):
             'device_type', 
             'device_category', 
             'device_vendor', 
+            'device_os',
+            'device_stack',
             'device_description'
         ]
 
 class DeviceLocationForm(forms.ModelForm):
-
     class Meta:
 
         model = DeviceLocation
         fields = [
             'device_location', 
+            'description'
+            ]
+
+class DeviceOSForm(forms.ModelForm):
+    class Meta:
+
+        model = DeviceOS
+        fields = [
+            'device_os', 
             'description'
             ]
 
@@ -63,7 +73,13 @@ class CreateDeviceBasicInfoForm(forms.Form):
 
 
 class DeviceManagementForm(forms.ModelForm):
-    
+    start_ma_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_ma_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    start_license_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_license_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_sw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    end_hw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    start_used_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     class Meta:
         model = DeviceManagement
         fields = [
@@ -118,3 +134,13 @@ class DeviceConfigurationForm(forms.ModelForm):
             'device_monitored',
             'device_backup_config'
         ]
+
+
+class DeviceExportForm(forms.Form):
+    CHOICES = (
+        ('0', '-----------------'),
+        ('1', 'Device basic info'),
+        ('2', 'Device management'),
+        ('3', 'Device topology'),
+        ('4', 'Device configuration'))
+    database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES, required=False)

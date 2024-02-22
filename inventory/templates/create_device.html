@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% block title %} ICMS | Create Device {% endblock title %}
+
 {% block content %}
 {% load crispy_forms_tags %}
 
@@ -7,8 +9,7 @@
   <legend>Create Device</legend>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-  <form action="/inventory/create-device" method="POST"
-    class="form-horizontal" role="form">
+  <form action="/inventory/create-device" method="POST" class="form-horizontal" role="form">
     {% csrf_token %}
     <div>
       {{ form | crispy }}
@@ -26,13 +27,12 @@
 
 
 {% block css %}
-  <link rel="stylesheet" href="/static/core/css/selectize.css">
+<link rel="stylesheet" href="/static/core/css/selectize.css">
 {% endblock css %}
 
 
 {% block js %}
-  <script src="/static/core/js/selectize.js"></script>
-  <script src="/static/inventory/js/create-device.js"></script>
+<script src="/static/core/js/selectize.js"></script>
+<script src="/static/inventory/js/create-device.js"></script>
+<script src="/static/core/js/sweet-alert.js"></script>
 {% endblock js %}
-  
-  

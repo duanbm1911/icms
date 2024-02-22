@@ -11,4 +11,8 @@ urlpatterns = [
     path('inventory/dashboard-05', views.inventory_dashboard_05),
     path('ipplan/dashboard-01', views.ipplan_dashboard_01),
     path('ipplan/dashboard-02', views.ipplan_dashboard_02),
+    path('get-list-device', views.get_list_device),
+    path('update-device-check-config', views.update_device_check_config),
+    path('update-device-check-monitor', views.update_device_check_monitor),
+    path('update-device-firmware', views.update_device_firmware)
 ]

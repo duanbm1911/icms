@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}ICMS | Device Management Detail{% endblock title %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Detail information</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Name</td>
+                <td>{{ object.device_ip.device_name }}</td>
+            </tr>
+            <tr>
+                <td>IP</td>
+                <td>{{ object.device_ip }}</td>
+            </tr>
+            <tr>
+                <td>Start of MA date</td>
+                <td>{{ object.start_ma_date }}</td>
+            </tr>
+            <tr>
+                <td>End of MA date</td>
+                <td>{{ object.end_ma_date }}</td>
+            </tr>
+            <tr>
+                <td>Start of license date</td>
+                <td>{{ object.start_license_date }}</td>
+            </tr>
+            <tr>
+                <td>End of license date</td>
+                <td>{{ object.end_license_date }}</td>
+            </tr>
+            <tr>
+                <td>End of SW support</td>
+                <td>{{ object.end_sw_support_date }}</td>
+            </tr>
+                <td>End of HW support</td>
+                <td>{{ object.end_hw_support_date }}</td>
+            </tr>
+            <tr>
+                <td>Start used</td>
+                <td>{{ object.start_used_date }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a href="/inventory/list-device/device-management"><button
+        type="button"
+        class="btn btn-warning">Back</button></a>
+
+{% endblock content %}

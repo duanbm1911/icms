@@ -3,7 +3,6 @@ $.ajax({
 	dataType: 'json',
 	type: 'GET',
 	success: function (data) {
-		console.log(data)
 		var chart = new CanvasJS.Chart("chartContainer-03", {
 			animationEnabled: true,
 			theme: "light2",
@@ -23,7 +22,11 @@ $.ajax({
 				}
 			},
 			axisY: {
+<<<<<<< HEAD
 				title: "Count of Device",
+=======
+				title: "Device",
+>>>>>>> 132d18df18dbb255136f81d551245bac572c316b
 				includeZero: true,
 				crosshair: {
 					enabled: true

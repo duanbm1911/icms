@@ -1,4 +1,4 @@
-from ipaddress import IPv4Network, IPv4Address
+from ipaddress import IPv4Network
 
 def is_subnet(subnet):
     try:

@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
-{% block title %} ICMS | List device management {% endblock title %}
+{% block title %}ICMS | List Device Management{% endblock title %}
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-management-table">
             <thead>
+                    <th>Device Name</th>
                     <th>Device IP</th>
                     <th>Serial number</th>
                     <th>End MA</th>
@@ -19,22 +20,47 @@
 
                 {% for obj in devices %}
                 <tr>
-                    <td>{{ obj.device_ip }}</td>
+                    <td>{{ obj.device_ip.device_name }}</td>
+                    <td>{{ obj.device_ip.device_ip }}</td>
                     <td>{{ obj.device_serial_number }}</td>
-                    <td>{{ obj.end_ma_date }}</td>
-                    <td>{{ obj.end_license_date }}</td>
-                    <td>{{ obj.end_sw_support_date }}</td>
-                    <td>{{ obj.end_hw_support_date }}</td>
-                    <td>{{ obj.start_used_date }}</td>
+                    <td>{{ obj.end_ma_date | date:"d/m/Y" }}</td>
+                    <td>{{ obj.end_license_date | date:"d/m/Y" }}</td>
+                    <td>{{ obj.end_sw_support_date | date:"d/m/Y"}}</td>
+                    <td>{{ obj.end_hw_support_date | date:"d/m/Y"}}</td>
+                    <td>{{ obj.start_used_date | date:"d/m/Y"}}</td>
                     <td>
-                        <a href="#"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                        <a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="/inventory/list-device/device-management/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span
+                            class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
+                        <a href="/inventory/list-device/device-management/detail/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 {% endfor %}
 
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-device-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action method="post" id='delete-device-from'>
+                {% csrf_token %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Delete Device</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete this device?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -47,4 +73,24 @@
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
 <script src="/static/inventory/js/list-device-management.js"></script>
+<script src="/static/core/js/sweet-alert.js"></script>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<script>
+    Swal.fire({
+        text: "{{ message }}",
+        icon: "error"
+    });
+</script>
+{% else %}
+<script>
+    Swal.fire({
+        text: "{{ message }}",
+        icon: "success"
+    });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endblock js %}

@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+
+{% block title %} ICMS | Create Device Category {% endblock title %}
+
 {% load crispy_forms_tags %}
-{% block title %} ICMS | Create Device category {% endblock title %}
 
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -20,3 +22,26 @@
   </div>
 </div>
 {% endblock content %}
+
+{% block js %}
+<script src="/static/core/js/sweet-alert.js"></script>
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<script>
+  Swal.fire({
+    text: "{{ message }}",
+    icon: "error"
+  });
+</script>
+{% else %}
+<script>
+  Swal.fire({
+    text: "{{ message }}",
+    icon: "success"
+  });
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock js %}
