@@ -7,6 +7,7 @@ from inventory.models import *
 from ipplan.models import *
 import random
 import base64
+import json
 
 # Create your views here.
 
@@ -332,29 +333,18 @@ def update_device_firmware(request):
 
 @csrf_exempt
 @logged_in_or_basicauth()
-def update_device_check_interface_count(request):
+def update_device_interface(request):
     if request.method == 'POST':
-        dataset = request.POST.dict()
-        for device_ip, data in dataset.items():
+        dataset = json.loads(request.body)
+        for key, value in dataset.items():
             DeviceInterface.objects.update_or_create(
-                device_ip=device_ip,
+                device_ip=key,
                 defaults={
-                    'count_interface': data
-                })
-        return JsonResponse({'status': 'success'}, status=200)
-    else:
-        return JsonResponse({'error_message': 'method not allowed'}, status=405)
-    
-@csrf_exempt
-@logged_in_or_basicauth()
-def update_device_check_interface_count(request):
-    if request.method == 'POST':
-        dataset = request.POST.dict()
-        for device_ip, data in dataset.items():
-            DeviceInterface.objects.update_or_create(
-                device_ip=device_ip,
-                defaults={
-                    'count_interface': data
+                    'list_interface_name': value['list_interface_name'],
+                    'list_interface_desc': value['list_interface_desc'],
+                    'list_interface_speed': value['list_interface_speed'],
+                    'list_interface_type': value['list_interface_type'],
+                    'list_interface_state': value['list_interface_state']
                 })
         return JsonResponse({'status': 'success'}, status=200)
     else:
