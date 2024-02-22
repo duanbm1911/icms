@@ -329,3 +329,33 @@ def update_device_firmware(request):
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+@csrf_exempt
+@logged_in_or_basicauth()
+def update_device_check_interface_count(request):
+    if request.method == 'POST':
+        dataset = request.POST.dict()
+        for device_ip, data in dataset.items():
+            DeviceInterface.objects.update_or_create(
+                device_ip=device_ip,
+                defaults={
+                    'count_interface': data
+                })
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+    
+@csrf_exempt
+@logged_in_or_basicauth()
+def update_device_check_interface_count(request):
+    if request.method == 'POST':
+        dataset = request.POST.dict()
+        for device_ip, data in dataset.items():
+            DeviceInterface.objects.update_or_create(
+                device_ip=device_ip,
+                defaults={
+                    'count_interface': data
+                })
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
