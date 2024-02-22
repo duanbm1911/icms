@@ -22,10 +22,6 @@
                 <td>{{ object.device_ip }}</td>
             </tr>
             <tr>
-                <td>Count interface</td>
-                <td>{{ object.count_interface }}</td>
-            </tr>
-            <tr>
                 <td>List interface</td>
                 <td>
                     {% for item in object.list_interface_name.data %}
@@ -42,32 +38,9 @@
                 </td>
             </tr>
             <tr>
-                <td>List interface inuse</td>
-                <td>
-                    {% for item in object.list_interface_inuse.data %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>List interface unuse</td>
-                <td>
-                    {% for item in object.list_interface_unuse.data %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </td>
-            </tr>
                 <td>List interface state</td>
                 <td>
                     {% for item in object.list_interface_state.data %}
-                    <p>{{item}}</p>
-                    {% endfor %}
-                </td>
-            </tr>
-            <tr>
-                <td>List interface neighbor</td>
-                <td>
-                    {% for item in object.list_interface_neighbor.data %}
                     <p>{{item}}</p>
                     {% endfor %}
                 </td>

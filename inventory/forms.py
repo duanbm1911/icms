@@ -101,15 +101,11 @@ class DeviceInterfaceForm(forms.ModelForm):
         model = DeviceInterface
         fields = [
             'device_ip',
-            'count_interface',
             'list_interface_name',
             'list_interface_desc',
-            'list_interface_inuse',
-            'list_interface_unuse',
             'list_interface_speed',
             'list_interface_type',
             'list_interface_state',
-            'list_interface_neighbor'
         ]
 
 
