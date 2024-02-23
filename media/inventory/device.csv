@@ -1,0 +1,33 @@
+﻿,device_name,device_ip,device_location,device_type,device_category,device_vendor,device_os,device_firmware,device_stack,device_description,device_creation_time,user_created
+0,S1-FW-ACI-01,10.23.35.7,DC-Viettel,CheckPoint7000,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.649349+00:00,admin
+1,S1-FW-ACI-02,10.23.35.8,DC-Viettel,CheckPoint7000,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.659775+00:00,admin
+2,S1-FW-EXTERNAL-01,10.23.35.14,DC-Viettel,CheckPoint3800,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.674249+00:00,admin
+3,S1-FW-EXTERNAL-02,10.23.35.15,DC-Viettel,CheckPoint3800,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.685365+00:00,admin
+4,S1-FW-INTERNAL-01,10.23.35.17,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.700729+00:00,admin
+5,S1-FW-INTERNAL-02,10.23.35.18,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.711865+00:00,admin
+6,S1-VPN-FW-01,10.23.35.21,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.727115+00:00,admin
+7,S1-VPN-FW-02,10.23.35.29,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-23 03:08:30.541453+00:00,admin
+8,S1-CP-SMART-1,10.23.35.155,DC-Viettel,Smart-1_5050,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.752758+00:00,admin
+9,S1-FW-INTERNET-01,10.23.35.27,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.764335+00:00,admin
+10,S1-FW-INTERNET-02,10.23.35.28,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.777168+00:00,admin
+11,S1-Proxy-Server-01,10.16.183.21,DC-Viettel,ASG-S400-20,Proxy,Symantec,CPOS,,False,,2024-02-22 07:19:48.801168+00:00,admin
+12,S1-Proxy-Server-02,10.16.183.22,DC-Viettel,ASG-S400-20,Proxy,Symantec,CPOS,,False,,2024-02-22 07:19:48.811007+00:00,admin
+13,S1-FW-WAN-01,10.23.35.37,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.820530+00:00,admin
+14,S1-FW-WAN-02,10.23.35.38,DC-Viettel,CheckPoint6400,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.829746+00:00,admin
+15,S1-FW-PARTNER-01,10.23.35.47,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.843788+00:00,admin
+16,S1-FW-PARTNER-02,10.23.35.48,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.857593+00:00,admin
+17,S1-FW-VISAMASTER-01,10.23.35.57,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.872601+00:00,admin
+18,S1-FW-VISAMASTER-02,10.23.35.58,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.889682+00:00,admin
+19,S1-Master-PBA-FW-01,10.72.30.5,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,Thiết  bị đối tác,2024-02-22 07:19:48.904481+00:00,admin
+20,S1-Master-PBA-FW-02,10.72.30.6,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,Thiết  bị đối tác,2024-02-22 07:19:48.923610+00:00,admin
+21,S1-FW-SWIFT-01,10.23.35.67,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.938058+00:00,admin
+22,S1-FW-SWIFT-02,10.23.35.68,DC-Viettel,CheckPoint3600,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:48.957664+00:00,admin
+23,S1-MC-Proxy,10.16.182.125,DC-Viettel,MC-V10-10,Proxy,Bluecoat,CPOS,,False,,2024-02-22 07:19:48.998193+00:00,admin
+24,S1-Reporter-Proxy,10.16.182.127,DC-Viettel,RP-V50,Proxy,Bluecoat,CPOS,,False,,2024-02-22 07:19:49.021733+00:00,admin
+25,S1-Cloud-FW-01,10.23.35.163,DC-Viettel,CheckPoint3800,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:49.035932+00:00,admin
+26,S1-Cloud-FW-02,10.23.35.164,DC-Viettel,CheckPoint3800,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:49.051052+00:00,admin
+27,FW-VPN-DC-01,10.36.100.13,DC-Viettel,Smart-1_5050,Firewall,Checkpoint,CPOS,,False,,2024-02-23 03:08:09.825504+00:00,admin
+28,FW-VPN-DC-01,10.36.100.14,DC-Viettel,CheckPoint,Firewall,Checkpoint,CPOS,,False,,2024-02-22 07:19:49.081641+00:00,admin
+29,HCM-Checkpoint-01,10.10.10.10,DC-Viettel,CheckPoint,Proxy,Bluecoat,CPOS,,True,xxx,2024-02-23 02:41:17.037931+00:00,admin
+30,HCM-Checkpoint-02,10.10.10.11,DC-Viettel,CheckPoint,Proxy,Bluecoat,CPOS,,True,xxx,2024-02-23 02:41:49.876581+00:00,admin
+31,S1-FW-INTERNAL-01,10.23.35.11,DC-Viettel,CheckPoint,Proxy,Checkpoint,CPOS,,True,DC-WAN-RT-02,2024-02-23 03:07:59.427598+00:00,admin

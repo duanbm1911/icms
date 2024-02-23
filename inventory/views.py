@@ -272,7 +272,7 @@ class DeviceVendorDeleteView(DeleteView):
 class DeviceListView(ListView):
     model = Device
     context_object_name = 'devices'
-    template_name = "list_device_basic_info.html"
+    template_name = "list_device.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -295,7 +295,7 @@ class DeviceUpdateView(UpdateView):
 
 class DeviceDeleteView(DeleteView):
     model = Device
-    template_name = 'list_device_basic_info.html'
+    template_name = 'list_device.html'
     success_url = '/inventory/list-device/device'
 
     @method_decorator(login_required)
@@ -312,7 +312,7 @@ class DeviceDeleteView(DeleteView):
 
 class DeviceDetailView(DetailView):
     model = Device
-    template_name = "detail_device_basic_info.html"
+    template_name = "detail_device.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -325,7 +325,7 @@ def create_multiple_device(request):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
             sheets = wb.sheetnames
-            worksheet_01 = wb["Device_basic_info"]
+            worksheet_01 = wb["device"]
             worksheet_02 = wb["Device_management"]
             worksheet_03 = wb["Device_topology"]
             excel_data = list()
@@ -462,7 +462,7 @@ class DeviceManagementCreateView(CreateView):
     
 class DeviceManagementDeleteView(DeleteView):
     model = DeviceManagement
-    template_name = 'list_device_basic_info.html'
+    template_name = 'list_device.html'
     success_url = '/inventory/list-device/device-management'
 
     @method_decorator(login_required)
