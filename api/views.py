@@ -62,7 +62,7 @@ def inventory_dashboard_01(request):
     device_os_count = list()
     list_device_os = list(DeviceOS.objects.values_list('device_os', flat=True))
     for obj in list_device_os:
-        count = DeviceBasicInfo.objects.filter(device_os__device_os=obj).count()
+        count = Device.objects.filter(device_os__device_os=obj).count()
         device_os_count.append({
             'label': str(obj),
             'y': count
@@ -77,7 +77,7 @@ def inventory_dashboard_02(request):
     vendor_count = list()
     list_vendor = list(DeviceVendor.objects.values_list('device_vendor', flat=True))
     for obj in list_vendor:
-        count = DeviceBasicInfo.objects.filter(device_vendor__device_vendor=obj).count()
+        count = Device.objects.filter(device_vendor__device_vendor=obj).count()
         vendor_count.append({
             'label': str(obj),
             'y': count
@@ -157,7 +157,7 @@ def inventory_dashboard_04(request):
     type_count = list()
     list_vendor = list(DeviceType.objects.values_list('device_type', flat=True))
     for obj in list_vendor:
-        count = DeviceBasicInfo.objects.filter(device_type__device_type=obj).count()
+        count = Device.objects.filter(device_type__device_type=obj).count()
         type_count.append({
             'label': str(obj),
             'y': count
@@ -172,7 +172,7 @@ def inventory_dashboard_05(request):
     location_count = list()
     list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
     for obj in list_location:
-        count = DeviceBasicInfo.objects.filter(device_location__device_location=obj).count()
+        count = Device.objects.filter(device_location__device_location=obj).count()
         location_count.append({
             'label': str(obj),
             'y': count
@@ -216,7 +216,7 @@ def get_list_device(request):
         if request.GET.get('device_os') is not None and request.GET.get('device_category') is not None:
             device_os = request.GET['device_os']
             device_category = request.GET['device_category']
-            queryset = DeviceBasicInfo.objects.filter(device_os__device_os=device_os, device_category__device_category=device_category)
+            queryset = Device.objects.filter(device_os__device_os=device_os, device_category__device_category=device_category)
             if len(queryset) > 0:
                 for item in queryset:
                     datalist.append({
@@ -226,7 +226,7 @@ def get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         elif request.GET.get('device_os') is not None:
             device_os = request.GET['device_os']
-            queryset = DeviceBasicInfo.objects.filter(device_os__device_os=device_os)
+            queryset = Device.objects.filter(device_os__device_os=device_os)
             if len(queryset) > 0:
                 for item in queryset:
                     datalist.append({
@@ -236,7 +236,7 @@ def get_list_device(request):
             return JsonResponse({'datalist': datalist}, status=200)
         elif request.GET.get('device_category') is not None:
             device_category = request.GET['device_category']
-            queryset = DeviceBasicInfo.objects.filter(device_category__device_category=device_category)
+            queryset = Device.objects.filter(device_category__device_category=device_category)
             if len(queryset) > 0:
                 for item in queryset:
                     datalist.append({
@@ -245,7 +245,7 @@ def get_list_device(request):
                     })
             return JsonResponse({'datalist': datalist}, status=200)
         else:
-            queryset = DeviceBasicInfo.objects.all()
+            queryset = Device.objects.all()
             if len(queryset) > 0:
                 for item in queryset:
                     datalist.append({
@@ -264,9 +264,9 @@ def update_device_check_config(request):
         datalist02 = request.POST.getlist('datalist02')
         if datalist01:
             for device_ip in datalist01:
-                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                check_device_exists = Device.objects.filter(device_ip=device_ip).count()
                 if check_device_exists > 0:
-                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    obj = Device.objects.get(device_ip=device_ip)
                     DeviceConfiguration.objects.update_or_create(
                         device_ip=obj,
                         defaults={
@@ -274,9 +274,9 @@ def update_device_check_config(request):
                         })
         if datalist02:
             for device_ip in datalist02:
-                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                check_device_exists = Device.objects.filter(device_ip=device_ip).count()
                 if check_device_exists > 0:
-                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    obj = Device.objects.get(device_ip=device_ip)
                     DeviceConfiguration.objects.update_or_create(
                         device_ip=obj,
                         defaults={
@@ -294,9 +294,9 @@ def update_device_check_monitor(request):
         datalist02 = request.POST.getlist('datalist02')
         if datalist01:
             for device_ip in datalist01:
-                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                check_device_exists = Device.objects.filter(device_ip=device_ip).count()
                 if check_device_exists > 0:
-                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    obj = Device.objects.get(device_ip=device_ip)
                     DeviceConfiguration.objects.update_or_create(
                         device_ip=obj,
                         defaults={
@@ -304,9 +304,9 @@ def update_device_check_monitor(request):
                         })
         if datalist02:
             for device_ip in datalist02:
-                check_device_exists = DeviceBasicInfo.objects.filter(device_ip=device_ip).count()
+                check_device_exists = Device.objects.filter(device_ip=device_ip).count()
                 if check_device_exists > 0:
-                    obj = DeviceBasicInfo.objects.get(device_ip=device_ip)
+                    obj = Device.objects.get(device_ip=device_ip)
                     DeviceConfiguration.objects.update_or_create(
                         device_ip=obj,
                         defaults={
@@ -322,7 +322,7 @@ def update_device_firmware(request):
     if request.method == 'POST':
         dataset = request.POST.dict()
         for device_ip, firmware in dataset.items():
-            DeviceBasicInfo.objects.update_or_create(
+            Device.objects.update_or_create(
                 device_ip=device_ip,
                 defaults={
                     'device_firmware': firmware

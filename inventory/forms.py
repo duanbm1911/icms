@@ -2,11 +2,11 @@ from django import forms
 from inventory.models import *
 
 
-class DeviceBasicInfoForm(forms.ModelForm):
+class DeviceForm(forms.ModelForm):
 
     class Meta:
 
-        model = DeviceBasicInfo
+        model = Device
         fields = [
             'device_name', 
             'device_ip', 
@@ -67,7 +67,7 @@ class DeviceVendorForm(forms.ModelForm):
             'description'
             ]
 
-class CreateDeviceBasicInfoForm(forms.Form):
+class CreateDeviceForm(forms.Form):
 
     upload_file = forms.FileField()
 
@@ -135,7 +135,7 @@ class DeviceConfigurationForm(forms.ModelForm):
 class DeviceExportForm(forms.Form):
     CHOICES = (
         ('0', '-----------------'),
-        ('1', 'Device basic info'),
+        ('1', 'Device'),
         ('2', 'Device management'),
         ('3', 'Device topology'),
         ('4', 'Device configuration'))

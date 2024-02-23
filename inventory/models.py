@@ -47,7 +47,7 @@ class DeviceOS(models.Model):
     def __str__(self):
         return self.device_os
     
-class DeviceBasicInfo(models.Model):
+class Device(models.Model):
     device_name = models.CharField(max_length=200, blank=True)
     device_ip = models.GenericIPAddressField(unique=True)
     device_location = models.ForeignKey('DeviceLocation', on_delete=models.PROTECT)
@@ -67,7 +67,7 @@ class DeviceBasicInfo(models.Model):
 class DeviceManagement(models.Model):
     """Model definition for DeviceManagement."""
 
-    device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('Device', on_delete=models.CASCADE)
     device_serial_number = models.CharField(max_length=100, blank=True, unique=True)
     start_ma_date = models.DateField(blank=True, null=True)
     end_ma_date = models.DateField(blank=True, null=True)
@@ -85,7 +85,7 @@ class DeviceManagement(models.Model):
 class DeviceInterface(models.Model):
     """Model definition for DeviceInterface."""
 
-    device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('Device', on_delete=models.CASCADE)
     list_interface_name = models.JSONField(max_length=200, blank=True, null=True)
     list_interface_desc = models.JSONField(max_length=200, blank=True, null=True)
     list_interface_speed = models.JSONField(max_length=200, blank=True, null=True)
@@ -101,7 +101,7 @@ class DeviceInterface(models.Model):
 class DeviceTopology(models.Model):
     """Model definition for DeviceTopology."""
 
-    device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('Device', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200, blank=True, null=True)
     device_rack_unit = models.IntegerField(blank=True, null=True)
     user_created = models.CharField(max_length=100, blank=True, null=True)
@@ -114,7 +114,7 @@ class DeviceTopology(models.Model):
 class DeviceConfiguration(models.Model):
     """Model definition for DeviceConfiguration."""
 
-    device_ip = models.ForeignKey('DeviceBasicInfo', on_delete=models.CASCADE)
+    device_ip = models.ForeignKey('Device', on_delete=models.CASCADE)
     device_config_standardized = models.BooleanField(blank=True, null=True)
     device_monitored = models.BooleanField(blank=True, null=True)
     device_backup_config = models.BooleanField(blank=True, null=True)

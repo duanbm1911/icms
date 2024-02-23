@@ -22,11 +22,11 @@ MESSAGE_TAGS = {
 }
 
 
-class DeviceBasicInfoCreateView(CreateView):
-    model = DeviceBasicInfo
-    form_class = DeviceBasicInfoForm
+class DeviceCreateView(CreateView):
+    model = Device
+    form_class = DeviceForm
     template_name = "create_device.html"
-    success_url = '/inventory/list-device/device-basic-info'
+    success_url = '/inventory/list-device/device'
     
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -269,8 +269,8 @@ class DeviceVendorDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
 
-class DeviceBasicInfoListView(ListView):
-    model = DeviceBasicInfo
+class DeviceListView(ListView):
+    model = Device
     context_object_name = 'devices'
     template_name = "list_device_basic_info.html"
 
@@ -278,11 +278,11 @@ class DeviceBasicInfoListView(ListView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-class DeviceBasicInfoUpdateView(UpdateView):
-    model = DeviceBasicInfo
-    form_class = DeviceBasicInfoForm
+class DeviceUpdateView(UpdateView):
+    model = Device
+    form_class = DeviceForm
     template_name = "update_device.html"
-    success_url = '/inventory/list-device/device-basic-info'
+    success_url = '/inventory/list-device/device'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -293,10 +293,10 @@ class DeviceBasicInfoUpdateView(UpdateView):
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
 
-class DeviceBasicInfoDeleteView(DeleteView):
-    model = DeviceBasicInfo
+class DeviceDeleteView(DeleteView):
+    model = Device
     template_name = 'list_device_basic_info.html'
-    success_url = '/inventory/list-device/device-basic-info'
+    success_url = '/inventory/list-device/device'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -310,8 +310,8 @@ class DeviceBasicInfoDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
 
-class DeviceBasicInfoDetailView(DetailView):
-    model = DeviceBasicInfo
+class DeviceDetailView(DetailView):
+    model = Device
     template_name = "detail_device_basic_info.html"
 
     @method_decorator(login_required)
@@ -331,7 +331,7 @@ def create_multiple_device(request):
             excel_data = list()
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
                 item = ["" if i is None else i for i in item]
-                obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                obj_count = Device.objects.filter(device_ip=item[1]).count()
                 if obj_count == 0:
                     obj_count_01 = DeviceLocation.objects.filter(device_location=item[2]).count()
                     obj_count_02 = DeviceType.objects.filter(device_type=item[3]).count()
@@ -353,7 +353,7 @@ def create_multiple_device(request):
                     if obj_count_05 == 0:
                         model_05 = DeviceOS(device_os=item[6])
                         model_05.save()
-                    model = DeviceBasicInfo(
+                    model = Device(
                         device_name=item[0],
                         device_ip=item[1],
                         device_location=DeviceLocation.objects.get(device_location=item[2]),
@@ -367,7 +367,7 @@ def create_multiple_device(request):
                     )
                     model.save()
                 elif obj_count == 1:
-                    model = DeviceBasicInfo.objects.get(device_ip=item[1])
+                    model = Device.objects.get(device_ip=item[1])
                     model.device_name = item[0]
                     model.device_location = DeviceLocation.objects.get(device_location=item[2])
                     model.device_type = DeviceType.objects.get(device_type=item[3])
@@ -380,15 +380,15 @@ def create_multiple_device(request):
                     model.save()
             for item in worksheet_02.iter_rows(min_row=2, values_only=True):
                 if item[0] is not None and item[1] is not None:
-                    obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                    obj_count = Device.objects.filter(device_ip=item[1]).count()
                     if obj_count == 1:
-                        device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
-                        obj_count_01 = DeviceManagement.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                        device_is_stack = Device.objects.get(device_ip=item[1]).device_stack
+                        obj_count_01 = DeviceManagement.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
                         obj_count_02 = DeviceManagement.objects.filter(device_serial_number=item[2]).count()
                         if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
                             if obj_count_02 == 0:
                                 model = DeviceManagement(
-                                    device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                    device_ip=Device.objects.get(device_ip=item[1]),
                                     device_serial_number=item[2],
                                     start_ma_date=item[3],
                                     end_ma_date=item[4],
@@ -402,25 +402,25 @@ def create_multiple_device(request):
                                 model.save()
             for item in worksheet_03.iter_rows(min_row=2, values_only=True):
                 if item[0] is not None and item[1] is not None:
-                    obj_count = DeviceBasicInfo.objects.filter(device_ip=item[1]).count()
+                    obj_count = Device.objects.filter(device_ip=item[1]).count()
                     if obj_count != 0:
-                        device_is_stack = DeviceBasicInfo.objects.get(device_ip=item[1]).device_stack
-                        obj_count_01 = DeviceTopology.objects.filter(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1])).count()
+                        device_is_stack = Device.objects.get(device_ip=item[1]).device_stack
+                        obj_count_01 = DeviceTopology.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
                         if obj_count_01 == 0:
                             model = DeviceTopology(
-                                device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                device_ip=Device.objects.get(device_ip=item[1]),
                                 device_rack_name=item[2],
                                 device_rack_unit=item[3],
                                 user_created=request.user
                             )
                             model.save()
                         elif obj_count_01 == 1 and device_is_stack == True:
-                            obj = DeviceTopology.objects.get(device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]))
+                            obj = DeviceTopology.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
                             rack_name = obj.device_rack_name
                             rack_unit = obj.device_rack_unit
                             if rack_name != item[2] or rack_unit != item[3]:
                                 model = DeviceTopology(
-                                    device_ip=DeviceBasicInfo.objects.get(device_ip=item[1]),
+                                    device_ip=Device.objects.get(device_ip=item[1]),
                                     device_rack_name=item[2],
                                     device_rack_unit=item[3],
                                     user_created=request.user
@@ -661,7 +661,7 @@ def device_export(request):
                 device_table_id = form.data['database_table']
                 if device_table_id == '1':
                     datalist = list()
-                    queryset = DeviceBasicInfo.objects.all()
+                    queryset = Device.objects.all()
                     for item in queryset:
                         datalist.append({
                             'device_name': item.device_name,
@@ -678,8 +678,8 @@ def device_export(request):
                             'user_created': item.user_created
                         })
                     df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-basic-info.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-basic-info.csv'
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
                 elif device_table_id == '2':
                     datalist = list()
