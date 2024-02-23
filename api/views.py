@@ -136,7 +136,7 @@ def inventory_dashboard_03(request):
         "name": data_point_03,
         "desc": "Device no backup configuration"
     }]
-    color = lambda: random.randint(0,255)
+    # color = lambda: random.randint(0,255)
     for data_point in list_data_point:
         chart_data.append({
             "type": "line",
@@ -144,7 +144,7 @@ def inventory_dashboard_03(request):
             "name": data_point['desc'],
             "markerSize": 0,
             "markerType": "square",
-            "color": '#%02X%02X%02X' % (color(),color(),color()),
+            # "color": '#%02X%02X%02X' % (color(),color(),color()),
             "dataPoints": data_point['name']
         })
     return JsonResponse({'data': chart_data})
