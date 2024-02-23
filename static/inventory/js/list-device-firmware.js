@@ -7,7 +7,4 @@ $(document).ready(function() {
       var href = "/inventory/list-device-firmware/delete/" + id
       $('#delete-device-from').attr('action', href)
     });
-    $('select').selectize({
-        sortField: 'text'
-    }); 
 });
