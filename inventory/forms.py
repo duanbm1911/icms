@@ -146,7 +146,7 @@ class DeviceFirmwareForm(forms.ModelForm):
     class Meta:
         model = DeviceFirmware
         fields = [
-            'device_type',
+            # 'device_type',
             'firmware',
-            'description'
+            # 'description'
         ]

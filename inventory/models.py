@@ -125,13 +125,13 @@ class DeviceConfiguration(models.Model):
         return str(self.device_ip)
     
 class DeviceFirmware(models.Model):
-    """Model definition for DeviceFirmware."""
+#     """Model definition for DeviceFirmware."""
     
-    device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
+#     device_type = models.ForeignKey('DeviceType', on_delete=models.CASCADE)
     firmware = models.CharField(max_length=200)
-    description = models.CharField(max_length=200, blank=True, null=True)
-    creation_time = models.DateTimeField(auto_now=True)
-    user_created = models.CharField(max_length=100, blank=True, null=True)
+#     description = models.CharField(max_length=200, blank=True, null=True)
+#     creation_time = models.DateTimeField(auto_now=True)
+#     user_created = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         """Unicode representation of DeviceFirmware."""
