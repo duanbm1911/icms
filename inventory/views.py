@@ -740,7 +740,7 @@ def device_export(request):
     return render(request, template_name='device_export.html', context=data)
 
 class DeviceFirmwareCreateView(CreateView):
-    model = DeviceFirmware
+    model = DeviceFirmware01
     form_class = DeviceFirmwareForm
     template_name = "create_device_firmware.html"
     success_url = '/inventory/list-device-firmware'
@@ -755,7 +755,7 @@ class DeviceFirmwareCreateView(CreateView):
         return super().form_valid(form)
 
 class DeviceFirmwareListView(ListView):
-    model = DeviceFirmware
+    model = DeviceFirmware01
     context_object_name = 'objects'
     template_name = "list_device_firmware.html"
 
@@ -764,7 +764,7 @@ class DeviceFirmwareListView(ListView):
         return super().dispatch(*args, **kwargs)
 
 class DeviceFirmwareUpdateView(UpdateView):
-    model = DeviceFirmware
+    model = DeviceFirmware01
     form_class = DeviceFirmwareForm
     template_name = "update_device_firmware.html"
     success_url = '/inventory/list-device-firmware'
@@ -779,7 +779,7 @@ class DeviceFirmwareUpdateView(UpdateView):
         return super().form_valid(form)
 
 class DeviceFirmwareDeleteView(DeleteView):
-    model = DeviceFirmware
+    model = DeviceFirmware01
     template_name = 'list_device_firmware.html'
     success_url = '/inventory/list-device-firmware'
 
