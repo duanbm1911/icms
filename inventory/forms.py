@@ -141,12 +141,12 @@ class DeviceExportForm(forms.Form):
         ('4', 'Device configuration'))
     database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES, required=False)
     
-class DeviceFirmwareForm(forms.ModelForm):
+# class DeviceFirmwareForm(forms.ModelForm):
 
-    class Meta:
-        model = DeviceFirmware01
-        fields = [
-            'device_type',
-            'firmware',
-            'description'
-        ]
+#     class Meta:
+#         model = DeviceFirmware
+#         fields = [
+#             'device_type',
+#             'firmware',
+#             'description'
+#         ]
