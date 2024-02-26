@@ -13,5 +13,5 @@ admin.site.register(DeviceManagement)
 admin.site.register(DeviceInterface)
 admin.site.register(DeviceTopology)
 admin.site.register(DeviceConfiguration)
-admin.site.register(DeviceFirmware)
+admin.site.register(DeviceFirmware01)
 
