@@ -739,60 +739,60 @@ def device_export(request):
         messages.add_message(request, constants.ERROR, error)
     return render(request, template_name='device_export.html', context=data)
 
-# class DeviceFirmwareCreateView(CreateView):
-#     model = DeviceFirmware
-#     form_class = DeviceFirmwareForm
-#     template_name = "create_device_firmware.html"
-#     success_url = '/inventory/list-device-firmware'
+class DeviceFirmwareCreateView(CreateView):
+    model = DeviceFirmware
+    form_class = DeviceFirmwareForm
+    template_name = "create_device_firmware.html"
+    success_url = '/inventory/list-device-firmware'
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):
-#         return super().dispatch(*args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-#     def form_valid(self, form):
-#         form.instance.user_created = str(self.request.user)
-#         messages.add_message(self.request, constants.SUCCESS, 'Create success')
-#         return super().form_valid(form)
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
 
-# class DeviceFirmwareListView(ListView):
-#     model = DeviceFirmware
-#     context_object_name = 'objects'
-#     template_name = "list_device_firmware.html"
+class DeviceFirmwareListView(ListView):
+    model = DeviceFirmware
+    context_object_name = 'objects'
+    template_name = "list_device_firmware.html"
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):
-#         return super().dispatch(*args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-# class DeviceFirmwareUpdateView(UpdateView):
-#     model = DeviceFirmware
-#     form_class = DeviceFirmwareForm
-#     template_name = "update_device_firmware.html"
-#     success_url = '/inventory/list-device-firmware'
+class DeviceFirmwareUpdateView(UpdateView):
+    model = DeviceFirmware
+    form_class = DeviceFirmwareForm
+    template_name = "update_device_firmware.html"
+    success_url = '/inventory/list-device-firmware'
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):
-#         return super().dispatch(*args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-#     def form_valid(self, form):
-#         form.instance.user_created = str(self.request.user)
-#         messages.add_message(self.request, constants.SUCCESS, 'Update success')
-#         return super().form_valid(form)
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
 
-# class DeviceFirmwareDeleteView(DeleteView):
-#     model = DeviceFirmware
-#     template_name = 'list_device_firmware.html'
-#     success_url = '/inventory/list-device-firmware'
+class DeviceFirmwareDeleteView(DeleteView):
+    model = DeviceFirmware
+    template_name = 'list_device_firmware.html'
+    success_url = '/inventory/list-device-firmware'
 
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):
-#         return super().dispatch(*args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             super().post(request, *args, **kwargs)
-#             messages.add_message(self.request, constants.SUCCESS, 'Delete success')
-#         except ProtectedError:
-#             messages.add_message(self.request, constants.ERROR, 'This object has been protected')
-#         except Exception as error:
-#             messages.add_message(self.request, constants.ERROR, error)
-#         return redirect(self.success_url)
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
