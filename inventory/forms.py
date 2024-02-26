@@ -144,9 +144,9 @@ class DeviceExportForm(forms.Form):
 class DeviceFirmwareForm(forms.ModelForm):
 
     class Meta:
-        model = DeviceFirmware
+        model = DeviceFirmware01
         fields = [
-            # 'device_type',
+            'device_type',
             'firmware',
-            # 'description'
+            'description'
         ]
