@@ -325,7 +325,7 @@ def create_multiple_device(request):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
             sheets = wb.sheetnames
-            worksheet_01 = wb["device"]
+            worksheet_01 = wb["Device"]
             worksheet_02 = wb["Device_management"]
             worksheet_03 = wb["Device_topology"]
             excel_data = list()
