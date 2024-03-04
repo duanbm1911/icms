@@ -324,11 +324,9 @@ def create_multiple_device(request):
         if request.method == 'POST' and request.FILES.get('upload-file'):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
-            sheets = wb.sheetnames
             worksheet_01 = wb["Device"]
             worksheet_02 = wb["Device_management"]
             worksheet_03 = wb["Device_topology"]
-            excel_data = list()
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
                 item = ["" if i is None else i for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
