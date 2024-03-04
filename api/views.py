@@ -361,20 +361,23 @@ def update_device_firmware(request):
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
 @csrf_exempt
-# @logged_in_or_basicauth()
+@logged_in_or_basicauth()
 def update_device_interface(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
-        for key, value in dataset.items():
-            DeviceInterface.objects.update_or_create(
-                device_ip=key,
-                defaults={
-                    'list_interface_name': value['list_interface_name'],
-                    'list_interface_desc': value['list_interface_desc'],
-                    'list_interface_speed': value['list_interface_speed'],
-                    'list_interface_type': value['list_interface_type'],
-                    'list_interface_state': value['list_interface_state']
-                })
+        for device_ip, data in dataset.items():
+            checklist = Device.objects.filter(device_ip=device_ip).count()
+            if checklist > 0:
+                obj = Device.objects.get(device_ip=device_ip)
+                DeviceInterface.objects.update_or_create(
+                    device_ip=obj,
+                    defaults={
+                        'list_interface_name': data['list_interface_name'],
+                        'list_interface_desc': data['list_interface_desc'],
+                        'list_interface_speed': data['list_interface_speed'],
+                        'list_interface_type': data['list_interface_type'],
+                        'list_interface_state': data['list_interface_state']
+                    })
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
