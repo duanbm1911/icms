@@ -656,8 +656,8 @@ def device_export(request):
         if request.method == 'POST':
             form = DeviceExportForm(request.POST)
             if form.is_valid():
-                device_table_id = form.data['database_table']
-                if device_table_id == '1':
+                select_id = form.data['database_table']
+                if select_id == '1':
                     datalist = list()
                     queryset = Device.objects.all()
                     for item in queryset:
@@ -679,7 +679,7 @@ def device_export(request):
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
-                elif device_table_id == '2':
+                elif select_id == '2':
                     datalist = list()
                     queryset = DeviceManagement.objects.all()
                     for item in queryset:
@@ -700,7 +700,7 @@ def device_export(request):
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-management.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
-                elif device_table_id == '3':
+                elif select_id == '3':
                     datalist = list()
                     queryset = DeviceTopology.objects.all()
                     for item in queryset:
@@ -715,7 +715,7 @@ def device_export(request):
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-topology.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-topology.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
-                elif device_table_id == '4':
+                elif select_id == '4':
                     datalist = list()
                     queryset = DeviceConfiguration.objects.all()
                     for item in queryset:
@@ -730,6 +730,28 @@ def device_export(request):
                     df = pandas.DataFrame(datalist)
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-configuration.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-configuration.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
+                elif select_id == '5':
+                    list_device_firmware = Device.objects.all().values_list('device_name', 'device_ip', 'device_type__device_type', 'device_firmware')
+                    list_firmware = DeviceFirmware.objects.all().values_list('device_type__device_type', 'firmware')
+                    datalist = list()
+                    for item in list_device_firmware:
+                        device_name = item[0]
+                        device_ip = item[1]
+                        device_type = item[2]
+                        device_firmware = item[3]
+                        if device_firmware is not None:
+                            checklist = [i for i in list_firmware if i == (device_type, device_firmware)]
+                            if not checklist:
+                                datalist.append({
+                                    'device_name': device_name,
+                                    'device_ip': device_ip,
+                                    'device_type': device_type,
+                                    'device_firmware': device_firmware
+                                })
+                    df = pandas.DataFrame(datalist)
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-incorrect-firmware.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-incorrect-firmware.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
                 else:
                     messages.add_message(request, constants.ERROR, 'Database selected is not validate')
