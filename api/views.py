@@ -369,11 +369,11 @@ def update_device_interface(request):
             DeviceInterface.objects.update_or_create(
                 device_ip=key,
                 defaults={
-                    'list_interface_name': value['list_interface_name'],
-                    'list_interface_desc': value['list_interface_desc'],
-                    'list_interface_speed': value['list_interface_speed'],
-                    'list_interface_type': value['list_interface_type'],
-                    'list_interface_state': value['list_interface_state']
+                    'list_interface_name': value,
+                    'list_interface_desc': value,
+                    'list_interface_speed': value,
+                    'list_interface_type': value,
+                    'list_interface_state': value
                 })
         return JsonResponse({'status': 'success'}, status=200)
     else:
