@@ -364,7 +364,7 @@ def update_device_firmware(request):
 @logged_in_or_basicauth()
 def update_device_interface(request):
     if request.method == 'POST':
-        dataset = json.loads(request.body)
+        dataset = request.body
         for key, value in dataset.items():
             DeviceInterface.objects.update_or_create(
                 device_ip=key,
