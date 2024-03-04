@@ -6,6 +6,7 @@ $.ajax({
 		var chart = new CanvasJS.Chart("chartContainer-05", {
 			animationEnabled: true,
 			theme: "light2",
+			exportEnabled: true,
 			title:{
 				text: "Count device by location",
 				fontFamily: "tahoma",
