@@ -41,7 +41,9 @@
                 <td>List interface state</td>
                 <td>
                     {% for item in object.list_interface_state.data %}
-                    <p>{{item}}</p>
+                    {% for k,v in item.items %}
+                    <p>Interface: {{k}} ⇨ State: {{v}}</p>
+                    {% endfor %}
                     {% endfor %}
                 </td>
             </tr>
@@ -49,7 +51,19 @@
                 <td>List interface type</td>
                 <td>
                     {% for item in object.list_interface_type.data %}
-                    <p>{{item}}</p>
+                    {% for k,v in item.items %}
+                    <p>Interface: {{k}} ⇨ Type: {{v}}</p>
+                    {% endfor %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>List interface speed</td>
+                <td>
+                    {% for item in object.list_interface_speed.data %}
+                    {% for k,v in item.items %}
+                    <p>Interface: {{k}} ⇨ Speed: {{v}}</p>
+                    {% endfor %}
                     {% endfor %}
                 </td>
             </tr>
