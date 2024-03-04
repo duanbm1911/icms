@@ -361,10 +361,10 @@ def update_device_firmware(request):
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
 @csrf_exempt
-@logged_in_or_basicauth()
+# @logged_in_or_basicauth()
 def update_device_interface(request):
     if request.method == 'POST':
-        dataset = request.body
+        dataset = json.loads(request.body.decode('utf-8'))
         for key, value in dataset.items():
             DeviceInterface.objects.update_or_create(
                 device_ip=key,
