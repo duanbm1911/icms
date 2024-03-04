@@ -5,10 +5,9 @@
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-interface-table">
             <thead>
+                    <th>Device name</th>
                     <th>Device IP</th>
                     <th>Count port</th>
-                    <!-- <th>Count port inuse</th>
-                    <th>Count port un-use</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -16,10 +15,9 @@
 
                 {% for obj in devices %}
                 <tr>
+                    <td>{{ obj.device_ip.device_name }}</td>
                     <td>{{ obj.device_ip }}</td>
                     <td>{{ obj.list_interface_name.data | length }}</td>
-                    <!-- <td>{{ obj.list_interface_inuse.data | length }}</td>
-                    <td>{{ obj.list_interface_unuse.data | length }}</td> -->
                     <td><a href="/inventory/list-device/device-interface/detail/{{obj.id}}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
                 </tr>
                 {% endfor %}
