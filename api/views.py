@@ -178,6 +178,35 @@ def inventory_dashboard_05(request):
             'y': count
         })
     return JsonResponse({'data': location_count})
+
+
+@login_required()
+def inventory_dashboard_06(request):
+    """
+    This dashboard will be display count of incorrect firmware by device type
+    """
+    list_device_firmware = Device.objects.all().values_list('device_name', 'device_ip', 'device_type__device_type', 'device_firmware')
+    list_firmware = DeviceFirmware.objects.all().values_list('device_type__device_type', 'firmware')
+    list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
+    datalist01 = list()
+    datalist02 = list()
+    for item in list_device_firmware:
+        # device_name = item[0]
+        # device_ip = item[1]
+        device_type = item[2]
+        device_firmware = item[3]
+        if device_firmware is not None:
+            checklist = [i for i in list_firmware if i == (device_type, device_firmware)]
+            if not checklist:
+                datalist01.append(device_type)
+    for item in list_device_type:
+        count = datalist01.count(item)
+        datalist02.append({
+            'label': str(item),
+            'y': count
+        })
+    return JsonResponse({'data': datalist02})
+
   
 @login_required()  
 def ipplan_dashboard_01(request):

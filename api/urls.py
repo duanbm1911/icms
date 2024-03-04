@@ -9,6 +9,7 @@ urlpatterns = [
     path('inventory/dashboard-03', views.inventory_dashboard_03),
     path('inventory/dashboard-04', views.inventory_dashboard_04),
     path('inventory/dashboard-05', views.inventory_dashboard_05),
+    path('inventory/dashboard-06', views.inventory_dashboard_06),
     path('ipplan/dashboard-01', views.ipplan_dashboard_01),
     path('ipplan/dashboard-02', views.ipplan_dashboard_02),
     path('get-list-device', views.get_list_device),
