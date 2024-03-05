@@ -763,10 +763,10 @@ def device_export(request):
                     dataset03 = list()
                     dataset04 = list()
                     for device_serial in list_device_serial:                     
-                        datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
-                        datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
-                        datalist03 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
-                        datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
+                        datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02)
+                        datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02)
+                        datalist03 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02)
+                        datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02)
                         if datalist01:
                             for item in datalist01:
                                 dataset01.append({
