@@ -14,6 +14,7 @@ from django.conf import settings
 from inventory.models import *
 from inventory.forms import *
 import pandas
+import datetime
 import openpyxl
 # Create your views here.
 
@@ -752,6 +753,61 @@ def device_export(request):
                     df = pandas.DataFrame(datalist)
                     df.to_csv(settings.MEDIA_ROOT + '/inventory/device-incorrect-firmware.csv', encoding='utf-8-sig')
                     download_url = '/media/inventory/device-incorrect-firmware.csv'
+                    messages.add_message(request, constants.SUCCESS, download_url)
+                elif select_id == '6':
+                    datepoint = datetime.date.today() + datetime.timedelta(days=180)
+                    list_device_serial = DeviceManagement.objects.all().values_list('device_serial_number', flat=True)
+                    dataset01 = list()
+                    dataset02 = list()
+                    dataset03 = list()
+                    dataset04 = list()
+                    for device_serial in list_device_serial:                     
+                        datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__lt=datepoint)
+                        datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__lt=datepoint)
+                        datalist03 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_sw_support_date__lt=datepoint)
+                        datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__lt=datepoint)
+                        if datalist01:
+                            for item in datalist01:
+                                dataset01.append({
+                                    'device_name': item.device_ip.device_name,
+                                    'device_ip': item.device_ip,
+                                    'device_serial': item.device_serial_number,
+                                    'end_ma': item.end_ma_date
+                                })
+                        if datalist02:
+                            for item in datalist02:
+                                dataset02.append({
+                                    'device_name': item.device_ip.device_name,
+                                    'device_ip': item.device_ip,
+                                    'device_serial': item.device_serial_number,
+                                    'end_license': item.end_license_date
+                                })
+                        if datalist03:
+                            for item in datalist03:
+                                dataset03.append({
+                                    'device_name': item.device_ip.device_name,
+                                    'device_ip': item.device_ip,
+                                    'device_serial': item.device_serial_number,
+                                    'end_hw_support': item.end_hw_support_date
+                                })
+                        if datalist04:
+                            for item in datalist04:
+                                dataset04.append({
+                                    'device_name': item.device_ip.device_name,
+                                    'device_ip': item.device_ip,
+                                    'device_serial': item.device_serial_number,
+                                    'end_sw_support': item.end_sw_support_date
+                                })
+                    df01 = pandas.DataFrame(dataset01)
+                    df02 = pandas.DataFrame(dataset02)
+                    df03 = pandas.DataFrame(dataset03)
+                    df04 = pandas.DataFrame(dataset04)
+                    with pandas.ExcelWriter(settings.MEDIA_ROOT + '/inventory/device-expired-license.xlsx') as w:
+                        df01.to_excel(w, sheet_name="End MA")
+                        df02.to_excel(w, sheet_name="End License")
+                        df03.to_excel(w, sheet_name="End HW support")
+                        df04.to_excel(w, sheet_name="End SW support")
+                    download_url = '/media/inventory/device-expired-license.xlsx'
                     messages.add_message(request, constants.SUCCESS, download_url)
                 else:
                     messages.add_message(request, constants.ERROR, 'Database selected is not validate')
