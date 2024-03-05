@@ -140,7 +140,7 @@ class DeviceExportForm(forms.Form):
         ('3', 'Device topology'),
         ('4', 'Device configuration'),
         ('5', 'Device incorrect firmware'),
-        ('6', 'Device expired license'))
+        ('6', 'Device expired license (6 months)'))
     database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES, required=False)
     
 class DeviceFirmwareForm(forms.ModelForm):
