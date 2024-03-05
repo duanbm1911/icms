@@ -755,17 +755,18 @@ def device_export(request):
                     download_url = '/media/inventory/device-incorrect-firmware.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
                 elif select_id == '6':
-                    datepoint = datetime.date.today() + datetime.timedelta(days=180)
+                    datepoint01 = datetime.date.today()
+                    datepoint02 = datetime.date.today() + datetime.timedelta(days=180)
                     list_device_serial = DeviceManagement.objects.all().values_list('device_serial_number', flat=True)
                     dataset01 = list()
                     dataset02 = list()
                     dataset03 = list()
                     dataset04 = list()
                     for device_serial in list_device_serial:                     
-                        datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__lt=datepoint)
-                        datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__lt=datepoint)
-                        datalist03 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_sw_support_date__lt=datepoint)
-                        datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__lt=datepoint)
+                        datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
+                        datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
+                        datalist03 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
+                        datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
                         if datalist01:
                             for item in datalist01:
                                 dataset01.append({

@@ -228,15 +228,16 @@ def inventory_dashboard_07(request):
         "desc": "End SW SP"
     }
     ]
-    datepoint = datetime.date.today() + datetime.timedelta(days=180)
+    datepoint01 = datetime.date.today()
+    datepoint02 = datetime.date.today() + datetime.timedelta(days=180)
     list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
     chart_data = list()
     for device_type in list_device_type:
         obj = DeviceType.objects.get(device_type=device_type)
-        point_01 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_ma_date__lt=datepoint).count()
-        point_02 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_license_date__lt=datepoint).count()
-        point_03 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_sw_support_date__lt=datepoint).count()
-        point_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__lt=datepoint).count()
+        point_01 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
+        point_02 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
+        point_03 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
+        point_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
         data_point_01.append({
             'label': device_type,
             'y': point_01
