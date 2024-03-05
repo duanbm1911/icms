@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from inventory.models import *
 from ipplan.models import *
-import random
+import datetime
 import base64
 import json
 
@@ -191,8 +191,6 @@ def inventory_dashboard_06(request):
     datalist01 = list()
     datalist02 = list()
     for item in list_device_firmware:
-        # device_name = item[0]
-        # device_ip = item[1]
         device_type = item[2]
         device_firmware = item[3]
         if device_firmware is not None:
@@ -207,6 +205,80 @@ def inventory_dashboard_06(request):
         })
     return JsonResponse({'data': datalist02})
 
+def inventory_dashboard_07(request):
+    data_point_01 = list()
+    data_point_02 = list()
+    data_point_03 = list()
+    data_point_04 = list()
+    list_data_point = [
+    {
+        "name": data_point_01,
+        "desc": "End MA"
+    },
+    {
+        "name": data_point_02,
+        "desc": "End License"
+    },
+    {
+        "name": data_point_03,
+        "desc": "End HW SP"
+    },
+    {
+        "name": data_point_04,
+        "desc": "End SW SP"
+    }
+    ]
+    datepoint = datetime.date.today() + datetime.timedelta(days=180)
+    list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
+    chart_data = list()
+    for device_type in list_device_type:
+        obj = DeviceType.objects.get(device_type=device_type)
+        point_01 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_ma_date__lt=datepoint).count()
+        point_02 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_license_date__lt=datepoint).count()
+        point_03 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_sw_support_date__lt=datepoint).count()
+        point_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__lt=datepoint).count()
+        data_point_01.append({
+            'label': device_type,
+            'y': point_01
+        })
+        data_point_02.append({
+            'label': device_type,
+            'y': point_02
+        })
+        data_point_03.append({
+            'label': device_type,
+            'y': point_03
+        })
+        data_point_04.append({
+            'label': device_type,
+            'y': point_04
+        })
+    list_data_point = [{
+        "name": data_point_01,
+        "desc": "End MA"
+    },
+    {
+        "name": data_point_02,
+        "desc": "End License"
+    },
+    {
+        "name": data_point_03,
+        "desc": "End HW SP"
+    },
+    {
+        "name": data_point_04,
+        "desc": "End SW SP"
+    }]
+    for data_point in list_data_point:
+        chart_data.append({
+            "type": "line",
+            "showInLegend": "true",
+            "name": data_point['desc'],
+            "markerSize": 0,
+            "markerType": "square",
+            "dataPoints": data_point['name']
+        })
+    return JsonResponse({'data': chart_data})
   
 @login_required()  
 def ipplan_dashboard_01(request):
