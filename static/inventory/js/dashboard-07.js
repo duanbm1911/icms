@@ -8,7 +8,7 @@ $.ajax({
 			theme: "light2",
 			exportEnabled: true,
 			title:{
-				text: "Device management report",
+				text: "Device management report (Statistics the license will be expired after 6 months)",
 				fontFamily: "tahoma",
 				fontSize: 20,
 				fontWeight: "normal"
