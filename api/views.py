@@ -315,46 +315,17 @@ def ipplan_dashboard_02(request):
 def get_list_device(request):
     if request.method == 'GET':
         datalist = list()
-        if request.GET.get('device_os') is not None and request.GET.get('device_category') is not None:
-            device_os = request.GET['device_os']
-            device_category = request.GET['device_category']
-            queryset = Device.objects.filter(device_os__device_os=device_os, device_category__device_category=device_category)
-            if len(queryset) > 0:
-                for item in queryset:
-                    datalist.append({
-                        'device_ip': item.device_ip,
-                        'device_name': item.device_name
-                    })
-            return JsonResponse({'datalist': datalist}, status=200)
-        elif request.GET.get('device_os') is not None:
-            device_os = request.GET['device_os']
-            queryset = Device.objects.filter(device_os__device_os=device_os)
-            if len(queryset) > 0:
-                for item in queryset:
-                    datalist.append({
-                        'device_ip': item.device_ip,
-                        'device_name': item.device_name
-                    })
-            return JsonResponse({'datalist': datalist}, status=200)
-        elif request.GET.get('device_category') is not None:
-            device_category = request.GET['device_category']
-            queryset = Device.objects.filter(device_category__device_category=device_category)
-            if len(queryset) > 0:
-                for item in queryset:
-                    datalist.append({
-                        'device_ip': item.device_ip,
-                        'device_name': item.device_name
-                    })
-            return JsonResponse({'datalist': datalist}, status=200)
-        else:
-            queryset = Device.objects.all()
-            if len(queryset) > 0:
-                for item in queryset:
-                    datalist.append({
-                        'device_ip': item.device_ip,
-                        'device_name': item.device_name
-                    })
-            return JsonResponse({'datalist': datalist}, status=200)
+        queryset = Device.objects.all()
+        if len(queryset) > 0:
+            for item in queryset:
+                datalist.append({
+                    'device_ip': item.device_ip,
+                    'device_name': item.device_name,
+                    'device_os': item.device_os.device_os,
+                    'device_category': item.device_category.device_category,
+                    'device_vendor': item.device_vendor.device_vendor
+                })
+        return JsonResponse({'datalist': datalist}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
         
