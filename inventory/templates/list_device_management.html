@@ -23,11 +23,31 @@
                     <td>{{ obj.device_ip.device_name }}</td>
                     <td>{{ obj.device_ip.device_ip }}</td>
                     <td>{{ obj.device_serial_number }}</td>
+                    {% if obj.end_ma_date == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
                     <td>{{ obj.end_ma_date | date:"d/m/Y" }}</td>
+                    {% endif %}
+                    {% if obj.end_license_date == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
                     <td>{{ obj.end_license_date | date:"d/m/Y" }}</td>
-                    <td>{{ obj.end_sw_support_date | date:"d/m/Y"}}</td>
-                    <td>{{ obj.end_hw_support_date | date:"d/m/Y"}}</td>
-                    <td>{{ obj.start_used_date | date:"d/m/Y"}}</td>
+                    {% endif %}
+                    {% if obj.end_sw_support_date == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
+                    <td>{{ obj.end_sw_support_date | date:"d/m/Y" }}</td>
+                    {% endif %}
+                    {% if obj.end_hw_support_date == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
+                    <td>{{ obj.end_hw_support_date | date:"d/m/Y" }}</td>
+                    {% endif %}
+                    {% if obj.start_used_date == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
+                    <td>{{ obj.start_used_date | date:"d/m/Y" }}</td>
+                    {% endif %}
                     <td>
                         <a href="/inventory/list-device/device-management/update/{{ obj.id }}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         <a data-toggle="modal" href='#delete-device-modal' id="{{ obj.id }}"><span

@@ -18,9 +18,21 @@
                 <tr>
                     <td>{{ obj.device_ip.device_name }}</td>
                     <td>{{ obj.device_ip }}</td>
+                    {% if obj.device_config_standardized == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
                     <td>{{ obj.device_config_standardized }}</td>
+                    {% endif %}
+                    {% if obj.device_monitored == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
                     <td>{{ obj.device_monitored }}</td>
+                    {% endif %}
+                    {% if obj.device_backup_config == none %}
+                    <td><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No data</td>
+                    {% else %}
                     <td>{{ obj.device_backup_config }}</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
 
