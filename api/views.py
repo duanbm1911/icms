@@ -430,74 +430,33 @@ def update_device_interface(request):
 def device_report():
     queryset_01 = DeviceManagement.objects.all()
     count_01 = queryset_01.count()
-    count_02 = list()
-    count_03 = list()
-    count_04 = list()
-    list_device_type = DeviceType.objects.filter().values_list('device_type', flat=True)
+    countlist = list()
     list_device_vendor = DeviceVendor.objects.filter().values_list('device_vendor', flat=True)
-    list_device_os = DeviceOS.objects.filter().values_list('device_os', flat=True)
-    for device_type in list_device_type:
-        count = DeviceManagement.objects.filter(device_ip__device_type__device_type=device_type).count()
-        count_02.append({
-            'device_type': device_type,
-            'count': count
-        })
     for device_vendor in list_device_vendor:
         count = DeviceManagement.objects.filter(device_ip__device_vendor__device_vendor=device_vendor).count()
-        count_03.append({
+        countlist.append({
             'device_vendor': device_vendor,
-            'count': count
-        })
-    for device_os in list_device_os:
-        count = DeviceManagement.objects.filter(device_ip__device_os__device_os=device_os).count()
-        count_04.append({
-            'device_os': device_os,
             'count': count
         })
     datalist = {
         'device_count': count_01,
-        'count_by_type': count_02,
-        'count_by_vendor': count_03,
-        'count_by_os': count_04
+        'count_by_vendor': countlist
     }
     return datalist
 
 def device_management_report():
     datalist = list()
-    list_end_ma = list()
-    list_end_license = list()
-    list_end_sw_sp = list()
-    list_end_hw_sp = list()
     datepoint01 = datetime.date.today()
     datepoint02 = datetime.date.today() + datetime.timedelta(days=180)
-    list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
-    for device_type in list_device_type:
-        obj = DeviceType.objects.get(device_type=device_type)
-        count_01 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
-        count_02 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
-        count_03 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
-        count_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
-        list_end_ma.append({
-            'device_type': device_type,
-            'count': count_01
-        })
-        list_end_license.append({
-            'device_type': device_type,
-            'count': count_02
-        })
-        list_end_sw_sp.append({
-            'device_type': device_type,
-            'count': count_03
-        })
-        list_end_hw_sp.append({
-            'device_type': device_type,
-            'count': count_04
-        })
+    count_01 = DeviceManagement.objects.filter(end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
+    count_02 = DeviceManagement.objects.filter(end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
+    count_03 = DeviceManagement.objects.filter(end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
+    count_04 = DeviceManagement.objects.filter(end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
     datalist = {
-        'list_end_ma': list_end_ma,
-        'list_end_license': list_end_license,
-        'list_end_sw_sp': list_end_sw_sp,
-        'list_end_hw_sp': list_end_hw_sp
+        'list_end_ma': count_01,
+        'list_end_license': count_02,
+        'list_end_sw_sp': count_03,
+        'list_end_hw_sp': count_04
     }
     return datalist
 
