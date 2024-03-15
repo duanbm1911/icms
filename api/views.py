@@ -470,18 +470,21 @@ def device_configuration_report():
         count_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_os__device_os=device_os).count()
         count_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_os__device_os=device_os).count()
         count_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_os__device_os=device_os).count()
-        device_config_status.append({
-            'device_os': device_os,
-            'count': count_01
-        })
-        device_monitor_status.append({
-            'device_os': device_os,
-            'count': count_02
-        })
-        device_backup_status.append({
-            'device_os': device_os,
-            'count': count_03
-        })
+        if count_01 != 0:
+            device_config_status.append({
+                'device_os': device_os,
+                'count': count_01
+            })
+        if count_02 != 0:
+            device_monitor_status.append({
+                'device_os': device_os,
+                'count': count_02
+            })
+        if count_03 != 0:
+            device_backup_status.append({
+                'device_os': device_os,
+                'count': count_03
+            })
     datalist = {
         'device_config_status': device_config_status,
         'device_monitor_status': device_monitor_status,
@@ -504,10 +507,11 @@ def device_firmmware_report():
                 datalist01.append(device_type)
     for device_type in list_device_type:
         count = datalist01.count(device_type)
-        datalist02.append({
-            'device_type': device_type,
-            'count': count
-        })
+        if count != 0:
+            datalist02.append({
+                'device_type': device_type,
+                'count': count
+            })
     return datalist02
 
 
