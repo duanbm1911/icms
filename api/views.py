@@ -425,3 +425,143 @@ def update_device_interface(request):
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+
+def device_report():
+    queryset_01 = DeviceManagement.objects.all()
+    count_01 = queryset_01.count()
+    count_02 = list()
+    count_03 = list()
+    count_04 = list()
+    list_device_type = DeviceType.objects.filter().values_list('device_type', flat=True)
+    list_device_vendor = DeviceVendor.objects.filter().values_list('device_vendor', flat=True)
+    list_device_os = DeviceOS.objects.filter().values_list('device_os', flat=True)
+    for device_type in list_device_type:
+        count = DeviceManagement.objects.filter(device_ip__device_type__device_type=device_type).count()
+        count_02.append({
+            'device_type': device_type,
+            'count': count
+        })
+    for device_vendor in list_device_vendor:
+        count = DeviceManagement.objects.filter(device_ip__device_vendor__device_vendor=device_vendor).count()
+        count_03.append({
+            'device_vendor': device_vendor,
+            'count': count
+        })
+    for device_os in list_device_os:
+        count = DeviceManagement.objects.filter(device_ip__device_os__device_os=device_os).count()
+        count_04.append({
+            'device_os': device_os,
+            'count': count
+        })
+    datalist = {
+        'device_count': count_01,
+        'count_by_type': count_02,
+        'count_by_vendor': count_03,
+        'count_by_os': count_04
+    }
+    return datalist
+
+def device_management_report():
+    datalist = list()
+    list_end_ma = list()
+    list_end_license = list()
+    list_end_sw_sp = list()
+    list_end_hw_sp = list()
+    datepoint01 = datetime.date.today()
+    datepoint02 = datetime.date.today() + datetime.timedelta(days=180)
+    list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
+    for device_type in list_device_type:
+        obj = DeviceType.objects.get(device_type=device_type)
+        count_01 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02).count()
+        count_02 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02).count()
+        count_03 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_sw_support_date__gte=datepoint01, end_sw_support_date__lte=datepoint02).count()
+        count_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
+        list_end_ma.append({
+            'device_type': device_type,
+            'count': count_01
+        })
+        list_end_license.append({
+            'device_type': device_type,
+            'count': count_02
+        })
+        list_end_sw_sp.append({
+            'device_type': device_type,
+            'count': count_03
+        })
+        list_end_hw_sp.append({
+            'device_type': device_type,
+            'count': count_04
+        })
+    datalist = {
+        'list_end_ma': list_end_ma,
+        'list_end_license': list_end_license,
+        'list_end_sw_sp': list_end_sw_sp,
+        'list_end_hw_sp': list_end_hw_sp
+    }
+    return datalist
+
+def device_configuration_report():
+    datalist = list()
+    device_config_status = list()
+    device_monitor_status = list()
+    device_backup_status = list()
+    list_device_os = list(DeviceOS.objects.values_list('device_os', flat=True))
+    for device_os in list_device_os:
+        count_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_os__device_os=device_os).count()
+        count_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_os__device_os=device_os).count()
+        count_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_os__device_os=device_os).count()
+        device_config_status.append({
+            'device_os': device_os,
+            'count': count_01
+        })
+        device_monitor_status.append({
+            'device_os': device_os,
+            'count': count_02
+        })
+        device_backup_status.append({
+            'device_os': device_os,
+            'count': count_03
+        })
+    datalist = {
+        'device_config_status': device_config_status,
+        'device_monitor_status': device_monitor_status,
+        'device_backup_status': device_backup_status
+    }
+    return datalist
+
+def device_firmmware_report():
+    list_device_firmware = Device.objects.all().values_list('device_name', 'device_ip', 'device_type__device_type', 'device_firmware')
+    list_firmware = DeviceFirmware.objects.all().values_list('device_type__device_type', 'firmware')
+    list_device_type = DeviceType.objects.all().values_list('device_type', flat=True)
+    datalist01 = list()
+    datalist02 = list()
+    for item in list_device_firmware:
+        device_type = item[2]
+        device_firmware = item[3]
+        if device_firmware is not None:
+            checklist = [i for i in list_firmware if i == (device_type, device_firmware)]
+            if not checklist:
+                datalist01.append(device_type)
+    for device_type in list_device_type:
+        count = datalist01.count(device_type)
+        datalist02.append({
+            'device_type': device_type,
+            'count': count
+        })
+    return datalist02
+
+
+@logged_in_or_basicauth()
+def inventory_report(request):
+    device = device_report()
+    device_management = device_management_report()
+    device_configuration = device_configuration_report()
+    device_firmmware = device_firmmware_report()
+    data = {
+        'device': device,
+        'device_management': device_management,
+        'device_configuration': device_configuration,
+        'device_firmmware': device_firmmware
+    }
+    return JsonResponse({'data': data})
