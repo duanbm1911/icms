@@ -40,7 +40,6 @@ $(document).ready(function () {
       })
       document.querySelector('#submit').addEventListener('click', function () {
         $('#submit').prop('disabled', true)
-        $('#submit').text('Checking')
         let datalist03 = myDataGrid.getData()
         $.ajax({
           type: "POST",
@@ -63,7 +62,6 @@ $(document).ready(function () {
                 text: response.message,
                 icon: "error"
               }).then(function () {
-                $('#submit').text('Submit');
                 $('#submit').prop('disabled', false)
               })
             }
