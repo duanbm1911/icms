@@ -4,5 +4,5 @@ from core.views import *
 
 
 urlpatterns = [
-    path('', views.redirect_home_url)
+    path('', views.redirect_home_url),
 ]

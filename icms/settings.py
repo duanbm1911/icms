@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'api',
     'accounts',
     'inventory',
-    'ipplan'
+    'ipplan',
+    'cm'
 ]
 
 MIDDLEWARE = [

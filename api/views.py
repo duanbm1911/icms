@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from inventory.models import *
 from ipplan.models import *
+from cm.models import *
 import datetime
 import base64
 import json
@@ -205,6 +206,7 @@ def inventory_dashboard_06(request):
         })
     return JsonResponse({'data': datalist02})
 
+@login_required()
 def inventory_dashboard_07(request):
     data_point_01 = list()
     data_point_02 = list()
@@ -528,3 +530,22 @@ def inventory_report(request):
         'device_firmmware': device_firmmware
     }
     return JsonResponse({'data': data})
+
+@login_required()
+@csrf_exempt
+def cm_create_task(request):
+    if request.method == 'POST':
+        list_obj = list(request.POST)
+        for obj in list_obj:
+            data = request.POST.getlist(obj)
+            print(data)
+        return JsonResponse({'status': 'success', 'message': 'Create task success'})
+    
+
+@login_required()
+def cm_get_list_policy_template(request):
+    if request.method == 'GET':
+        datalist = CheckpointPolicy.objects.all().values_list('policy', flat=True)
+        return JsonResponse({'data': list(datalist)}, status=200)
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
