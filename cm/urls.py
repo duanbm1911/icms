@@ -4,7 +4,13 @@ from cm.views import *
 
 
 urlpatterns = [
-    path('create-task', views.create_task),
-    path('objects/create-policy', CheckpointPolicyCreateView.as_view()),
-    path('objects/create-site', CheckpointSiteCreateView.as_view())
+    path('checkpoint/create-task', views.create_task),
+    path('checkpoint/objects/create-policy', CheckpointPolicyCreateView.as_view()),
+    path('checkpoint/objects/list-policy', CheckpointPolicyListView.as_view()),
+    path('checkpoint/objects/update-policy/<int:pk>', CheckpointPolicyUpdateView.as_view()),
+    path('checkpoint/objects/delete-policy/<int:pk>', CheckpointPolicyDeleteView.as_view()),
+    path('checkpoint/objects/create-site', CheckpointSiteCreateView.as_view()),
+    path('checkpoint/objects/list-site', CheckpointSiteListView.as_view()),
+    path('checkpoint/objects/update-site/<int:pk>', CheckpointSiteUpdateView.as_view()),
+    path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view()),
 ]

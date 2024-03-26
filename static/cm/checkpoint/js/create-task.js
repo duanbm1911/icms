@@ -2,7 +2,7 @@ $(document).ready(function () {
   var datalist01 = [[]];
   $.ajax({
     type: "GET",
-    url: '/api/cm/get-list-policy',
+    url: '/api/cm/checkpoint/get-list-policy',
     success: function (response) {
       var datalist02 = response.data
       var placeholder = document.getElementById('dataTable');
@@ -42,7 +42,7 @@ $(document).ready(function () {
         let datalist03 = myDataGrid.getData()
         $.ajax({
           type: "POST",
-          url: '/api/cm/create-task',
+          url: '/api/cm/checkpoint/create-task',
           dataType: "json",
           data: {
             'datalist': datalist03

@@ -19,6 +19,6 @@ urlpatterns = [
     path('update-device-check-monitor', views.update_device_check_monitor),
     path('update-device-firmware', views.update_device_firmware),
     path('update-device-interface', views.update_device_interface),
-    path('cm/create-task', views.cm_create_task),
-    path('cm/get-list-policy', views.cm_get_list_policy_template)
+    path('cm/checkpoint/create-task', views.cm_create_task),
+    path('cm/checkpoint/get-list-policy', views.cm_get_list_policy_template)
 ]
