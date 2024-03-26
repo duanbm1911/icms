@@ -4,7 +4,9 @@ from cm.views import *
 
 
 urlpatterns = [
-    path('checkpoint/create-task', views.create_task),
+    path('checkpoint/create-task', CheckpointTaskView.as_view()),
+    path('checkpoint/list-task', CheckpointTaskListView.as_view()),
+    path('checkpoint/delete-task/<int:pk>', CheckpointTaskDeleteView.as_view()),
     path('checkpoint/objects/create-policy', CheckpointPolicyCreateView.as_view()),
     path('checkpoint/objects/list-policy', CheckpointPolicyListView.as_view()),
     path('checkpoint/objects/update-policy/<int:pk>', CheckpointPolicyUpdateView.as_view()),

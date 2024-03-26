@@ -42,12 +42,14 @@ def check_list_protocol(datalist):
         for item in datalist:
             list_item = item.split('-')
             if len(list_item) == 2:
-                if 'tcp' not in list_item[0] or 'udp' not in list_item[0]:
+                if list_item[0] not in ['tcp', 'udp']:
                     return False
                 else:
                     int(list_item[1])
+                    if int(list_item[1]) < 0 or int(list_item[1]) > 65536:
+                        return False
             elif len(list_item) == 3:
-                if 'tcp' not in list_item[0] or 'udp' not in list_item[0]:
+                if list_item[0] not in ['tcp', 'udp']:
                     return False
                 else:
                     int(list_item[1])
@@ -65,7 +67,8 @@ def check_list_protocol(datalist):
         return False
 
 
-def check_access_rule_input(data):
+def check_access_rule_input(data, index):
+    rule_index = index + 1
     error_message = str()
     if data != []:
         policy = data[0]
@@ -75,21 +78,21 @@ def check_access_rule_input(data):
         protocol = data[4].split('\n')
         schedule = data[5]
         if policy == "":
-            error_message = f'Policy template name can not be empty'
+            error_message = f'Rule index {rule_index}: Policy template name can not be empty'
         elif description == "":
-            error_message = f'Policy template description can not be empty'
+            error_message = f'Rule index {rule_index}: Policy template description can not be empty'
         elif source == ['']:
-            error_message = f'Source address is invalid'
+            error_message = f'Rule index {rule_index}: Source address is invalid'
         elif 'any' in source and len(source) > 1:
-            error_message = f'Source address is invalid'
+            error_message = f'Rule index {rule_index}: Source address is invalid'
         elif not check_list_ipaddress(source):
-            error_message = f'Source address is invalid'
+            error_message = f'Rule index {rule_index}: Source address is invalid'
         elif destination == ['']:
-            error_message = f'Destination address is invalid'
+            error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif 'any' in destination and len(destination) > 1:
-            error_message = f'Destination address is invalid'
+            error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif not check_list_ipaddress(destination):
-            error_message = f'Destination address is invalid'
+            error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif not check_list_protocol(protocol):
-            error_message = f'Protocol is invalid'
+            error_message = f'Rule index {rule_index}: Protocol is invalid'
     return error_message

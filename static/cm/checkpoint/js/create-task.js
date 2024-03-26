@@ -21,7 +21,7 @@ $(document).ready(function () {
           }, {}, {}, {}, {},
           {
             type: 'date',
-            dateFormat: 'MM/DD/YYYY',
+            dateFormat: 'YYYY-MM-DD',
             correctFormat: true,
             datePickerConfig: {
               firstDay: 0,
@@ -49,10 +49,18 @@ $(document).ready(function () {
           },
           success: function (response) {
             if (response.status == 'success') {
-              alert(response.message)
+              Swal.fire({
+                text: response.message,
+                icon: "success"
+              }).then(function() {
+                window.location = '/cm/checkpoint/list-task';
+              })
             }
-            else {
-              alert(response.message)
+            else{
+              Swal.fire({
+                text: response.message,
+                icon: "error"
+              });
             }
           }
         });

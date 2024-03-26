@@ -3,6 +3,6 @@ from cm.models import *
 
 # Register your models here.
 
-
-admin.site.register(TaskStatus)
 admin.site.register(CheckpointTask)
+admin.site.register(CheckpointSite)
+admin.site.register(CheckpointPolicy)

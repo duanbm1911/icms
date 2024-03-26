@@ -11,13 +11,16 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
+from django.views.generic import TemplateView
 
 # Create your views here.
 
-
-def create_task(request):
-    return render(request, template_name='checkpoint/create_task.html')
-
+class CheckpointTaskView(TemplateView):
+    template_name = "checkpoint/create_task.html"
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class CheckpointPolicyCreateView(CreateView):
     model = CheckpointPolicy
@@ -120,6 +123,35 @@ class CheckpointSiteDeleteView(DeleteView):
     model = CheckpointSite
     template_name = 'checkpoint/list_site.html'
     success_url = '/cm/checkpoint/objects/list-site'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+    
+
+class CheckpointTaskListView(ListView):
+    model = CheckpointTask
+    context_object_name = 'objects'
+    template_name = "checkpoint/list_task.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+class CheckpointTaskDeleteView(DeleteView):
+    model = CheckpointTask
+    template_name = 'checkpoint/list_site.html'
+    success_url = '/cm/checkpoint/list-task'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
