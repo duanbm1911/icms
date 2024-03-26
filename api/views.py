@@ -535,54 +535,57 @@ def inventory_report(request):
 @login_required()
 @csrf_exempt
 def cm_checkpoint_create_task(request):
-    if request.method == 'POST':
-        list_obj = list(request.POST)
-        list_error_message = str()
-        list_task = list()
-        status = 'Created'
-        user_created = request.user
-        for obj in list_obj:
-            index = list_obj.index(obj)
-            data = request.POST.getlist(obj)
-            error_message = check_access_rule_input(data, index)
-            if not error_message:
-                policy = data[0]
-                description = data[1]
-                source = [i.replace(' ', '') for i in data[2].split('\n')]
-                destination = [i.replace(' ', '') for i in data[3].split('\n')]
-                protocol = [i.replace(' ', '') for i in data[4].split('\n')]
-                schedule = data[5]
-                list_task.append([
-                    policy, 
-                    description, 
-                    json.dumps(source), 
-                    json.dumps(destination),
-                    json.dumps(protocol),
-                    schedule,
-                    status,
-                    user_created
-                    ])
+    try:
+        if request.method == 'POST':
+            list_obj = list(request.POST)
+            list_error_message = str()
+            list_task = list()
+            status = 'Created'
+            user_created = request.user
+            for obj in list_obj:
+                index = list_obj.index(obj)
+                data = request.POST.getlist(obj)
+                error_message = check_access_rule_input(data, index)
+                if not error_message:
+                    policy = data[0]
+                    description = data[1]
+                    source = [i.replace(' ', '') for i in data[2].split('\n')]
+                    destination = [i.replace(' ', '') for i in data[3].split('\n')]
+                    protocol = [i.replace(' ', '') for i in data[4].split('\n')]
+                    schedule = data[5]
+                    list_task.append([
+                        policy, 
+                        description, 
+                        json.dumps(source), 
+                        json.dumps(destination),
+                        json.dumps(protocol),
+                        schedule,
+                        status,
+                        user_created
+                        ])
+                else:
+                    list_error_message += error_message + '\n'
+            if list_error_message:
+                return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
             else:
-                list_error_message += error_message + '\n'
-        if list_error_message:
-            return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
+                for item in list_task:
+                    model = CheckpointTask(
+                        policy=CheckpointPolicy.objects.get(policy=item[0]),
+                        description=item[1],
+                        source=item[2],
+                        destination=item[3],
+                        protocol=item[4],
+                        schedule=item[5],
+                        status=item[6],
+                        user_created=item[7],
+                    )
+                    model.save()
+                return JsonResponse({'status': 'success', 'message': 'Create task success'}, status=200)
         else:
-            for item in list_task:
-                model = CheckpointTask(
-                    policy=CheckpointPolicy.objects.get(policy=item[0]),
-                    description=item[1],
-                    source=item[2],
-                    destination=item[3],
-                    protocol=item[4],
-                    schedule=item[5],
-                    status=item[6],
-                    user_created=item[7],
-                )
-                model.save()
-            return JsonResponse({'status': 'success', 'message': 'Create task success'}, status=200)
-    else:
-        return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
-    
+            return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
+    except:
+        return JsonResponse({'status': 'failed', 'message': 'Exception error'}, status=500)
+
 @login_required()
 def cm_checkpoint_get_list_policy(request):
     if request.method == 'GET':
@@ -591,7 +594,7 @@ def cm_checkpoint_get_list_policy(request):
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
-@logged_in_or_basicauth()
+@login_required()
 def cm_checkpoint_get_list_task(request):
     if request.method == 'GET':
         datalist = CheckpointTask.objects.filter(status='Created').values_list('id', 'policy', 'description', 'source', 'destination', 'protocol', 'schedule')
@@ -605,7 +608,7 @@ def cm_checkpoint_get_list_task(request):
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
-# @logged_in_or_basicauth()
+@logged_in_or_basicauth()
 @csrf_exempt
 def cm_checkpoint_update_task_status(request):
     if request.method == 'POST':

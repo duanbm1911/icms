@@ -1,41 +1,41 @@
-from ipaddress import IPv4Network
 from ipaddress import IPv4Address
+from ipaddress import ip_network
+import re
 
 def is_subnet(subnet):
     try:
-        IPv4Network(subnet)
+        ip_network(subnet)
         return True
     except:
         return False
-
-def get_available_ips(subnet, used_ips, count):
-    network = IPv4Network(subnet)
-    unused_ips = []
-    for ip in network.hosts():
-        ip_str = str(ip)
-        if ip_str not in used_ips and ip_str != str(network.network_address):
-            unused_ips.append(ip_str)
-            if len(unused_ips) == count:
-                break
-    return unused_ips
-
-def check_subnet_overlap(subnet, subnets):
-    net = IPv4Network(subnet)
-    overlapped = []
-    for s in subnets:
-        other = IPv4Network(s)
-        if net.overlaps(other):
-            overlapped.append(other)
-    return overlapped
-
-def check_list_ipaddress(datalist):
+    
+def is_ipaddress(ip):
     try:
-        for ip in datalist:
-            if ip != 'any':
-                IPv4Address(ip)
+        IPv4Address(ip)
         return True
     except:
         return False
+    
+def is_domain(domain):
+    regex = r"^(?!:\/\/)([a-zA-Z0-9-_]+(\.[a-zA-Z0-9-_]+)*\.[a-zA-Z]{2,63}|localhost)$"
+    if re.match(regex, domain):
+        return True
+    else:
+        return False
+
+def check_list_object(datalist):
+    for item in datalist:
+        if item != 'any' and is_ipaddress(item) is True:
+            pass
+        elif item != 'any' and is_subnet(item) is True:
+            pass
+        elif item != 'any' and is_domain(item) is True:
+            pass
+        elif item == 'any' and len(datalist) == 1:
+            pass
+        else:
+            return False
+    return True
 
 def check_list_protocol(datalist):
     try:
@@ -88,13 +88,13 @@ def check_access_rule_input(data, index):
             error_message = f'Rule index {rule_index}: Source address is invalid'
         elif 'any' in source and len(source) > 1:
             error_message = f'Rule index {rule_index}: Source address is invalid'
-        elif not check_list_ipaddress(source):
+        elif not check_list_object(source):
             error_message = f'Rule index {rule_index}: Source address is invalid'
         elif destination == ['']:
             error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif 'any' in destination and len(destination) > 1:
             error_message = f'Rule index {rule_index}: Destination address is invalid'
-        elif not check_list_ipaddress(destination):
+        elif not check_list_object(destination):
             error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif not check_list_protocol(protocol):
             error_message = f'Rule index {rule_index}: Protocol is invalid'

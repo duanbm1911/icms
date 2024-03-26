@@ -66,10 +66,18 @@ $(document).ready(function () {
                 $('#submit').text('Submit');
                 $('#submit').prop('disabled', false)
               })
-
             }
+          },
+          error: function (response) {
+            Swal.fire({
+              text: response.responseJSON.message,
+              icon: "error"
+            }).then(function () {
+              $('#submit').text('Submit');
+              $('#submit').prop('disabled', false)
+            })
           }
-        });
+        })
       })
     }
   })
