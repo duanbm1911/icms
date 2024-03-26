@@ -166,3 +166,11 @@ class CheckpointTaskDeleteView(DeleteView):
         except Exception as error:
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
+    
+class CheckpointTaskDetailView(DetailView):
+    model = CheckpointTask
+    template_name = "checkpoint/detail_task.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

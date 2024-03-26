@@ -16,7 +16,7 @@ class CheckpointSite(models.Model):
         return self.site_name
 
 class CheckpointTask(models.Model):
-    policy = models.CharField(max_length=1000)
+    policy = models.ForeignKey('CheckpointPolicy', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     source = models.CharField(max_length=1000)
     destination = models.CharField(max_length=1000)

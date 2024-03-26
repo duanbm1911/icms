@@ -569,7 +569,7 @@ def cm_checkpoint_create_task(request):
         else:
             for item in list_task:
                 model = CheckpointTask(
-                    policy=item[0],
+                    policy=CheckpointPolicy.objects.get(policy=item[0]),
                     description=item[1],
                     source=item[2],
                     destination=item[3],
@@ -584,9 +584,40 @@ def cm_checkpoint_create_task(request):
         return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
     
 @login_required()
-def cm_get_list_policy_template(request):
+def cm_checkpoint_get_list_policy(request):
     if request.method == 'GET':
         datalist = CheckpointPolicy.objects.all().values_list('policy', flat=True)
         return JsonResponse({'data': list(datalist)}, status=200)
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
+@logged_in_or_basicauth()
+def cm_checkpoint_get_list_task(request):
+    if request.method == 'GET':
+        datalist = CheckpointTask.objects.filter(status='Created').values_list('id', 'policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+        datalist = [list(i) for i in datalist]
+        if datalist != []:
+            for item in datalist:
+                item[3] = json.loads(item[3])
+                item[4] = json.loads(item[4])
+                item[5] = json.loads(item[5])
+        return JsonResponse({'datalist': list(datalist)},  status=200)
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
+# @logged_in_or_basicauth()
+@csrf_exempt
+def cm_checkpoint_update_task_status(request):
+    if request.method == 'POST':
+        dataset = request.POST.dict()
+        policy_id = dataset['policy_id']
+        status = dataset['status']
+        message = dataset['message']
+        model = CheckpointTask.objects.filter(id=policy_id)
+        model.update(
+            status=status,
+            message=message
+        )
+        return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)

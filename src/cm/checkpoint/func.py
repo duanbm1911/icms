@@ -41,7 +41,10 @@ def check_list_protocol(datalist):
     try:
         for item in datalist:
             list_item = item.split('-')
-            if len(list_item) == 2:
+            if len(list_item) == 1:
+                if list_item[0] != 'any':
+                    return False
+            elif len(list_item) == 2:
                 if list_item[0] not in ['tcp', 'udp']:
                     return False
                 else:

@@ -39,6 +39,8 @@ $(document).ready(function () {
         myDataGrid.alter('insert_row_below', col, 1)
       })
       document.querySelector('#submit').addEventListener('click', function () {
+        $('#submit').prop('disabled', true)
+        $('#submit').text('Checking')
         let datalist03 = myDataGrid.getData()
         $.ajax({
           type: "POST",
@@ -60,7 +62,11 @@ $(document).ready(function () {
               Swal.fire({
                 text: response.message,
                 icon: "error"
-              });
+              }).then(function () {
+                $('#submit').text('Submit');
+                $('#submit').prop('disabled', false)
+              })
+
             }
           }
         });
