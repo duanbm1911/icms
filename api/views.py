@@ -549,9 +549,9 @@ def cm_checkpoint_create_task(request):
                 if not error_message:
                     policy = data[0]
                     description = data[1]
-                    source = [i.replace(' ', '') for i in data[2].split('\n')]
-                    destination = [i.replace(' ', '') for i in data[3].split('\n')]
-                    protocol = [i.replace(' ', '') for i in data[4].split('\n')]
+                    source = [i.replace('\r', '') for i in data[2].split('\n')]
+                    destination = [i.replace('\r', '') for i in data[3].split('\n')]
+                    protocol = [i.replace('\r', '') for i in data[4].split('\n')]
                     schedule = data[5]
                     list_task.append([
                         policy, 
@@ -594,22 +594,22 @@ def cm_checkpoint_get_list_policy(request):
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
-@login_required()
+@logged_in_or_basicauth()
 def cm_checkpoint_get_list_task(request):
     if request.method == 'GET':
-        datalist = CheckpointTask.objects.filter(status='Created').values_list('id', 'policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+        datalist = CheckpointTask.objects.filter(status='Created').values_list('id', 'policy__site_name__site_name', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
         datalist = [list(i) for i in datalist]
         if datalist != []:
             for item in datalist:
-                item[3] = json.loads(item[3])
                 item[4] = json.loads(item[4])
                 item[5] = json.loads(item[5])
+                item[6] = json.loads(item[6])
         return JsonResponse({'datalist': list(datalist)},  status=200)
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def cm_checkpoint_update_task_status(request):
     if request.method == 'POST':
         dataset = request.POST.dict()
