@@ -549,9 +549,9 @@ def cm_checkpoint_create_task(request):
                 if not error_message:
                     policy = data[0]
                     description = data[1]
-                    source = [i.replace('\r', '') for i in data[2].split('\n')]
-                    destination = [i.replace('\r', '') for i in data[3].split('\n')]
-                    protocol = [i.replace('\r', '') for i in data[4].split('\n')]
+                    source = [i.replace(' ', '').replace('\r', '') for i in data[2].split('\n')]
+                    destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
+                    protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
                     schedule = data[5]
                     list_task.append([
                         policy, 

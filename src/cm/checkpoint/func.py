@@ -76,9 +76,9 @@ def check_access_rule_input(data, index):
     if data != []:
         policy = data[0]
         description = data[1]
-        source = data[2].split('\n')
-        destination = data[3].split('\n')
-        protocol = data[4].split('\n')
+        source = [i.replace(' ', '').replace('\r', '') for i in data[2].split('\n')]
+        destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
+        protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
         schedule = data[5]
         if policy == "":
             error_message = f'Rule index {rule_index}: Policy template name can not be empty'
