@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import ProtectedError
+from django.http import HttpResponse
 from cm.models import *
 from cm.forms import *
 from django.utils.decorators import method_decorator
@@ -20,8 +21,10 @@ class CheckpointTaskView(TemplateView):
     template_name = "checkpoint/create_task.html"
     
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
 class CheckpointPolicyCreateView(CreateView):
     model = CheckpointPolicy
@@ -30,8 +33,10 @@ class CheckpointPolicyCreateView(CreateView):
     success_url = '/cm/checkpoint/objects/create-policy'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -54,8 +59,10 @@ class CheckpointPolicyUpdateView(UpdateView):
     success_url = '/cm/checkpoint/objects/list-policy'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -68,8 +75,10 @@ class CheckpointPolicyDeleteView(DeleteView):
     success_url = '/cm/checkpoint/objects/list-policy'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -88,8 +97,10 @@ class CheckpointSiteCreateView(CreateView):
     success_url = '/cm/checkpoint/objects/create-site'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -112,8 +123,10 @@ class CheckpointSiteUpdateView(UpdateView):
     success_url = '/cm/checkpoint/objects/list-site'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -126,8 +139,10 @@ class CheckpointSiteDeleteView(DeleteView):
     success_url = '/cm/checkpoint/objects/list-site'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -155,8 +170,10 @@ class CheckpointTaskDeleteView(DeleteView):
     success_url = '/cm/checkpoint/list-task'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
