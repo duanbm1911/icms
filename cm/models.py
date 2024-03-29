@@ -4,16 +4,21 @@ from django.db import models
 
 class CheckpointPolicy(models.Model):
     policy = models.CharField(max_length=500, unique=True)
-    site_name = models.ForeignKey('CheckpointSite', on_delete=models.CASCADE)
+    layer = models.CharField(max_length=100, blank=True, null=True)
+    section = models.CharField(max_length=100, blank=True, null=True)
+    site = models.ForeignKey('CheckpointSite', on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return self.policy
 
 class CheckpointSite(models.Model):
-    site_name = models.CharField(max_length=100, unique=True)
+    site = models.CharField(max_length=100, unique=True)
+    smc = models.CharField(max_length=100, blank=True, null=True)
 
+    
     def __str__(self):
-        return self.site_name
+        return self.site
 
 class CheckpointTask(models.Model):
     policy = models.ForeignKey('CheckpointPolicy', on_delete=models.CASCADE)

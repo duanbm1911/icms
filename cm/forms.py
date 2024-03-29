@@ -9,7 +9,9 @@ class CheckpointPolicyForm(forms.ModelForm):
         model = CheckpointPolicy
         fields = [
             'policy',
-            'site_name'
+            'layer',
+            'section',
+            'site'
         ]
 
 class CheckpointSiteForm(forms.ModelForm):
@@ -18,5 +20,6 @@ class CheckpointSiteForm(forms.ModelForm):
 
         model = CheckpointSite
         fields = [
-            'site_name'
+            'site',
+            'smc'
         ]

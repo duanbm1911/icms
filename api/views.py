@@ -604,14 +604,16 @@ def cm_checkpoint_get_list_policy(request):
 def cm_checkpoint_get_list_task(request):
     if request.user.groups.filter(name='ADMIN').exists():
         if request.method == 'GET':
-            datalist = CheckpointTask.objects.filter(status='Processing').values_list('id', 'policy__site_name__site_name', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
-            datalist = [list(i) for i in datalist]
-            if datalist != []:
-                for item in datalist:
+            cp_task = CheckpointTask.objects.filter(status='Processing').values_list('id', 'policy__site__site', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+            cp_smc = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer', 'section')
+            cp_task = [list(i) for i in cp_task]
+            cp_smc = [list(i) for i in cp_smc]
+            if cp_task:
+                for item in cp_task:
                     item[4] = json.loads(item[4])
                     item[5] = json.loads(item[5])
                     item[6] = json.loads(item[6])
-            return JsonResponse({'datalist': list(datalist)},  status=200)
+            return JsonResponse({'cp_task': cp_task, 'cp_smc': cp_smc},  status=200)
         else:
             return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     else:
