@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth import logout as auth_logout, login as auth_login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 
 
@@ -27,4 +29,3 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'registration/change_password.html', {'form': form})
-

@@ -1,0 +1,4 @@
+﻿,device_name,device_ip,device_config_standardized,device_monitored,device_backup_config,user_created
+0,S1-FW-ACI-01,10.23.35.7,False,False,False,
+1,S1-FW-ACI-02,10.23.35.8,False,False,False,
+2,S1-FW-INTERNAL-01,10.23.35.17,,,,
