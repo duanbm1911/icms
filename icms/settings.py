@@ -162,6 +162,4 @@ MESSAGE_STORAGE = os.getenv("MESSAGE_STORAGE")
 DATA_UPLOAD_MAX_NUMBER_FIELDS=None
 
 LOGIN_URL = 'two_factor:login'
-
-# this one is optional
-LOGIN_REDIRECT_URL = 'two_factor:profile'
+LOGIN_REDIRECT_URL = '/'

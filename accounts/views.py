@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 def logout(request):
     auth_logout(request)
-    return redirect('/accounts/login')
+    return redirect('/auth/account/login')
 
 @login_required()
 def change_password(request):
