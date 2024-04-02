@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from inventory.models import *
 from ipplan.models import *
 from cm.models import *
@@ -27,7 +28,7 @@ def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
                 secret = base64.b64decode(string).decode('utf-8')
                 uname, passwd = secret.split(':')
                 user = authenticate(username=uname, password=passwd)
-                if user is not None:
+                if user is not None and User.objects.filter(username=uname, groups__name='API').count() > 0:
                     if user.is_active:
                         login(request, user)
                         request.user = user
@@ -602,49 +603,43 @@ def cm_checkpoint_get_list_policy(request):
 
 @logged_in_or_basicauth()
 def cm_checkpoint_get_list_task(request):
-    if request.user.groups.filter(name='ADMIN').exists():
-        if request.method == 'GET':
-            data = dict()
-            list_site = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer', 'section')
-            list_site = [list(i) for i in list_site]
-            if list_site:
-                for item in list_site:
-                    rules = CheckpointTask.objects.filter(status='Processing', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
-                    rules = [list(i) for i in rules]
-                    if rules:
-                        for obj in rules:
-                            obj[3] = json.loads(obj[3])
-                            obj[4] = json.loads(obj[4])
-                            obj[5] = json.loads(obj[5])
-                    site = item[0]
-                    data[site] = {
-                        'smc': item[1],
-                        'layer': item[2],
-                        'section': item[3],
-                        'rules': rules
-                    }
-            return JsonResponse({'data': data},  status=200)
-        else:
-            return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    if request.method == 'GET':
+        data = dict()
+        list_site = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer', 'section')
+        list_site = [list(i) for i in list_site]
+        if list_site:
+            for item in list_site:
+                rules = CheckpointTask.objects.filter(status='Processing', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+                rules = [list(i) for i in rules]
+                if rules:
+                    for obj in rules:
+                        obj[3] = json.loads(obj[3])
+                        obj[4] = json.loads(obj[4])
+                        obj[5] = json.loads(obj[5])
+                site = item[0]
+                data[site] = {
+                    'smc': item[1],
+                    'layer': item[2],
+                    'section': item[3],
+                    'rules': rules
+                }
+        return JsonResponse({'data': data},  status=200)
     else:
-        return JsonResponse({'erorr': 'forbidden'}, status=403)
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 @csrf_exempt
 @logged_in_or_basicauth()
 def cm_checkpoint_update_task_status(request):
-    if request.user.groups.filter(name='ADMIN').exists():
-        if request.method == 'POST':
-            dataset = request.POST.dict()
-            rule_id = dataset['rule_id']
-            status = dataset['status']
-            message = dataset['message']
-            model = CheckpointTask.objects.filter(id=rule_id)
-            model.update(
-                status=status,
-                message=message
-            )
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    if request.method == 'POST':
+        dataset = request.POST.dict()
+        rule_id = dataset['rule_id']
+        status = dataset['status']
+        message = dataset['message']
+        model = CheckpointTask.objects.filter(id=rule_id)
+        model.update(
+            status=status,
+            message=message
+        )
+        return JsonResponse({'status': 'success'})
     else:
-        return JsonResponse({'erorr': 'forbidden'}, status=403)
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
