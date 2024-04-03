@@ -34,9 +34,11 @@
                     {% endif %}
                     <td>{{ obj.user_created }}</td>
                     {% if obj.status == 'Processing' %}
-                    <td style="color: yellow"><strong>{{ obj.status }}</strong></td>
+                    <td style="color: rgb(210, 11, 241)"><strong>{{ obj.status }}</strong></td>
                     {% elif obj.status == 'Success' %}
                     <td style="color: green"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Created' %}
+                    <td style="color: blue"><strong>{{ obj.status }}</strong></td>
                     {% elif obj.status == 'Failed' %}
                     <td style="color: red"><strong>{{ obj.status }}</strong></td>
                     {% else %}
