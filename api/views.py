@@ -542,7 +542,7 @@ def cm_checkpoint_create_task(request):
                 list_obj = list(request.POST)
                 list_error_message = str()
                 list_task = list()
-                status = 'Processing'
+                status = 'Created'
                 user_created = request.user
                 for obj in list_obj:
                     index = list_obj.index(obj)
@@ -609,7 +609,7 @@ def cm_checkpoint_get_list_task(request):
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointTask.objects.filter(status='Processing', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+                rules = CheckpointTask.objects.filter(status='Created', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:
