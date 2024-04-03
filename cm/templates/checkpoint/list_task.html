@@ -2,8 +2,10 @@
 {% block title %}ICMS | List Site{% endblock title %}
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>Rules <strong style="color: blue;">Pending</strong></h3>
+    <hr>
     <div class="table-responsive">
-        <table class="table table-hover table-bordered" id="list-task-table">
+        <table class="table table-hover table-bordered" id="list-pending-task-table">
             <thead>
                 <th>Site</th>
                 <th>Policy</th>
@@ -19,7 +21,7 @@
             </thead>
             <tbody>
 
-                {% for obj in objects %}
+                {% for obj in list_task_created %}
                 <tr>
                     <td>{{ obj.policy.site.site }}</td>
                     <td>{{ obj.policy }}</td>
@@ -54,6 +56,172 @@
         </table>
     </div>
 </div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>Rules <strong style="color: rgb(210, 11, 241);">Processing</strong></h3>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="list-process-task-table">
+            <thead>
+                <th>Site</th>
+                <th>Policy</th>
+                <th>Description</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Protocol</th>
+                <th>Schedule</th>
+                <th>User created</th>
+                <th>Status</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for obj in list_task_process %}
+                <tr>
+                    <td>{{ obj.policy.site.site }}</td>
+                    <td>{{ obj.policy }}</td>
+                    <td>{{ obj.description }}</td>
+                    <td>{{ obj.source }}</td>
+                    <td>{{ obj.destination }}</td>
+                    <td>{{ obj.protocol }}</td>
+                    {% if obj.schedule != '' %}
+                    <td>{{ obj.schedule }}</td>
+                    {% else %}
+                    <td>Forever</td>
+                    {% endif %}
+                    <td>{{ obj.user_created }}</td>
+                    {% if obj.status == 'Processing' %}
+                    <td style="color: rgb(210, 11, 241)"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Success' %}
+                    <td style="color: green"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Created' %}
+                    <td style="color: blue"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Failed' %}
+                    <td style="color: red"><strong>{{ obj.status }}</strong></td>
+                    {% else %}
+                    <td><strong>{{ obj.status }}</strong></td>
+                    {% endif %}
+                    <td>
+                        <a href="/cm/checkpoint/detail-task/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-task-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>Rules <strong style="color: red;">Failed</strong></h3>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="list-failed-task-table">
+            <thead>
+                <th>Site</th>
+                <th>Policy</th>
+                <th>Description</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Protocol</th>
+                <th>Schedule</th>
+                <th>User created</th>
+                <th>Status</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for obj in list_task_failed %}
+                <tr>
+                    <td>{{ obj.policy.site.site }}</td>
+                    <td>{{ obj.policy }}</td>
+                    <td>{{ obj.description }}</td>
+                    <td>{{ obj.source }}</td>
+                    <td>{{ obj.destination }}</td>
+                    <td>{{ obj.protocol }}</td>
+                    {% if obj.schedule != '' %}
+                    <td>{{ obj.schedule }}</td>
+                    {% else %}
+                    <td>Forever</td>
+                    {% endif %}
+                    <td>{{ obj.user_created }}</td>
+                    {% if obj.status == 'Processing' %}
+                    <td style="color: rgb(210, 11, 241)"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Success' %}
+                    <td style="color: green"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Created' %}
+                    <td style="color: blue"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Failed' %}
+                    <td style="color: red"><strong>{{ obj.status }}</strong></td>
+                    {% else %}
+                    <td><strong>{{ obj.status }}</strong></td>
+                    {% endif %}
+                    <td>
+                        <a href="/cm/checkpoint/detail-task/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-task-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3>Last 20 rules <strong style="color: green;">Success</strong></h3>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="list-success-task-table">
+            <thead>
+                <th>Site</th>
+                <th>Policy</th>
+                <th>Description</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Protocol</th>
+                <th>Schedule</th>
+                <th>User created</th>
+                <th>Status</th>
+                <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for obj in list_task_success %}
+                <tr>
+                    <td>{{ obj.policy.site.site }}</td>
+                    <td>{{ obj.policy }}</td>
+                    <td>{{ obj.description }}</td>
+                    <td>{{ obj.source }}</td>
+                    <td>{{ obj.destination }}</td>
+                    <td>{{ obj.protocol }}</td>
+                    {% if obj.schedule != '' %}
+                    <td>{{ obj.schedule }}</td>
+                    {% else %}
+                    <td>Forever</td>
+                    {% endif %}
+                    <td>{{ obj.user_created }}</td>
+                    {% if obj.status == 'Processing' %}
+                    <td style="color: rgb(210, 11, 241)"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Success' %}
+                    <td style="color: green"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Created' %}
+                    <td style="color: blue"><strong>{{ obj.status }}</strong></td>
+                    {% elif obj.status == 'Failed' %}
+                    <td style="color: red"><strong>{{ obj.status }}</strong></td>
+                    {% else %}
+                    <td><strong>{{ obj.status }}</strong></td>
+                    {% endif %}
+                    <td>
+                        <a href="/cm/checkpoint/detail-task/{{ obj.id }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-task-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="delete-task-modal">

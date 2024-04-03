@@ -163,6 +163,16 @@ class CheckpointTaskListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # context = super(CheckpointTaskListView, self).get_context_data(**kwargs)
+        context = {
+            'list_task_created': CheckpointTask.objects.filter(status='Created'),
+            'list_task_process': CheckpointTask.objects.filter(status='Processing'),
+            'list_task_success': CheckpointTask.objects.filter(status='Success').order_by('-id')[:20],
+            'list_task_failed': CheckpointTask.objects.filter(status='Failed'),
+        }
+        return context
     
 class CheckpointTaskDeleteView(DeleteView):
     model = CheckpointTask

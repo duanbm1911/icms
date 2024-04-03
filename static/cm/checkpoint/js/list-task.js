@@ -1,5 +1,14 @@
 $(document).ready(function() {
-    $('#list-task-table').DataTable({
+    $('#list-pending-task-table').DataTable({
+      'pageLength': 50
+    });
+    $('#list-process-task-table').DataTable({
+      'pageLength': 50
+    });
+    $('#list-success-task-table').DataTable({
+      'pageLength': 50
+    });
+    $('#list-failed-task-table').DataTable({
       'pageLength': 50
     });
     $(document.body).on('click', '[data-toggle="modal"]', function() {
