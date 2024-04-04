@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib import messages
+from django.contrib.messages import constants
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -12,6 +14,9 @@ from django.views.generic.edit import FormView
 from django.http import JsonResponse
 from ipplan.models import *
 from ipplan.forms import *
+from src.ipplan.func import *
+import pandas
+import openpyxl
 
 # Create your views here.
 
@@ -172,3 +177,50 @@ class SubnetDeleteView(DeleteView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+
+def create_multiple_subnet(request):
+    try:
+        if request.method == 'POST' and request.FILES.get('upload-file'):
+            uploaded_file = request.FILES['upload-file']
+            wb = openpyxl.load_workbook(uploaded_file)
+            worksheet = wb["IPPlan"]
+            error_message = list()
+            for item in worksheet.iter_rows(min_row=2, values_only=True):
+                item = ["" if i is None else i for i in item]
+                region = item[0]
+                location = item[1]
+                subnet = item[2]
+                description = item[3]
+                if region != "" or location != "" or subnet != "":
+                    obj_count_01 = Region.objects.filter(region=region).count()
+                    obj_count_02 = Location.objects.filter(location=location).count()
+                    obj_count_03 = Subnet.objects.filter(subnet=subnet).count()
+                    if obj_count_01 == 0:
+                        model = Region(
+                            region=region,
+                            description=region,
+                            user_created=request.user
+                        )
+                        model.save()
+                    obj_01 = Region.objects.get(region=region)
+                    if obj_count_02 == 0:
+                        model = Location(
+                            location=location,
+                            region=obj_01,
+                            description=region,
+                            user_created=request.user
+                        )
+                        model.save()
+                    if obj_count_03 == 0:
+                        obj_02 = Location.objects.get(location=location)
+                        model = Subnet(
+                            subnet=subnet,
+                            location=obj_02,
+                            description=description,
+                            user_created=request.user
+                        )
+                        model.save()
+                messages.add_message(request, constants.SUCCESS, 'Import subnet success')
+    except Exception as error:
+        messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
+    return render(request, template_name='create_multiple_subnet.html')

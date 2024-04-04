@@ -535,13 +535,13 @@ def inventory_report(request):
 
 @login_required()
 @csrf_exempt
-def cm_checkpoint_create_task(request):
+def cm_checkpoint_create_rule(request):
     try:
         if request.user.groups.filter(name='ADMIN').exists():
             if request.method == 'POST':
                 list_obj = list(request.POST)
                 list_error_message = str()
-                list_task = list()
+                list_rule = list()
                 status = 'Created'
                 user_created = request.user
                 for obj in list_obj:
@@ -555,7 +555,7 @@ def cm_checkpoint_create_task(request):
                         destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
                         protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
                         schedule = data[5]
-                        list_task.append([
+                        list_rule.append([
                             policy, 
                             description, 
                             json.dumps(source), 
@@ -570,8 +570,8 @@ def cm_checkpoint_create_task(request):
                 if list_error_message:
                     return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
                 else:
-                    for item in list_task:
-                        model = CheckpointTask(
+                    for item in list_rule:
+                        model = CheckpointRule(
                             policy=CheckpointPolicy.objects.get(policy=item[0]),
                             description=item[1],
                             source=item[2],
@@ -582,13 +582,13 @@ def cm_checkpoint_create_task(request):
                             user_created=item[7],
                         )
                         model.save()
-                    return JsonResponse({'status': 'success', 'message': 'Create task success'}, status=200)
+                    return JsonResponse({'status': 'success', 'message': 'Create rule success'}, status=200)
             else:
                 return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
         else:
             return JsonResponse({'erorr': 'forbidden'}, status=403)
-    except:
-        return JsonResponse({'status': 'failed', 'message': 'Exception error'}, status=500)
+    except Exception as error:
+        return JsonResponse({'status': 'failed', 'message': f'Exception error: {error}'}, status=500)
 
 @login_required()
 def cm_checkpoint_get_list_policy(request):
@@ -602,14 +602,14 @@ def cm_checkpoint_get_list_policy(request):
         return JsonResponse({'erorr': 'forbidden'}, status=403)
 
 @logged_in_or_basicauth()
-def cm_checkpoint_get_list_task(request):
+def cm_checkpoint_get_list_rule(request):
     if request.method == 'GET':
         data = dict()
         list_site = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer', 'section')
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointTask.objects.filter(status='Created', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+                rules = CheckpointRule.objects.filter(status='Created', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:
@@ -629,13 +629,13 @@ def cm_checkpoint_get_list_task(request):
 
 @csrf_exempt
 @logged_in_or_basicauth()
-def cm_checkpoint_update_task_status(request):
+def cm_checkpoint_update_rule_status(request):
     if request.method == 'POST':
         dataset = request.POST.dict()
         rule_id = dataset['rule_id']
         status = dataset['status']
         message = dataset['message']
-        model = CheckpointTask.objects.filter(id=rule_id)
+        model = CheckpointRule.objects.filter(id=rule_id)
         model.update(
             status=status,
             message=message

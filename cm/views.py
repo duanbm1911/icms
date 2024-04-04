@@ -17,8 +17,8 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
-class CheckpointTaskView(TemplateView):
-    template_name = "checkpoint/create_task.html"
+class CheckpointRuleView(TemplateView):
+    template_name = "checkpoint/create_rule.html"
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -155,29 +155,29 @@ class CheckpointSiteDeleteView(DeleteView):
         return redirect(self.success_url)
     
 
-class CheckpointTaskListView(ListView):
-    model = CheckpointTask
+class CheckpointRuleListView(ListView):
+    model = CheckpointRule
     context_object_name = 'objects'
-    template_name = "checkpoint/list_task.html"
+    template_name = "checkpoint/list_rule.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        # context = super(CheckpointTaskListView, self).get_context_data(**kwargs)
+        # context = super(CheckpointRuleListView, self).get_context_data(**kwargs)
         context = {
-            'list_task_created': CheckpointTask.objects.filter(status='Created'),
-            'list_task_process': CheckpointTask.objects.filter(status='Processing'),
-            'list_task_success': CheckpointTask.objects.filter(status='Success').order_by('-id')[:20],
-            'list_task_failed': CheckpointTask.objects.filter(status='Failed'),
+            'list_rule_created': CheckpointRule.objects.filter(status='Created'),
+            'list_rule_process': CheckpointRule.objects.filter(status='Processing'),
+            'list_rule_success': CheckpointRule.objects.filter(status='Success').order_by('-id')[:20],
+            'list_rule_failed': CheckpointRule.objects.filter(status='Failed'),
         }
         return context
     
-class CheckpointTaskDeleteView(DeleteView):
-    model = CheckpointTask
+class CheckpointRuleDeleteView(DeleteView):
+    model = CheckpointRule
     template_name = 'checkpoint/list_site.html'
-    success_url = '/cm/checkpoint/list-task'
+    success_url = '/cm/checkpoint/list-rule'
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -195,10 +195,28 @@ class CheckpointTaskDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
     
-class CheckpointTaskDetailView(DetailView):
-    model = CheckpointTask
-    template_name = "checkpoint/detail_task.html"
+class CheckpointRuleDetailView(DetailView):
+    model = CheckpointRule
+    template_name = "checkpoint/detail_rule.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+    
+class CheckpointRuleUpdateView(UpdateView):
+    model = CheckpointRule
+    form_class = CheckpointRuleForm
+    template_name = "checkpoint/update_rule.html"
+    success_url = '/cm/checkpoint/list-rule'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return HttpResponse('Forbidden', status=403)
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)

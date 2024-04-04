@@ -20,7 +20,7 @@ class CheckpointSite(models.Model):
     def __str__(self):
         return self.site
 
-class CheckpointTask(models.Model):
+class CheckpointRule(models.Model):
     policy = models.ForeignKey('CheckpointPolicy', on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
     source = models.CharField(max_length=1000)

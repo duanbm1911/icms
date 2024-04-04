@@ -7,6 +7,7 @@ urlpatterns = [
     path('create-location', LocationCreateView.as_view()),
     path('create-region', RegionCreateView.as_view()),
     path('create-subnet', SubnetCreateView.as_view()),
+    path('create-multiple-subnet', views.create_multiple_subnet),
     path('delete-subnet/<int:pk>', SubnetDeleteView.as_view()),
     path('list-subnet', SubnetListView.as_view()),
     path('request-ip', views.request_ip_form),

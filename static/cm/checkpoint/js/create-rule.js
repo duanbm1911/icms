@@ -11,7 +11,7 @@ $(document).ready(function () {
         rowHeaders: true,
         colWidths: 200,
         rowHeights: 100,
-        colHeaders: ['Policy', 'Description', 'Source', 'Destination', 'Protocol', 'Schedule'],
+        colHeaders: ['Policy', 'Name', 'Source', 'Destination', 'Protocol', 'Schedule'],
         manualColumnResize: true,
         columns: [
           {
@@ -43,7 +43,7 @@ $(document).ready(function () {
         let datalist03 = myDataGrid.getData()
         $.ajax({
           type: "POST",
-          url: '/api/cm/checkpoint/create-task',
+          url: '/api/cm/checkpoint/create-rule',
           dataType: "json",
           data: {
             'datalist': datalist03
@@ -54,7 +54,7 @@ $(document).ready(function () {
                 text: response.message,
                 icon: "success"
               }).then(function() {
-                window.location = '/cm/checkpoint/list-task';
+                window.location = '/cm/checkpoint/list-rule';
               })
             }
             else{
