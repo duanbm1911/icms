@@ -7,17 +7,17 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist" id="rule-list">
         <li role="presentation">
-            <a href="#created" aria-controls="created" role="tab" data-toggle="tab" style="color: blue;">CREATED <span class="badge badge-success">{{ list_rule_created | length }}</span></a>
+            <a href="#created" aria-controls="created" role="tab" data-toggle="tab" style="color: blue;">CREATED <span class="badge badge-primary">{{ list_rule_created | length }}</span></a>
         </li>
         <li role="presentation">
             <a href="#processing" aria-controls="processing" role="tab" data-toggle="tab"
-                style="color:fuchsia;">PROCESSING <span class="badge badge-primary">{{ list_rule_process | length}}</span></a>
+                style="color:fuchsia;">PROCESSING <span class="badge badge-warning">{{ list_rule_process | length}}</span></a>
         </li>
         <li role="presentation">
-            <a href="#failed" aria-controls="failed" role="tab" data-toggle="tab" style="color: red;">FAILED <span class="badge badge-primary">{{ list_rule_failed | length }}</span></a>
+            <a href="#failed" aria-controls="failed" role="tab" data-toggle="tab" style="color: red;">FAILED <span class="badge badge-danger">{{ list_rule_failed | length }}</span></a>
         </li>
         <li role="presentation">
-            <a href="#success" aria-controls="success" role="tab" data-toggle="tab" style="color: green;">SUCCESS <span class="badge badge-primary">{{ list_rule_success | length }}</span></a>
+            <a href="#success" aria-controls="success" role="tab" data-toggle="tab" style="color: green;">SUCCESS <span class="badge badge-success">{{ list_rule_success | length }}</span></a>
         </li>
     </ul>
 
