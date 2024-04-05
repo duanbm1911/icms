@@ -15,8 +15,9 @@ $(document).ready(function () {
         manualColumnResize: true,
         columns: [
           {
-            type: 'dropdown',
+            type: 'autocomplete',
             source: datalist02,
+            strict: true,
             allowInvalid: false
           }, {}, {}, {}, {},
           {
