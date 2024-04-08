@@ -26,7 +26,7 @@ class CheckpointRule(models.Model):
     source = models.CharField(max_length=1000)
     destination = models.CharField(max_length=1000)
     protocol = models.CharField(max_length=1000)
-    schedule = models.CharField(max_length=1000)
+    schedule = models.CharField(max_length=1000, blank=True)
     user_created = models.CharField(max_length=200)
     time_created = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=200)
