@@ -190,7 +190,8 @@ def create_multiple_subnet(request):
                 region = item[0]
                 location = item[1]
                 subnet = item[2]
-                description = item[3]
+                name = item[3]
+                description = item[4]
                 if region != "" or location != "" or subnet != "":
                     obj_count_01 = Region.objects.filter(region=region).count()
                     obj_count_02 = Location.objects.filter(location=location).count()
@@ -216,9 +217,17 @@ def create_multiple_subnet(request):
                         model = Subnet(
                             subnet=subnet,
                             location=obj_02,
+                            name=name,
                             description=description,
                             user_created=request.user
                         )
+                        model.save()
+                    else:
+                        model = Subnet.objects.get(subnet=subnet)
+                        model.location = Location.objects.get(location=location)
+                        model.name = name
+                        model.description = description
+                        model.user_created = str(request.user)
                         model.save()
                 messages.add_message(request, constants.SUCCESS, 'Import subnet success')
     except Exception as error:
