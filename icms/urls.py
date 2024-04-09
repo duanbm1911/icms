@@ -18,10 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-
+from core.admin import admin_site
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('icms-admin/', admin_site.urls),
     path('accounts/', include('accounts.urls')),
     path('inventory/', include('inventory.urls')),
     path('ipplan/', include('ipplan.urls')),
