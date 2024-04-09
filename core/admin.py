@@ -2,6 +2,7 @@ from django.contrib import admin
 from cm.models import *
 from inventory.models import *
 from ipplan.models import *
+from django.contrib.auth.models import *
 
 # Register your models here.
 
@@ -34,3 +35,6 @@ admin_site.register(Location)
 admin_site.register(Subnet)
 admin_site.register(IpStatus)
 admin_site.register(IpAddressModel)
+
+admin_site.register(User)
+admin_site.register(Group)
