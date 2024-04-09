@@ -1,15 +1,15 @@
 $(document).ready(function () {
   $('#list-created-rule-table').DataTable({
-    'pageLength': 20
+    'pageLength': 25
   });
   $('#list-process-rule-table').DataTable({
-    'pageLength': 20
+    'pageLength': 25
   });
   $('#list-success-rule-table').DataTable({
-    'pageLength': 20
+    'pageLength': 25
   });
   $('#list-failed-rule-table').DataTable({
-    'pageLength': 20
+    'pageLength': 25
   });
   $(document.body).on('click', '[data-toggle="modal"]', function () {
     var id = $(this).attr('id');
