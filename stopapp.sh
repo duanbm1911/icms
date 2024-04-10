@@ -1,1 +1,0 @@
-pkill -P1 gunicorn
