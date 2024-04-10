@@ -3,6 +3,7 @@ from cm.models import *
 from inventory.models import *
 from ipplan.models import *
 from django.contrib.auth.models import *
+from accounts.models import *
 
 # Register your models here.
 
