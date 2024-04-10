@@ -23,7 +23,7 @@ class CheckpointRuleView(TemplateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
 class CheckpointPolicyCreateView(CreateView):
@@ -35,7 +35,7 @@ class CheckpointPolicyCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -61,7 +61,7 @@ class CheckpointPolicyUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -77,7 +77,7 @@ class CheckpointPolicyDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -99,7 +99,7 @@ class CheckpointSiteCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -125,7 +125,7 @@ class CheckpointSiteUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -141,7 +141,7 @@ class CheckpointSiteDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -182,7 +182,7 @@ class CheckpointRuleDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -213,7 +213,7 @@ class CheckpointRuleUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return HttpResponse('Forbidden', status=403)
+            return render(request, template_name='checkpoint/403.html')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):

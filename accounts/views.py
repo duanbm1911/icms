@@ -11,9 +11,14 @@ from django.contrib.auth import authenticate
 from django.contrib.messages import constants
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.views.generic import ListView
+from django.utils.decorators import method_decorator
 from accounts.models import *
+from accounts.forms import *
 import pyotp
 import qrcode
+import time
 
 # Create your views here.
 
@@ -66,4 +71,29 @@ def verify_otp(user, otp):
     except:
         return False
     
+def register(request):
+    if request.user.is_superuser:
+        if request.method == 'GET':
+            form = RegisterForm()
+        else:
+            form = RegisterForm(request.POST) 
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.username = user.username.lower()
+                user.save()
+                messages.add_message(request, constants.SUCCESS, 'Register user success')
+                return redirect('/accounts/list-users')
+        return render(request, 'registration/register.html', { 'form': form})
+    else:
+        return render(request, template_name='403.html')
     
+class UserListView(ListView):
+    model = User
+    context_object_name = 'objects'
+    template_name = "list_user.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            return render(self.request, template_name='403.html')
+        return super().dispatch(*args, **kwargs)
