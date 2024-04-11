@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.db.models import Q
 from inventory.models import *
 from ipplan.models import *
 from cm.models import *
@@ -609,7 +610,7 @@ def cm_checkpoint_get_list_rule(request):
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointRule.objects.filter(status='Created', policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule')
+                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='ForceInstall'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'status')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:

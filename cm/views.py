@@ -3,6 +3,7 @@ from django.db.models import ProtectedError
 from django.http import HttpResponse
 from cm.models import *
 from cm.forms import *
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -165,9 +166,8 @@ class CheckpointRuleListView(ListView):
         return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        # context = super(CheckpointRuleListView, self).get_context_data(**kwargs)
         context = {
-            'list_rule_created': CheckpointRule.objects.filter(status='Created'),
+            'list_rule_created': CheckpointRule.objects.filter(Q(status='Created') | Q(status='ForceInstall')),
             'list_rule_process': CheckpointRule.objects.filter(status='Processing'),
             'list_rule_success': CheckpointRule.objects.filter(status='Success').order_by('-id')[:500],
             'list_rule_failed': CheckpointRule.objects.filter(status='Failed'),
