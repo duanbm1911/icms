@@ -62,6 +62,8 @@
                             <td style="color: green"><strong>{{ obj.status }}</strong></td>
                             {% elif obj.status == 'Created' %}
                             <td style="color: blue"><strong>{{ obj.status }}</strong></td>
+                            {% elif obj.status == 'ForceInstall' %}
+                            <td style="color: rgb(231, 105, 27)"><strong>{{ obj.status }}</strong></td>
                             {% elif obj.status == 'Failed' %}
                             <td style="color: red"><strong>{{ obj.status }}</strong></td>
                             {% else %}
