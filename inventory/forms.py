@@ -10,21 +10,23 @@ class DeviceForm(forms.ModelForm):
         fields = [
             'device_name', 
             'device_ip', 
-            'device_location', 
-            'device_type', 
+            'device_province', 
+            'device_branch',
+            'device_type',
             'device_category', 
-            'device_vendor', 
+            'device_vendor',
             'device_os',
+            'device_tag',
             'device_stack',
             'device_description'
         ]
 
-class DeviceLocationForm(forms.ModelForm):
+class DeviceProvinceForm(forms.ModelForm):
     class Meta:
 
-        model = DeviceLocation
+        model = DeviceProvince
         fields = [
-            'device_location', 
+            'device_province', 
             'description'
             ]
 
@@ -64,6 +66,26 @@ class DeviceVendorForm(forms.ModelForm):
         model = DeviceVendor
         fields = [
             'device_vendor', 
+            'description'
+            ]
+        
+class DeviceBranchForm(forms.ModelForm):
+
+    class Meta:
+
+        model = DeviceBranch
+        fields = [
+            'device_branch', 
+            'description'
+            ]
+        
+class DeviceTagForm(forms.ModelForm):
+
+    class Meta:
+
+        model = DeviceTag
+        fields = [
+            'device_tag', 
             'description'
             ]
 

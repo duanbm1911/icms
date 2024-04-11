@@ -2,14 +2,14 @@ from django.db import models
 
 # Create your models here.
 
-class DeviceLocation(models.Model):
-    device_location = models.CharField(max_length=200, unique=True)
+class DeviceProvince(models.Model):
+    device_province = models.CharField(max_length=200, unique=True)
     description = models.CharField(max_length=200)
     creation_time = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.device_location
+        return self.device_province
     
 class DeviceType(models.Model):
     device_type = models.CharField(max_length=200, unique=True)
@@ -47,14 +47,35 @@ class DeviceOS(models.Model):
     def __str__(self):
         return self.device_os
     
+class DeviceBranch(models.Model):
+    device_branch = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=200)
+    creation_time = models.DateTimeField(auto_now=True)
+    user_created = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.device_os
+    
+class DeviceTag(models.Model):
+    device_tag = models.CharField(max_length=200, unique=True)
+    description = models.CharField(max_length=200)
+    creation_time = models.DateTimeField(auto_now=True)
+    user_created = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.device_os
+
+    
 class Device(models.Model):
     device_name = models.CharField(max_length=200, blank=True)
     device_ip = models.GenericIPAddressField(unique=True)
-    device_location = models.ForeignKey('DeviceLocation', on_delete=models.PROTECT)
+    device_province = models.ForeignKey('DeviceProvince', on_delete=models.PROTECT)
+    device_branch = models.ForeignKey('DeviceBranch', on_delete=models.PROTECT, blank=True, null=True)
     device_type = models.ForeignKey('DeviceType', on_delete=models.PROTECT)
     device_category = models.ForeignKey('DeviceCategory', on_delete=models.PROTECT)
     device_vendor = models.ForeignKey('DeviceVendor', on_delete=models.PROTECT)
     device_os = models.ForeignKey('DeviceOS', on_delete=models.PROTECT)
+    device_tag = models.ForeignKey('DeviceTag', on_delete=models.PROTECT, blank=True, null=True)
     device_firmware = models.CharField(max_length=200, blank=True, null=True)
     device_stack = models.BooleanField(default=False, blank=True, null=True)
     device_description = models.CharField(max_length=200, blank=True, null=True)

@@ -38,11 +38,11 @@ class DeviceCreateView(CreateView):
         messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
-class DeviceLocationCreateView(CreateView):
-    model = DeviceLocation
-    form_class = DeviceLocationForm
-    template_name = "create_device_location.html"
-    success_url = '/inventory/list-device-location'
+class DeviceProvinceCreateView(CreateView):
+    model = DeviceProvince
+    form_class = DeviceProvinceForm
+    template_name = "create_device_province.html"
+    success_url = '/inventory/list-device-province'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -53,11 +53,11 @@ class DeviceLocationCreateView(CreateView):
         messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
-class DeviceLocationUpdateView(UpdateView):
-    model = DeviceLocation
-    form_class = DeviceLocationForm
-    template_name = "update_device_location.html"
-    success_url = '/inventory/list-device-location'
+class DeviceProvinceUpdateView(UpdateView):
+    model = DeviceProvince
+    form_class = DeviceProvinceForm
+    template_name = "update_device_province.html"
+    success_url = '/inventory/list-device-province'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -68,10 +68,10 @@ class DeviceLocationUpdateView(UpdateView):
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
 
-class DeviceLocationDeleteView(DeleteView):
-    model = DeviceLocation
-    template_name = 'list_device_location.html'
-    success_url = '/inventory/list-device-location'
+class DeviceProvinceDeleteView(DeleteView):
+    model = DeviceProvince
+    template_name = 'list_device_province.html'
+    success_url = '/inventory/list-device-province'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -87,10 +87,10 @@ class DeviceLocationDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
 
-class DeviceLocationListView(ListView):
-    model = DeviceLocation
+class DeviceProvinceListView(ListView):
+    model = DeviceProvince
     context_object_name = 'objects'
-    template_name = "list_device_location.html"
+    template_name = "list_device_province.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -332,59 +332,71 @@ def create_multiple_device(request):
                 item = ["" if i is None else i for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
                 if obj_count == 0:
-                    obj_count_01 = DeviceLocation.objects.filter(device_location=item[2]).count()
-                    obj_count_02 = DeviceType.objects.filter(device_type=item[3]).count()
-                    obj_count_03 = DeviceCategory.objects.filter(device_category=item[4]).count()
-                    obj_count_04 = DeviceVendor.objects.filter(device_vendor=item[5]).count()
-                    obj_count_05 = DeviceOS.objects.filter(device_os=item[6]).count()
+                    obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
+                    obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
+                    obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
+                    obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
+                    obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
+                    obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
+                    obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
                     if obj_count_01 == 0:
-                        model_01 = DeviceLocation(device_location=item[2])
+                        model_01 = DeviceBranch(device_branch=item[2])
                         model_01.save()
                     if obj_count_02 == 0:
-                        model_02 = DeviceType(device_type=item[3])
+                        model_02 = DeviceProvince(device_province=item[3])
                         model_02.save()
                     if obj_count_03 == 0:
-                        model_03 = DeviceCategory(device_category=item[4])
+                        model_03 = DeviceType(device_type=item[4])
                         model_03.save()
                     if obj_count_04 == 0:
-                        model_04 = DeviceVendor(device_vendor=item[5])
+                        model_04 = DeviceCategory(device_category=item[5])
                         model_04.save()
                     if obj_count_05 == 0:
-                        model_05 = DeviceOS(device_os=item[6])
+                        model_05 = DeviceVendor(device_vendor=item[6])
                         model_05.save()
+                    if obj_count_06 == 0:
+                        model_06 = DeviceOS(device_os=item[7])
+                        model_06.save()
+                    if obj_count_07 == 0:
+                        model_07 = DeviceTag(device_tag=item[8])
+                        model_07.save()
                     model = Device(
                         device_name=item[0],
                         device_ip=item[1],
-                        device_location=DeviceLocation.objects.get(device_location=item[2]),
-                        device_type=DeviceType.objects.get(device_type=item[3]),
-                        device_category=DeviceCategory.objects.get(device_category=item[4]),
-                        device_vendor=DeviceVendor.objects.get(device_vendor=item[5]),
-                        device_os=DeviceOS.objects.get(device_os=item[6]),
-                        device_stack=item[7],
-                        device_description=item[8],
+                        device_branch=DeviceBranch.objects.get(device_branch=item[2]),
+                        device_province=DeviceProvince.objects.get(device_province=item[3]),
+                        device_type=DeviceType.objects.get(device_type=item[4]),
+                        device_category=DeviceCategory.objects.get(device_category=item[5]),
+                        device_vendor=DeviceVendor.objects.get(device_vendor=item[6]),
+                        device_os=DeviceOS.objects.get(device_os=item[7]),
+                        device_tag=DeviceTag.objects.get(device_tag=item[8]),
+                        device_stack=item[9],
+                        device_description=item[10],
                         user_created=request.user
                     )
                     model.save()
                 elif obj_count == 1:
                     model = Device.objects.get(device_ip=item[1])
                     model.device_name = item[0]
-                    model.device_location = DeviceLocation.objects.get(device_location=item[2])
-                    model.device_type = DeviceType.objects.get(device_type=item[3])
-                    model.device_category = DeviceCategory.objects.get(device_category=item[4])
-                    model.device_vendor = DeviceVendor.objects.get(device_vendor=item[5])
-                    model.device_os = DeviceOS.objects.get(device_os=item[6])
-                    model.device_stack = item[7]
-                    model.device_description = item[8]
+                    model.device_branch = DeviceBranch.objects.get(device_branch=item[2])
+                    model.device_province = DeviceProvince.objects.get(device_province=item[3])
+                    model.device_type = DeviceType.objects.get(device_type=item[4])
+                    model.device_category = DeviceCategory.objects.get(device_category=item[5])
+                    model.device_vendor = DeviceVendor.objects.get(device_vendor=item[6])
+                    model.device_os = DeviceOS.objects.get(device_os=item[7])
+                    model.device_tag = DeviceTag.objects.get(device_tag=item[8])
+                    model.device_stack = item[9]
+                    model.device_description = item[10]
                     model.user_created = str(request.user)
                     model.save()
             for item in worksheet_02.iter_rows(min_row=2, values_only=True):
                 if item[0] is not None and item[1] is not None:
                     obj_count = Device.objects.filter(device_ip=item[1]).count()
                     if obj_count == 1:
-                        device_is_stack = Device.objects.get(device_ip=item[1]).device_stack
+                        device_tag = Device.objects.get(device_ip=item[1]).device_tag
                         obj_count_01 = DeviceManagement.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
                         obj_count_02 = DeviceManagement.objects.filter(device_serial_number=item[2]).count()
-                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_is_stack == True):
+                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_tag == 'duplicated'):
                             if obj_count_02 == 0:
                                 model = DeviceManagement(
                                     device_ip=Device.objects.get(device_ip=item[1]),
@@ -403,7 +415,7 @@ def create_multiple_device(request):
                 if item[0] is not None and item[1] is not None:
                     obj_count = Device.objects.filter(device_ip=item[1]).count()
                     if obj_count != 0:
-                        device_is_stack = Device.objects.get(device_ip=item[1]).device_stack
+                        device_tag = Device.objects.get(device_ip=item[1]).device_tag
                         obj_count_01 = DeviceTopology.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
                         if obj_count_01 == 0:
                             model = DeviceTopology(
@@ -413,7 +425,7 @@ def create_multiple_device(request):
                                 user_created=request.user
                             )
                             model.save()
-                        elif obj_count_01 == 1 and device_is_stack == True:
+                        elif obj_count_01 == 1 and device_tag == 'duplicated':
                             obj = DeviceTopology.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
                             rack_name = obj.device_rack_name
                             rack_unit = obj.device_rack_unit
@@ -665,7 +677,7 @@ def device_export(request):
                         datalist.append({
                             'device_name': item.device_name,
                             'device_ip': item.device_ip,
-                            'device_location': item.device_location.device_location,
+                            'device_province': item.device_province.device_province,
                             'device_type': item.device_type.device_type,
                             'device_category': item.device_category.device_category,
                             'device_vendor': item.device_vendor.device_vendor,
@@ -873,3 +885,63 @@ class DeviceFirmwareDeleteView(DeleteView):
         except Exception as error:
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
+    
+
+
+class DeviceBranchCreateView(CreateView):
+    model = DeviceBranch
+    form_class = DeviceBranchForm
+    template_name = "create_device_branch.html"
+    success_url = '/inventory/list-device-branch'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
+
+class DeviceBranchUpdateView(UpdateView):
+    model = DeviceBranch
+    form_class = DeviceBranchForm
+    template_name = "update_device_branch.html"
+    success_url = '/inventory/list-device-branch'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class DeviceBranchDeleteView(DeleteView):
+    model = DeviceBranch
+    template_name = 'list_device_branch.html'
+    success_url = '/inventory/list-device-branch'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class DeviceBranchListView(ListView):
+    model = DeviceBranch
+    context_object_name = 'objects'
+    template_name = "list_device_branch.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

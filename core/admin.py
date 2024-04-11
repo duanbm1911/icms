@@ -15,7 +15,7 @@ class MyAdminSite(admin.AdminSite):
     
     
 admin_site = MyAdminSite(name="ICMS_ADMIN")
-admin_site.register(DeviceLocation)
+admin_site.register(DeviceProvince)
 admin_site.register(DeviceType)
 admin_site.register(DeviceCategory)
 admin_site.register(DeviceVendor)
@@ -26,6 +26,8 @@ admin_site.register(DeviceInterface)
 admin_site.register(DeviceTopology)
 admin_site.register(DeviceConfiguration)
 admin_site.register(DeviceFirmware)
+admin_site.register(DeviceBranch)
+admin_site.register(DeviceTag)
 
 admin_site.register(CheckpointRule)
 admin_site.register(CheckpointSite)
