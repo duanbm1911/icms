@@ -5,6 +5,8 @@
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-configuration-table">
             <thead>
+                    <th>Branch</th>
+                    <th>Province</th>
                     <th>Device name</th>
                     <th>Device IP</th>
                     <th>Configuration standardized</th>
@@ -16,6 +18,8 @@
 
                 {% for obj in devices %}
                 <tr>
+                    <td>{{ obj.device_ip.device_branch }}</td>
+                    <td>{{ obj.device_ip.device_province }}</td>
                     <td>{{ obj.device_ip.device_name }}</td>
                     <td>{{ obj.device_ip }}</td>
                     {% if obj.device_config_standardized == none %}
