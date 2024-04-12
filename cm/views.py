@@ -167,7 +167,7 @@ class CheckpointRuleListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = {
-            'list_rule_created': CheckpointRule.objects.filter(Q(status='Created') | Q(status='ForceInstall')),
+            'list_rule_created': CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-Only')),
             'list_rule_process': CheckpointRule.objects.filter(status='Processing'),
             'list_rule_success': CheckpointRule.objects.filter(status='Success').order_by('-id')[:500],
             'list_rule_failed': CheckpointRule.objects.filter(status='Failed'),
