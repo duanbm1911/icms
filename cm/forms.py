@@ -31,7 +31,7 @@ class CheckpointRuleForm(forms.ModelForm):
         ('Processing', 'Processing'),
         ('Failed', 'Failed'),
         ('Success', 'Success'),
-        ('ForceInstall', 'ForceInstall')
+        ('Install-Only', 'Install-Only')
     )
     
     status = forms.ChoiceField(choices=STATUS)

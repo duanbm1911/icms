@@ -111,11 +111,11 @@ def inventory_dashboard_03(request):
     }
     ]
     chart_data = list()
-    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    list_location = list(DeviceProvince.objects.values_list('device_province', flat=True))
     for obj in list_location:
-        point_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_location__device_location=obj).count()
-        point_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_location__device_location=obj).count()
-        point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_location__device_location=obj).count()
+        point_01 = DeviceConfiguration.objects.filter(device_config_standardized=False, device_ip__device_province__device_province=obj).count()
+        point_02 = DeviceConfiguration.objects.filter(device_monitored=False, device_ip__device_province__device_province=obj).count()
+        point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_province__device_province=obj).count()
         data_point_01.append({
             'label': obj,
             'y': point_01
@@ -174,9 +174,9 @@ def inventory_dashboard_05(request):
     This dashboard will be display count of device by vendor
     """
     location_count = list()
-    list_location = list(DeviceLocation.objects.values_list('device_location', flat=True))
+    list_location = list(DeviceProvince.objects.values_list('device_province', flat=True))
     for obj in list_location:
-        count = Device.objects.filter(device_location__device_location=obj).count()
+        count = Device.objects.filter(device_province__device_province=obj).count()
         location_count.append({
             'label': str(obj),
             'y': count
@@ -610,7 +610,7 @@ def cm_checkpoint_get_list_rule(request):
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='ForceInstall'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'status')
+                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-only'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'status')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:

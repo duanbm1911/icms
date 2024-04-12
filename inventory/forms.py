@@ -131,10 +131,10 @@ class DeviceInterfaceForm(forms.ModelForm):
         ]
 
 
-class DeviceTopologyForm(forms.ModelForm):
+class DeviceRackLayoutForm(forms.ModelForm):
     
     class Meta:
-        model = DeviceTopology
+        model = DeviceRackLayout
         fields = [
             'device_ip',
             'device_rack_name',
@@ -158,7 +158,7 @@ class DeviceExportForm(forms.Form):
     CHOICES = (
         ('1', 'Device'),
         ('2', 'Device management'),
-        ('3', 'Device topology'),
+        ('3', 'Device rack layout'),
         ('4', 'Device configuration'),
         ('5', 'Device incorrect firmware'),
         ('6', 'Device expired license (6 months)'))

@@ -54,7 +54,7 @@ class DeviceBranch(models.Model):
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.device_os
+        return self.device_branch
     
 class DeviceTag(models.Model):
     device_tag = models.CharField(max_length=200, unique=True)
@@ -63,7 +63,7 @@ class DeviceTag(models.Model):
     user_created = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.device_os
+        return self.device_tag
 
     
 class Device(models.Model):
@@ -119,8 +119,8 @@ class DeviceInterface(models.Model):
         return str(self.device_ip)
 
 
-class DeviceTopology(models.Model):
-    """Model definition for DeviceTopology."""
+class DeviceRackLayout(models.Model):
+    """Model definition for DeviceRackLayout."""
 
     device_ip = models.ForeignKey('Device', on_delete=models.CASCADE)
     device_rack_name = models.CharField(max_length=200, blank=True, null=True)
@@ -128,7 +128,7 @@ class DeviceTopology(models.Model):
     user_created = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
-        """Unicode representation of DeviceTopology."""
+        """Unicode representation of DeviceRackLayout."""
         return str(self.device_ip)
     
 

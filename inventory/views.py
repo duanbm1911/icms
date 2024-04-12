@@ -327,7 +327,7 @@ def create_multiple_device(request):
             wb = openpyxl.load_workbook(uploaded_file)
             worksheet_01 = wb["Device"]
             worksheet_02 = wb["Device_management"]
-            worksheet_03 = wb["Device_topology"]
+            worksheet_03 = wb["Device_rack_layout"]
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
                 item = ["" if i is None else i for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
@@ -416,9 +416,9 @@ def create_multiple_device(request):
                     obj_count = Device.objects.filter(device_ip=item[1]).count()
                     if obj_count != 0:
                         device_tag = Device.objects.get(device_ip=item[1]).device_tag
-                        obj_count_01 = DeviceTopology.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
+                        obj_count_01 = DeviceRackLayout.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
                         if obj_count_01 == 0:
-                            model = DeviceTopology(
+                            model = DeviceRackLayout(
                                 device_ip=Device.objects.get(device_ip=item[1]),
                                 device_rack_name=item[2],
                                 device_rack_unit=item[3],
@@ -426,11 +426,11 @@ def create_multiple_device(request):
                             )
                             model.save()
                         elif obj_count_01 == 1 and device_tag == 'duplicated':
-                            obj = DeviceTopology.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
+                            obj = DeviceRackLayout.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
                             rack_name = obj.device_rack_name
                             rack_unit = obj.device_rack_unit
                             if rack_name != item[2] or rack_unit != item[3]:
-                                model = DeviceTopology(
+                                model = DeviceRackLayout(
                                     device_ip=Device.objects.get(device_ip=item[1]),
                                     device_rack_name=item[2],
                                     device_rack_unit=item[3],
@@ -498,21 +498,21 @@ class DeviceInterfaceListView(ListView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-class DeviceTopologyListView(ListView):
-    model = DeviceTopology
-    form_class = DeviceTopologyForm
+class DeviceRackLayoutListView(ListView):
+    model = DeviceRackLayout
+    form_class = DeviceRackLayoutForm
     context_object_name = 'devices'
-    template_name = "list_device_topology.html"
+    template_name = "list_device_rack_layout.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-class DeviceTopologyCreateView(CreateView):
-    model = DeviceTopology
-    form_class = DeviceTopologyForm
-    template_name = "create_device_topology.html"
-    success_url = '/inventory/list-device/device-topology'
+class DeviceRackLayoutCreateView(CreateView):
+    model = DeviceRackLayout
+    form_class = DeviceRackLayoutForm
+    template_name = "create_device_rack_layout.html"
+    success_url = '/inventory/list-device/device-rack-layout'
     
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -564,11 +564,11 @@ class DeviceManagementDetailView(DetailView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
-class DeviceTopologyUpdateView(UpdateView):
-    model = DeviceTopology
-    form_class = DeviceTopologyForm
-    template_name = 'update_device_topology.html'
-    success_url = '/inventory/list-device/device-topology'
+class DeviceRackLayoutUpdateView(UpdateView):
+    model = DeviceRackLayout
+    form_class = DeviceRackLayoutForm
+    template_name = 'update_device_rack_layout.html'
+    success_url = '/inventory/list-device/device-rack-layout'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -579,18 +579,18 @@ class DeviceTopologyUpdateView(UpdateView):
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
     
-class DeviceTopologyDetailView(DetailView):
-    model = DeviceTopology
-    template_name = 'detail_device_topology.html'
+class DeviceRackLayoutDetailView(DetailView):
+    model = DeviceRackLayout
+    template_name = 'detail_device_rack_layout.html'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
-class DeviceTopologyDeleteView(DeleteView):
-    model = DeviceTopology
-    template_name = 'list_device_topology.html'
-    success_url = '/inventory/list-device/device-topology'
+class DeviceRackLayoutDeleteView(DeleteView):
+    model = DeviceRackLayout
+    template_name = 'list_device_rack_layout.html'
+    success_url = '/inventory/list-device/device-rack-layout'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -677,13 +677,15 @@ def device_export(request):
                         datalist.append({
                             'device_name': item.device_name,
                             'device_ip': item.device_ip,
-                            'device_province': item.device_province.device_province,
-                            'device_type': item.device_type.device_type,
-                            'device_category': item.device_category.device_category,
-                            'device_vendor': item.device_vendor.device_vendor,
-                            'device_os': item.device_os.device_os,
+                            'device_branch': item.device_branch,
+                            'device_province': item.device_province,
+                            'device_type': item.device_type,
+                            'device_category': item.device_category,
+                            'device_vendor': item.device_vendor,
+                            'device_os': item.device_os,
                             'device_firmware': item.device_firmware,
                             'device_stack': item.device_stack,
+                            'device_tag': item.device_tag,
                             'device_description': item.device_description,
                             'device_creation_time': str(item.device_creation_time),
                             'user_created': item.user_created
@@ -697,7 +699,9 @@ def device_export(request):
                     queryset = DeviceManagement.objects.all()
                     for item in queryset:
                         datalist.append({
-                            'device_name': item.device_ip.device_name,
+                            'device_branch': item.device_ip.device_branch,
+                            'device_province': item.device_ip.device_province,
+                            'device_name': item.device_ip,
                             'device_ip': item.device_ip,
                             'device_serial_number': item.device_serial_number,
                             'start_ma_date': str(item.start_ma_date),
@@ -715,9 +719,11 @@ def device_export(request):
                     messages.add_message(request, constants.SUCCESS, download_url)
                 elif select_id == '3':
                     datalist = list()
-                    queryset = DeviceTopology.objects.all()
+                    queryset = DeviceRackLayout.objects.all()
                     for item in queryset:
                         datalist.append({
+                            'device_branch': item.device_ip.device_branch,
+                            'device_province': item.device_ip.device_province,
                             'device_name': item.device_ip.device_name,
                             'device_ip': item.device_ip,
                             'device_rack_name': item.device_rack_name,
@@ -725,14 +731,16 @@ def device_export(request):
                             'user_created': item.user_created
                         })
                     df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-topology.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-topology.csv'
+                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-rack-layout.csv', encoding='utf-8-sig')
+                    download_url = '/media/inventory/device-rack-layout.csv'
                     messages.add_message(request, constants.SUCCESS, download_url)
                 elif select_id == '4':
                     datalist = list()
                     queryset = DeviceConfiguration.objects.all()
                     for item in queryset:
                         datalist.append({
+                            'device_branch': item.device_ip.device_branch,
+                            'device_province': item.device_ip.device_province,
                             'device_name': item.device_ip.device_name,
                             'device_ip': item.device_ip,
                             'device_config_standardized': item.device_config_standardized,
@@ -782,6 +790,8 @@ def device_export(request):
                         if datalist01:
                             for item in datalist01:
                                 dataset01.append({
+                                    'device_branch': item.device_ip.device_branch,
+                                    'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
@@ -790,6 +800,8 @@ def device_export(request):
                         if datalist02:
                             for item in datalist02:
                                 dataset02.append({
+                                    'device_branch': item.device_ip.device_branch,
+                                    'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
@@ -798,6 +810,8 @@ def device_export(request):
                         if datalist03:
                             for item in datalist03:
                                 dataset03.append({
+                                    'device_branch': item.device_ip.device_branch,
+                                    'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
@@ -806,6 +820,8 @@ def device_export(request):
                         if datalist04:
                             for item in datalist04:
                                 dataset04.append({
+                                    'device_branch': item.device_ip.device_branch,
+                                    'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
@@ -886,8 +902,6 @@ class DeviceFirmwareDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
     
-
-
 class DeviceBranchCreateView(CreateView):
     model = DeviceBranch
     form_class = DeviceBranchForm
@@ -941,6 +955,66 @@ class DeviceBranchListView(ListView):
     model = DeviceBranch
     context_object_name = 'objects'
     template_name = "list_device_branch.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    
+
+class DeviceTagCreateView(CreateView):
+    model = DeviceTag
+    form_class = DeviceTagForm
+    template_name = "create_device_tag.html"
+    success_url = '/inventory/list-device-tag'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
+
+class DeviceTagUpdateView(UpdateView):
+    model = DeviceTag
+    form_class = DeviceTagForm
+    template_name = "update_device_tag.html"
+    success_url = '/inventory/list-device-tag'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class DeviceTagDeleteView(DeleteView):
+    model = DeviceTag
+    template_name = 'list_device_tag.html'
+    success_url = '/inventory/list-device-tag'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class DeviceTagListView(ListView):
+    model = DeviceTag
+    context_object_name = 'objects'
+    template_name = "list_device_tag.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
