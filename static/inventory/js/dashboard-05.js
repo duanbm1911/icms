@@ -8,7 +8,7 @@ $.ajax({
 			theme: "light2",
 			exportEnabled: true,
 			title:{
-				text: "Count device by location",
+				text: "Count device by province",
 				fontFamily: "tahoma",
 				fontSize: 20,
 				fontWeight: "normal"
