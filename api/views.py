@@ -534,6 +534,22 @@ def inventory_report(request):
     }
     return JsonResponse({'data': data})
 
+
+@csrf_exempt
+@logged_in_or_basicauth()
+def update_device_status(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for device_ip, status in dataset.items():
+            checklist = Device.objects.filter(device_ip=device_ip).count()
+            if checklist > 0:
+                model = Device.objects.filter(device_ip=device_ip)
+                model.update(device_status=status)
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+
 @login_required()
 @csrf_exempt
 def cm_checkpoint_create_rule(request):

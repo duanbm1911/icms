@@ -77,6 +77,7 @@ class Device(models.Model):
     device_os = models.ForeignKey('DeviceOS', on_delete=models.PROTECT)
     device_tag = models.ForeignKey('DeviceTag', on_delete=models.PROTECT, blank=True, null=True)
     device_firmware = models.CharField(max_length=200, blank=True, null=True)
+    device_status = models.CharField(max_length=200, blank=True, null=True)
     device_stack = models.BooleanField(default=False, blank=True, null=True)
     device_description = models.CharField(max_length=200, blank=True, null=True)
     device_creation_time = models.DateTimeField(auto_now=True)

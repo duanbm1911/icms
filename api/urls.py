@@ -19,6 +19,7 @@ urlpatterns = [
     path('update-device-check-monitor', views.update_device_check_monitor),
     path('update-device-firmware', views.update_device_firmware),
     path('update-device-interface', views.update_device_interface),
+    path('update-device-status', views.update_device_status),
     path('cm/checkpoint/create-rule', views.cm_checkpoint_create_rule),
     path('cm/checkpoint/get-list-policy', views.cm_checkpoint_get_list_policy),
     path('cm/checkpoint/get-list-rule', views.cm_checkpoint_get_list_rule),
