@@ -15,7 +15,7 @@
                 <th>Vendor</th>
                 <th>Category</th>
                 <th>OS</th>
-                <th>Stack</th>
+                <th>Status</th>
                 <th>Action</th>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@
                     <td>{{ obj.device_vendor }}</td>
                     <td>{{ obj.device_category }}</td>
                     <td>{{ obj.device_os }}</td>
-                    <td>{{ obj.device_stack }}</td>
+                    <td>{{ obj.device_status }}</td>
                     <td>
                         <a href="/inventory/list-device/device/update/{{ obj.id }}"><span
                                 class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
