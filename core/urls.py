@@ -4,7 +4,7 @@ from django.conf.urls import handler400
 from core.views import *
 
 
-handler400 = views.error_404
+handler400 = views.redirect_home_url
 
 urlpatterns = [
     path('', views.redirect_home_url),

@@ -8,5 +8,5 @@ def redirect_home_url(request):
     return redirect('/inventory/device-dashboard')
 
 
-def error_404(request, exception):
-   return render(request, template_name='404.html')
+# def error_404(request, exception):
+#    return render(request, template_name='404.html')
