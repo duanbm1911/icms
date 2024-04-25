@@ -16,5 +16,5 @@ urlpatterns = [
     path('checkpoint/objects/create-site', CheckpointSiteCreateView.as_view()),
     path('checkpoint/objects/list-site', CheckpointSiteListView.as_view()),
     path('checkpoint/objects/update-site/<int:pk>', CheckpointSiteUpdateView.as_view()),
-    path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view()),
+    path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view())
 ]
