@@ -376,6 +376,34 @@ def create_multiple_device(request):
                     )
                     model.save()
                 elif obj_count == 1:
+                    obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
+                    obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
+                    obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
+                    obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
+                    obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
+                    obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
+                    obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
+                    if obj_count_01 == 0:
+                        model_01 = DeviceBranch(device_branch=item[2])
+                        model_01.save()
+                    if obj_count_02 == 0:
+                        model_02 = DeviceProvince(device_province=item[3])
+                        model_02.save()
+                    if obj_count_03 == 0:
+                        model_03 = DeviceType(device_type=item[4])
+                        model_03.save()
+                    if obj_count_04 == 0:
+                        model_04 = DeviceCategory(device_category=item[5])
+                        model_04.save()
+                    if obj_count_05 == 0:
+                        model_05 = DeviceVendor(device_vendor=item[6])
+                        model_05.save()
+                    if obj_count_06 == 0:
+                        model_06 = DeviceOS(device_os=item[7])
+                        model_06.save()
+                    if obj_count_07 == 0:
+                        model_07 = DeviceTag(device_tag=item[8])
+                        model_07.save()
                     model = Device.objects.get(device_ip=item[1])
                     model.device_name = item[0]
                     model.device_branch = DeviceBranch.objects.get(device_branch=item[2])
