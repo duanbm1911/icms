@@ -52,7 +52,6 @@ def login(request):
         password = request.POST.get("password")
         otp = request.POST.get("otp")
         user = authenticate(username=username, password=password)
-        print(user)
         if user is not None:
             verify_otp_result = verify_otp(user, otp)
             if verify_otp_result:
@@ -64,9 +63,12 @@ def login(request):
 def verify_otp(user, otp):
     try:
         obj = User.objects.get(username=user)
+        print(obj)
         model = UserOTP.objects.get(user=obj)
+        print(model.key)
         otp_key = model.otp_key
         totp = pyotp.TOTP(otp_key)
+        print(totp)
         result = totp.verify(otp)
         return result
     except:
