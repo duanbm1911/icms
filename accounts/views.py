@@ -54,6 +54,7 @@ def login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             verify_otp_result = verify_otp(user, otp)
+            print(verify_otp_result)
             if verify_otp_result:
                 auth_login(request, user)
                 return redirect('/')
