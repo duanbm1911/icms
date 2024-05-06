@@ -66,7 +66,7 @@ def verify_otp(user, otp):
         obj = User.objects.get(username=user)
         print(obj)
         model = UserOTP.objects.get(user=obj)
-        print(model.key)
+        print(model.otp_key)
         otp_key = model.otp_key
         totp = pyotp.TOTP(otp_key)
         print(totp)
