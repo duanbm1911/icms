@@ -69,7 +69,7 @@ def verify_otp(user, otp):
         print(model.otp_key)
         otp_key = model.otp_key
         totp = pyotp.TOTP(otp_key)
-        print(totp)
+        print(otp)
         result = totp.verify(otp)
         return result
     # except:
