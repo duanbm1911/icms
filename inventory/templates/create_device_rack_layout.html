@@ -10,7 +10,7 @@
   <legend>Create Device Topology</legend>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-  <form action="/inventory/create-device-topology" method="POST" class="form-horizontal" role="form">
+  <form action="/inventory/create-device-rack-layout" method="POST" class="form-horizontal" role="form">
     {% csrf_token %}
     <div>
       {{ form | crispy }}
