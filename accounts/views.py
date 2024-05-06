@@ -62,7 +62,7 @@ def login(request):
     return render(request, "registration/login.html")
     
 def verify_otp(user, otp):
-    try:
+    # try:
         obj = User.objects.get(username=user)
         print(obj)
         model = UserOTP.objects.get(user=obj)
@@ -72,8 +72,8 @@ def verify_otp(user, otp):
         print(totp)
         result = totp.verify(otp)
         return result
-    except:
-        return False
+    # except:
+    #     return False
     
 def register(request):
     if request.user.is_superuser:
