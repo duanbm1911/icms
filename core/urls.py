@@ -2,6 +2,8 @@ from django.urls import path
 from core import views
 from django.conf.urls import handler400
 from core.views import *
+from cm.views import *
+
 
 
 handler400 = views.error_404
