@@ -1,11 +1,20 @@
 from django import forms
 from inventory.models import *
+from django.core.exceptions import ValidationError
+import re
 
 
+def validate_xss(value):
+    regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
+    result = re.search(regex, value)
+    if result:
+        raise ValidationError('The input string contains unusual characters')
+    
 class DeviceForm(forms.ModelForm):
-
+    device_name = forms.CharField(validators=[validate_xss])
+    device_description = forms.CharField(validators=[validate_xss])
     class Meta:
-
+        
         model = Device
         fields = [
             'device_name', 
@@ -20,8 +29,11 @@ class DeviceForm(forms.ModelForm):
             'device_stack',
             'device_description'
         ]
+    
 
 class DeviceProvinceForm(forms.ModelForm):
+    device_province = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceProvince
@@ -31,6 +43,8 @@ class DeviceProvinceForm(forms.ModelForm):
             ]
 
 class DeviceOSForm(forms.ModelForm):
+    device_os = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceOS
@@ -40,7 +54,8 @@ class DeviceOSForm(forms.ModelForm):
             ]
 
 class DeviceTypeForm(forms.ModelForm):
-
+    device_type = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceType
@@ -50,7 +65,8 @@ class DeviceTypeForm(forms.ModelForm):
             ]
 
 class DeviceCategoryForm(forms.ModelForm):
-
+    device_category = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceCategory
@@ -60,7 +76,8 @@ class DeviceCategoryForm(forms.ModelForm):
             ]
 
 class DeviceVendorForm(forms.ModelForm):
-
+    device_vendor = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceVendor
@@ -70,7 +87,8 @@ class DeviceVendorForm(forms.ModelForm):
             ]
         
 class DeviceBranchForm(forms.ModelForm):
-
+    device_branch = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceBranch
@@ -80,7 +98,8 @@ class DeviceBranchForm(forms.ModelForm):
             ]
         
 class DeviceTagForm(forms.ModelForm):
-
+    device_tag = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
 
         model = DeviceTag
@@ -90,7 +109,6 @@ class DeviceTagForm(forms.ModelForm):
             ]
 
 class CreateDeviceForm(forms.Form):
-
     upload_file = forms.FileField()
 
 
@@ -102,6 +120,7 @@ class DeviceManagementForm(forms.ModelForm):
     end_sw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     end_hw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     start_used_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
+    device_serial_number = forms.CharField(validators=[validate_xss])
     class Meta:
         model = DeviceManagement
         fields = [
