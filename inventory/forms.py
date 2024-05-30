@@ -5,7 +5,7 @@ import re
 
 
 def validate_xss(value):
-    regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
+    regex = '<([A-Za-z0-9_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
     result = re.search(regex, value)
     if result:
         raise ValidationError('The input string contains unusual characters')
