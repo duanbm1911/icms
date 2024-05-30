@@ -23,6 +23,14 @@ MESSAGE_TAGS = {
 }
 
 
+def validate_xss(list_string):
+    regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
+    for string in list_string:
+        result = re.search(regex, string)
+        if result:
+            return False
+    return True
+
 class DeviceCreateView(CreateView):
     model = Device
     form_class = DeviceForm
@@ -331,133 +339,131 @@ def create_multiple_device(request):
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
                 item = ["" if i is None else i for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
-                if obj_count == 0:
-                    obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
-                    obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
-                    obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
-                    obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
-                    obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
-                    obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
-                    obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
-                    if obj_count_01 == 0:
-                        model_01 = DeviceBranch(device_branch=item[2])
-                        model_01.save()
-                    if obj_count_02 == 0:
-                        model_02 = DeviceProvince(device_province=item[3])
-                        model_02.save()
-                    if obj_count_03 == 0:
-                        model_03 = DeviceType(device_type=item[4])
-                        model_03.save()
-                    if obj_count_04 == 0:
-                        model_04 = DeviceCategory(device_category=item[5])
-                        model_04.save()
-                    if obj_count_05 == 0:
-                        model_05 = DeviceVendor(device_vendor=item[6])
-                        model_05.save()
-                    if obj_count_06 == 0:
-                        model_06 = DeviceOS(device_os=item[7])
-                        model_06.save()
-                    if obj_count_07 == 0:
-                        model_07 = DeviceTag(device_tag=item[8])
-                        model_07.save()
-                    model = Device(
-                        device_name=item[0],
-                        device_ip=item[1],
-                        device_branch=DeviceBranch.objects.get(device_branch=item[2]),
-                        device_province=DeviceProvince.objects.get(device_province=item[3]),
-                        device_type=DeviceType.objects.get(device_type=item[4]),
-                        device_category=DeviceCategory.objects.get(device_category=item[5]),
-                        device_vendor=DeviceVendor.objects.get(device_vendor=item[6]),
-                        device_os=DeviceOS.objects.get(device_os=item[7]),
-                        device_tag=DeviceTag.objects.get(device_tag=item[8]),
-                        device_stack=item[9],
-                        device_description=item[10],
-                        user_created=request.user
-                    )
-                    model.save()
-                elif obj_count == 1:
-                    obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
-                    obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
-                    obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
-                    obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
-                    obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
-                    obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
-                    obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
-                    if obj_count_01 == 0:
-                        model_01 = DeviceBranch(device_branch=item[2])
-                        model_01.save()
-                    if obj_count_02 == 0:
-                        model_02 = DeviceProvince(device_province=item[3])
-                        model_02.save()
-                    if obj_count_03 == 0:
-                        model_03 = DeviceType(device_type=item[4])
-                        model_03.save()
-                    if obj_count_04 == 0:
-                        model_04 = DeviceCategory(device_category=item[5])
-                        model_04.save()
-                    if obj_count_05 == 0:
-                        model_05 = DeviceVendor(device_vendor=item[6])
-                        model_05.save()
-                    if obj_count_06 == 0:
-                        model_06 = DeviceOS(device_os=item[7])
-                        model_06.save()
-                    if obj_count_07 == 0:
-                        model_07 = DeviceTag(device_tag=item[8])
-                        model_07.save()
-                    model = Device.objects.get(device_ip=item[1])
-                    model.device_name = item[0]
-                    model.device_branch = DeviceBranch.objects.get(device_branch=item[2])
-                    model.device_province = DeviceProvince.objects.get(device_province=item[3])
-                    model.device_type = DeviceType.objects.get(device_type=item[4])
-                    model.device_category = DeviceCategory.objects.get(device_category=item[5])
-                    model.device_vendor = DeviceVendor.objects.get(device_vendor=item[6])
-                    model.device_os = DeviceOS.objects.get(device_os=item[7])
-                    model.device_tag = DeviceTag.objects.get(device_tag=item[8])
-                    model.device_stack = item[9]
-                    model.device_description = item[10]
-                    model.user_created = str(request.user)
-                    model.save()
-            for item in worksheet_02.iter_rows(min_row=2, values_only=True):
-                if item[0] is not None and item[1] is not None:
-                    obj_count = Device.objects.filter(device_ip=item[1]).count()
-                    if obj_count == 1:
-                        device_tag = Device.objects.get(device_ip=item[1]).device_tag
-                        obj_count_01 = DeviceManagement.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
-                        obj_count_02 = DeviceManagement.objects.filter(device_serial_number=item[2]).count()
-                        if obj_count_01 == 0 or (obj_count_01 == 1 and device_tag == 'duplicated'):
-                            if obj_count_02 == 0:
-                                model = DeviceManagement(
-                                    device_ip=Device.objects.get(device_ip=item[1]),
-                                    device_serial_number=item[2],
-                                    start_ma_date=item[3],
-                                    end_ma_date=item[4],
-                                    start_license_date=item[5],
-                                    end_license_date=item[6],
-                                    end_sw_support_date=item[7],
-                                    end_hw_support_date=item[8],
-                                    start_used_date=item[9],
-                                    user_created=request.user
-                                )
-                                model.save()
-            for item in worksheet_03.iter_rows(min_row=2, values_only=True):
-                if item[0] is not None and item[1] is not None:
-                    obj_count = Device.objects.filter(device_ip=item[1]).count()
-                    if obj_count != 0:
-                        device_tag = Device.objects.get(device_ip=item[1]).device_tag
-                        obj_count_01 = DeviceRackLayout.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
+                validate_xss_result = validate_xss(list_string=item)
+                if validate_xss_result:
+                    if obj_count == 0:
+                        obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
+                        obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
+                        obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
+                        obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
+                        obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
+                        obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
+                        obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
                         if obj_count_01 == 0:
-                            model = DeviceRackLayout(
-                                device_ip=Device.objects.get(device_ip=item[1]),
-                                device_rack_name=item[2],
-                                device_rack_unit=item[3],
-                                user_created=request.user
-                            )
-                            model.save()
-                        elif obj_count_01 == 1 and device_tag == 'duplicated':
-                            obj = DeviceRackLayout.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
-                            rack_name = obj.device_rack_name
-                            rack_unit = obj.device_rack_unit
-                            if rack_name != item[2] or rack_unit != item[3]:
+                            model_01 = DeviceBranch(device_branch=item[2])
+                            model_01.save()
+                        if obj_count_02 == 0:
+                            model_02 = DeviceProvince(device_province=item[3])
+                            model_02.save()
+                        if obj_count_03 == 0:
+                            model_03 = DeviceType(device_type=item[4])
+                            model_03.save()
+                        if obj_count_04 == 0:
+                            model_04 = DeviceCategory(device_category=item[5])
+                            model_04.save()
+                        if obj_count_05 == 0:
+                            model_05 = DeviceVendor(device_vendor=item[6])
+                            model_05.save()
+                        if obj_count_06 == 0:
+                            model_06 = DeviceOS(device_os=item[7])
+                            model_06.save()
+                        if obj_count_07 == 0:
+                            model_07 = DeviceTag(device_tag=item[8])
+                            model_07.save()
+                        model = Device(
+                            device_name=item[0],
+                            device_ip=item[1],
+                            device_branch=DeviceBranch.objects.get(device_branch=item[2]),
+                            device_province=DeviceProvince.objects.get(device_province=item[3]),
+                            device_type=DeviceType.objects.get(device_type=item[4]),
+                            device_category=DeviceCategory.objects.get(device_category=item[5]),
+                            device_vendor=DeviceVendor.objects.get(device_vendor=item[6]),
+                            device_os=DeviceOS.objects.get(device_os=item[7]),
+                            device_tag=DeviceTag.objects.get(device_tag=item[8]),
+                            device_stack=item[9],
+                            device_description=item[10],
+                            user_created=request.user
+                        )
+                        model.save()
+                    elif obj_count == 1:
+                        obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
+                        obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
+                        obj_count_03 = DeviceType.objects.filter(device_type=item[4]).count()
+                        obj_count_04 = DeviceCategory.objects.filter(device_category=item[5]).count()
+                        obj_count_05 = DeviceVendor.objects.filter(device_vendor=item[6]).count()
+                        obj_count_06 = DeviceOS.objects.filter(device_os=item[7]).count()
+                        obj_count_07 = DeviceTag.objects.filter(device_tag=item[8]).count()
+                        if obj_count_01 == 0:
+                            model_01 = DeviceBranch(device_branch=item[2])
+                            model_01.save()
+                        if obj_count_02 == 0:
+                            model_02 = DeviceProvince(device_province=item[3])
+                            model_02.save()
+                        if obj_count_03 == 0:
+                            model_03 = DeviceType(device_type=item[4])
+                            model_03.save()
+                        if obj_count_04 == 0:
+                            model_04 = DeviceCategory(device_category=item[5])
+                            model_04.save()
+                        if obj_count_05 == 0:
+                            model_05 = DeviceVendor(device_vendor=item[6])
+                            model_05.save()
+                        if obj_count_06 == 0:
+                            model_06 = DeviceOS(device_os=item[7])
+                            model_06.save()
+                        if obj_count_07 == 0:
+                            model_07 = DeviceTag(device_tag=item[8])
+                            model_07.save()
+                        model = Device.objects.get(device_ip=item[1])
+                        model.device_name = item[0]
+                        model.device_branch = DeviceBranch.objects.get(device_branch=item[2])
+                        model.device_province = DeviceProvince.objects.get(device_province=item[3])
+                        model.device_type = DeviceType.objects.get(device_type=item[4])
+                        model.device_category = DeviceCategory.objects.get(device_category=item[5])
+                        model.device_vendor = DeviceVendor.objects.get(device_vendor=item[6])
+                        model.device_os = DeviceOS.objects.get(device_os=item[7])
+                        model.device_tag = DeviceTag.objects.get(device_tag=item[8])
+                        model.device_stack = item[9]
+                        model.device_description = item[10]
+                        model.user_created = str(request.user)
+                        model.save()
+                else:
+                    raise Exception('The input string contains unusual characters')
+            for item in worksheet_02.iter_rows(min_row=2, values_only=True):
+                validate_xss_result = validate_xss(list_string=item)
+                if validate_xss_result:
+                    if item[0] is not None and item[1] is not None:
+                        obj_count = Device.objects.filter(device_ip=item[1]).count()
+                        if obj_count == 1:
+                            device_tag = Device.objects.get(device_ip=item[1]).device_tag
+                            obj_count_01 = DeviceManagement.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
+                            obj_count_02 = DeviceManagement.objects.filter(device_serial_number=item[2]).count()
+                            if obj_count_01 == 0 or (obj_count_01 == 1 and device_tag == 'duplicated'):
+                                if obj_count_02 == 0:
+                                    model = DeviceManagement(
+                                        device_ip=Device.objects.get(device_ip=item[1]),
+                                        device_serial_number=item[2],
+                                        start_ma_date=item[3],
+                                        end_ma_date=item[4],
+                                        start_license_date=item[5],
+                                        end_license_date=item[6],
+                                        end_sw_support_date=item[7],
+                                        end_hw_support_date=item[8],
+                                        start_used_date=item[9],
+                                        user_created=request.user
+                                    )
+                                    model.save()
+                else:
+                    raise Exception('The input string contains unusual characters')
+            for item in worksheet_03.iter_rows(min_row=2, values_only=True):
+                validate_xss_result = validate_xss(list_string=item)
+                if validate_xss_result:
+                    if item[0] is not None and item[1] is not None:
+                        obj_count = Device.objects.filter(device_ip=item[1]).count()
+                        if obj_count != 0:
+                            device_tag = Device.objects.get(device_ip=item[1]).device_tag
+                            obj_count_01 = DeviceRackLayout.objects.filter(device_ip=Device.objects.get(device_ip=item[1])).count()
+                            if obj_count_01 == 0:
                                 model = DeviceRackLayout(
                                     device_ip=Device.objects.get(device_ip=item[1]),
                                     device_rack_name=item[2],
@@ -465,6 +471,20 @@ def create_multiple_device(request):
                                     user_created=request.user
                                 )
                                 model.save()
+                            elif obj_count_01 == 1 and device_tag == 'duplicated':
+                                obj = DeviceRackLayout.objects.get(device_ip=Device.objects.get(device_ip=item[1]))
+                                rack_name = obj.device_rack_name
+                                rack_unit = obj.device_rack_unit
+                                if rack_name != item[2] or rack_unit != item[3]:
+                                    model = DeviceRackLayout(
+                                        device_ip=Device.objects.get(device_ip=item[1]),
+                                        device_rack_name=item[2],
+                                        device_rack_unit=item[3],
+                                        user_created=request.user
+                                    )
+                                    model.save()
+                else:
+                    raise Exception('The input string contains unusual characters')
             messages.add_message(request, constants.SUCCESS, 'Import devices success')
     except Exception as error:
         messages.add_message(request, constants.ERROR, f'An error occurred: {error}')

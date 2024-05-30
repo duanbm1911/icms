@@ -23,7 +23,13 @@ import time
 # Create your views here.
 
 
-
+def get_client_ip(request):
+    client_ip = str()
+    if request.META.get('HTTP_CLIENT_IP') is not None:
+        client_ip = request.META.get('HTTP_CLIENT_IP')
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+    return client_ip
 
 def logout(request):
     auth_logout(request)
@@ -51,13 +57,24 @@ def login(request):
         username = request.POST.get("username").lower()
         password = request.POST.get("password")
         otp = request.POST.get("otp")
+        client_ip = get_client_ip(request)
         user = authenticate(username=username, password=password)
-        if user is not None:
-            verify_otp_result = verify_otp(user, otp)
-            if verify_otp_result:
-                auth_login(request, user)
-                return redirect('/')
-        messages.add_message(request, constants.ERROR, 'Login failed')
+        login_failed_count = ClientLoginSession.objects.filter(client_ip=client_ip, username=username).count()
+        if login_failed_count <= 4:
+            retries_login_count = 5 - login_failed_count
+            if user is not None:
+                verify_otp_result = verify_otp(user, otp)
+                if verify_otp_result:
+                    auth_login(request, user)
+                    login_failed = ClientLoginSession.objects.filter(client_ip=client_ip, username=username)
+                    login_failed.delete()
+                    return redirect('/')
+            else:
+                model = ClientLoginSession(client_ip=client_ip, username=username)
+                model.save()
+            messages.add_message(request, constants.ERROR, f'Login failed, The account will be locked after {retries_login_count} failed attempts ')
+        else:
+            messages.add_message(request, constants.ERROR, f'Account: {username} has been locked, please contact with Administrator')
     return render(request, "registration/login.html")
     
 def verify_otp(user, otp):

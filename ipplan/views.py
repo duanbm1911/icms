@@ -21,6 +21,14 @@ import openpyxl
 # Create your views here.
 
 
+def validate_xss(list_string):
+    regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
+    for string in list_string:
+        result = re.search(regex, string)
+        if result:
+            return False
+    return True
+
 class RegionCreateView(CreateView):
     model = Region
     form_class = RegionForm
@@ -184,52 +192,55 @@ def create_multiple_subnet(request):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
             worksheet = wb["IPPlan"]
-            error_message = list()
             for item in worksheet.iter_rows(min_row=2, values_only=True):
                 item = ["" if i is None else i for i in item]
-                region = item[0]
-                location = item[1]
-                subnet = item[2]
-                name = item[3]
-                description = item[4]
-                if region != "" or location != "" or subnet != "":
-                    obj_count_01 = Region.objects.filter(region=region).count()
-                    obj_count_02 = Location.objects.filter(location=location).count()
-                    obj_count_03 = Subnet.objects.filter(subnet=subnet).count()
-                    if obj_count_01 == 0:
-                        model = Region(
-                            region=region,
-                            description=region,
-                            user_created=request.user
-                        )
-                        model.save()
-                    obj_01 = Region.objects.get(region=region)
-                    if obj_count_02 == 0:
-                        model = Location(
-                            location=location,
-                            region=obj_01,
-                            description=region,
-                            user_created=request.user
-                        )
-                        model.save()
-                    if obj_count_03 == 0:
-                        obj_02 = Location.objects.get(location=location)
-                        model = Subnet(
-                            subnet=subnet,
-                            location=obj_02,
-                            name=name,
-                            description=description,
-                            user_created=request.user
-                        )
-                        model.save()
-                    else:
-                        model = Subnet.objects.get(subnet=subnet)
-                        model.location = Location.objects.get(location=location)
-                        model.name = name
-                        model.description = description
-                        model.user_created = str(request.user)
-                        model.save()
-                messages.add_message(request, constants.SUCCESS, 'Import subnet success')
+                validate_xss_result = validate_xss(list_string=item)
+                if validate_xss_result:
+                    region = item[0]
+                    location = item[1]
+                    subnet = item[2]
+                    name = item[3]
+                    description = item[4]
+                    if region != "" or location != "" or subnet != "":
+                        obj_count_01 = Region.objects.filter(region=region).count()
+                        obj_count_02 = Location.objects.filter(location=location).count()
+                        obj_count_03 = Subnet.objects.filter(subnet=subnet).count()
+                        if obj_count_01 == 0:
+                            model = Region(
+                                region=region,
+                                description=region,
+                                user_created=request.user
+                            )
+                            model.save()
+                        obj_01 = Region.objects.get(region=region)
+                        if obj_count_02 == 0:
+                            model = Location(
+                                location=location,
+                                region=obj_01,
+                                description=region,
+                                user_created=request.user
+                            )
+                            model.save()
+                        if obj_count_03 == 0:
+                            obj_02 = Location.objects.get(location=location)
+                            model = Subnet(
+                                subnet=subnet,
+                                location=obj_02,
+                                name=name,
+                                description=description,
+                                user_created=request.user
+                            )
+                            model.save()
+                        else:
+                            model = Subnet.objects.get(subnet=subnet)
+                            model.location = Location.objects.get(location=location)
+                            model.name = name
+                            model.description = description
+                            model.user_created = str(request.user)
+                            model.save()
+                    messages.add_message(request, constants.SUCCESS, 'Import subnet success')
+                else:
+                    raise Exception('The input string contains unusual characters')
     except Exception as error:
         messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
     return render(request, template_name='create_multiple_subnet.html')
