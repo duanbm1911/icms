@@ -30,7 +30,7 @@ class ValidatingPasswordChangeForm(auth.forms.PasswordChangeForm):
             raise forms.ValidationError("The new password must contain at least one upper characters")
 
         symbol_error = re.search(r"[ @!#$%&'()*+,-./[\\\]^_`{|}~"+r'"]', password1[0])
-        print(symbol_error)
+        print(symbol_error, password1[0])
         if symbol_error is None:
             raise forms.ValidationError("The new password must contain at least one symbol characters")
         return password1
