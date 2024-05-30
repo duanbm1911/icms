@@ -25,12 +25,12 @@ class ValidatingPasswordChangeForm(auth.forms.PasswordChangeForm):
         if all(c.isalpha() == first_isalpha for c in password1):
             raise forms.ValidationError("The new password must contain at least one letter and at least one digit or" \
                                         " punctuation character.")
-        uppercase_error = re.search(r"[A-Z]", password1[0])
+        uppercase_error = re.search(r"[A-Z]", password1)
         if uppercase_error is None:
             raise forms.ValidationError("The new password must contain at least one upper characters")
 
-        symbol_error = re.search(r"[ @!#$%&'()*+,-./[\\\]^_`{|}~"+r'"]', password1[0])
-        print(symbol_error, password1[0])
+        symbol_error = re.search(r"[ @!#$%&'()*+,-./[\\\]^_`{|}~"+r'"]', password1)
+        print(symbol_error, password1)
         if symbol_error is None:
             raise forms.ValidationError("The new password must contain at least one symbol characters")
         return password1
