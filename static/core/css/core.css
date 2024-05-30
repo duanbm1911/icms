@@ -24,3 +24,7 @@
 a>strong {
   color: green;
 }
+
+p[id^="error_"] {
+  color: red;
+}

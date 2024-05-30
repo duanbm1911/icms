@@ -43,3 +43,5 @@ admin_site.register(User)
 admin_site.register(Group)
 
 admin_site.register(UserOTP)
+
+admin_site.register(ClientLoginSession)

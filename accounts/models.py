@@ -12,4 +12,11 @@ class UserOTP(models.Model):
     def __str__(self):
         return str(self.user)
     
+class ClientLoginSession(models.Model):
+    client_ip = models.GenericIPAddressField()
+    username = models.CharField(max_length=200)
+    failed_time = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.client_ip
     

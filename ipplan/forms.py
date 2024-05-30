@@ -2,11 +2,20 @@ from django import forms
 from ipplan.models import *
 from src.ipplan.func import *
 from django.core.exceptions import ValidationError
+import re
 
 
+
+def validate_xss(value):
+    regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
+    result = re.search(regex, value)
+    if result:
+        raise ValidationError('The input string contains unusual characters')
+    
 class RegionForm(forms.ModelForm):
     """Form definition for IpProject."""
-
+    region = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
     class Meta:
         """Meta definition for IpProjectform."""
 
@@ -15,7 +24,9 @@ class RegionForm(forms.ModelForm):
 
 class LocationForm(forms.ModelForm):
     """Form definition for Location."""
-
+    location = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
+    
     class Meta:
         """Meta definition for Locationform."""
 
@@ -24,7 +35,9 @@ class LocationForm(forms.ModelForm):
 
 class SubnetForm(forms.ModelForm):
     """Form definition for Subnet."""
-
+    name = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
+    
     class Meta:
         """Meta definition for Subnetform."""
 
@@ -40,7 +53,9 @@ class SubnetForm(forms.ModelForm):
 
 class SubnetUpdateForm(forms.ModelForm):
     """Form definition for Subnet."""
-
+    name = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
+    
     class Meta:
         """Meta definition for Subnetform."""
 
@@ -54,7 +69,7 @@ class RequestIpAddressForm(forms.Form):
     subnet = forms.ModelChoiceField(queryset=Subnet.objects.all())
     count = forms.IntegerField()
     status = forms.ModelChoiceField(queryset=IpStatus.objects.all())
-    description = forms.CharField(max_length=200)
+    description = forms.CharField(max_length=200, validators=[validate_xss])
 
     def clean_subnet(self):
         subnet = self.cleaned_data.get('subnet')
@@ -77,7 +92,8 @@ class IpAddressModelForm(forms.ModelForm):
 
 class IpAddressModelUpdatelForm(forms.ModelForm):
     """Form definition for IpAddressModelUpdatelForm."""
-
+    description = forms.CharField(validators=[validate_xss])
+    
     class Meta:
         """Meta definition for IpAddressModelUpdatelForm."""
 
