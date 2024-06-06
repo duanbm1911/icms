@@ -34,3 +34,31 @@ class CheckpointRule(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class LBDeviceCategory(models.Model):
+    device_category = models.CharField(max_length=200)
+
+    def __str__(self):
+        return str(self.device_category)
+    
+class LBDevice(models.Model):
+    device_ip = models.GenericIPAddressField()
+    device_name = models.CharField(max_length=200)
+    device_category = models.ForeignKey('LBDeviceCategory', on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.device_ip)
+
+class LBCreateVirtualServer(models.Model):
+    service_name = models.CharField(max_length=200)
+    vs_name = models.CharField(max_length=200)
+    vs_ip = models.GenericIPAddressField()
+    vs_port = models.IntegerField()
+    pool_name = models.CharField(max_length=200)
+    client_ssl_profile = models.CharField(max_length=200)
+    server_ssl_profile = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.vs_ip)
+    

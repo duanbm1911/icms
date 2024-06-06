@@ -220,3 +220,62 @@ class CheckpointRuleUpdateView(UpdateView):
         form.instance.user_created = str(self.request.user)
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
+    
+
+class LBDeviceCategoryCreateView(CreateView):
+    model = LBDeviceCategory
+    form_class = LBDeviceCategoryForm
+    template_name = "lb/update_device_category.html"
+    success_url = '/cm/lb/list-device-category'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
+
+class LBDeviceCategoryUpdateView(UpdateView):
+    model = LBDeviceCategory
+    form_class = LBDeviceCategoryForm
+    template_name = "lb/update_device_category.html"
+    success_url = '/cm/lb/list-device-category'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class LBDeviceCategoryDeleteView(DeleteView):
+    model = LBDeviceCategory
+    template_name = 'lb/list_device_category.html'
+    success_url = '/cm/lb/list-device-category'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class LBDeviceCategoryListView(ListView):
+    model = LBDeviceCategory
+    context_object_name = 'objects'
+    template_name = "lb/list_device_category.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

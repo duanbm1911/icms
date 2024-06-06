@@ -47,3 +47,37 @@ class CheckpointRuleForm(forms.ModelForm):
             'schedule',
             'status'
         ]
+        
+
+class LBDeviceCategoryForm(forms.ModelForm):
+    
+    class Meta:
+        model = LBDeviceCategory
+        fields = [
+            'device_category'
+        ]
+        
+class LBDeviceForm(forms.ModelForm):
+    
+    class Meta:
+        model = LBDevice
+        fields = [
+            'device_ip',
+            'device_name',
+            'device_category'
+        ]
+        
+
+class LBCreateVirtualServerForm(forms.ModelForm):
+
+    class Meta:
+        model = LBCreateVirtualServer
+        fields = [
+            'service_name',
+            'vs_name',
+            'vs_ip',
+            'vs_port',
+            'pool_name',
+            'client_ssl_profile',
+            'server_ssl_profile'
+        ]

@@ -15,6 +15,10 @@ import json
 
 # Create your views here.
 
+def replace_characters(string):
+    new_string = str(string).replace('<', '%').replace('>', '%').replace('?', '%').replace('!', '%').replace('(', '%').replace(')', '%').replace('&', '%').replace('+', '%').replace('\\', '%')
+    return new_string
+
 def view_or_basicauth(view, request, test_func, realm = "", *args, **kwargs):
 
     if test_func(request.user):
@@ -69,7 +73,8 @@ def inventory_dashboard_01(request):
         count = Device.objects.filter(device_os__device_os=obj).count()
         device_os_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': device_os_count})
 
@@ -84,7 +89,8 @@ def inventory_dashboard_02(request):
         count = Device.objects.filter(device_vendor__device_vendor=obj).count()
         vendor_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': vendor_count})
 
@@ -118,15 +124,18 @@ def inventory_dashboard_03(request):
         point_03 = DeviceConfiguration.objects.filter(device_backup_config=False, device_ip__device_province__device_province=obj).count()
         data_point_01.append({
             'label': obj,
-            'y': point_01
+            'y': point_01,
+            'toolTipContent': f'{replace_characters(obj)}:{point_01}'
         })
         data_point_02.append({
             'label': obj,
-            'y': point_02
+            'y': point_02,
+            'toolTipContent': f'{replace_characters(obj)}:{point_02}'
         })
         data_point_03.append({
             'label': obj,
-            'y': point_03
+            'y': point_03,
+            'toolTipContent': f'{replace_characters(obj)}:{point_03}'
         })
     list_data_point = [{
         "name": data_point_01,
@@ -148,7 +157,6 @@ def inventory_dashboard_03(request):
             "name": data_point['desc'],
             "markerSize": 0,
             "markerType": "square",
-            # "color": '#%02X%02X%02X' % (color(),color(),color()),
             "dataPoints": data_point['name']
         })
     return JsonResponse({'data': chart_data})
@@ -164,7 +172,8 @@ def inventory_dashboard_04(request):
         count = Device.objects.filter(device_type__device_type=obj).count()
         type_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': type_count})
 
@@ -179,7 +188,8 @@ def inventory_dashboard_05(request):
         count = Device.objects.filter(device_province__device_province=obj).count()
         location_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': location_count})
 
@@ -205,7 +215,8 @@ def inventory_dashboard_06(request):
         count = datalist01.count(item)
         datalist02.append({
             'label': str(item),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(item)}:{count}'
         })
     return JsonResponse({'data': datalist02})
 
@@ -245,19 +256,23 @@ def inventory_dashboard_07(request):
         point_04 = DeviceManagement.objects.filter(device_ip__device_type=obj, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02).count()
         data_point_01.append({
             'label': device_type,
-            'y': point_01
+            'y': point_01,
+            'toolTipContent': f'{replace_characters(obj)}:{point_01}'
         })
         data_point_02.append({
             'label': device_type,
-            'y': point_02
+            'y': point_02,
+            'toolTipContent': f'{replace_characters(obj)}:{point_02}'
         })
         data_point_03.append({
             'label': device_type,
-            'y': point_03
+            'y': point_03,
+            'toolTipContent': f'{replace_characters(obj)}:{point_03}'
         })
         data_point_04.append({
             'label': device_type,
-            'y': point_04
+            'y': point_04,
+            'toolTipContent': f'{replace_characters(obj)}:{point_04}'
         })
     list_data_point = [{
         "name": data_point_01,
@@ -297,7 +312,8 @@ def ipplan_dashboard_01(request):
         count = Location.objects.filter(region__region=obj).count()
         location_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': location_count})
 
@@ -312,7 +328,8 @@ def ipplan_dashboard_02(request):
         count = Subnet.objects.filter(location__location=obj).count()
         subnet_count.append({
             'label': str(obj),
-            'y': count
+            'y': count,
+            'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': subnet_count})
 

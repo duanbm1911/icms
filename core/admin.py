@@ -44,4 +44,8 @@ admin_site.register(Group)
 
 admin_site.register(UserOTP)
 
-admin_site.register(ClientLoginSession)
+admin_site.register(ClientLoginFailedSession)
+
+admin_site.register(LBCreateVirtualServer)
+admin_site.register(LBDevice)
+admin_site.register(LBDeviceCategory)

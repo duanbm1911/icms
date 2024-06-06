@@ -16,5 +16,9 @@ urlpatterns = [
     path('checkpoint/objects/create-site', CheckpointSiteCreateView.as_view()),
     path('checkpoint/objects/list-site', CheckpointSiteListView.as_view()),
     path('checkpoint/objects/update-site/<int:pk>', CheckpointSiteUpdateView.as_view()),
-    path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view())
+    path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view()),
+    path('lb/list-device-category', LBDeviceCategoryListView.as_view()),
+    path('lb/objects/create-device-category', LBDeviceCategoryCreateView.as_view()),
+    path('lb/objects/update-device-category/<int:pk>', LBDeviceCategoryUpdateView.as_view()),
+    path('lb/objects/delete-device-category/<int:pk>', LBDeviceCategoryDeleteView.as_view())
 ]

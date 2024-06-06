@@ -710,6 +710,8 @@ class DeviceOSDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
     
+    
+@login_required()
 def device_export(request):
     form = DeviceExportForm
     data = {'form': form}
