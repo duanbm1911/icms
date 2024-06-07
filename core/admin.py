@@ -46,6 +46,5 @@ admin_site.register(UserOTP)
 
 admin_site.register(ClientLoginFailedSession)
 
-admin_site.register(LBCreateVirtualServer)
-admin_site.register(LBDevice)
-admin_site.register(LBDeviceCategory)
+admin_site.register(F5CreateVirtualServer)
+admin_site.register(F5Device)

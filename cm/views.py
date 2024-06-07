@@ -222,11 +222,11 @@ class CheckpointRuleUpdateView(UpdateView):
         return super().form_valid(form)
     
 
-class LBDeviceCategoryCreateView(CreateView):
-    model = LBDeviceCategory
-    form_class = LBDeviceCategoryForm
-    template_name = "lb/update_device_category.html"
-    success_url = '/cm/lb/list-device-category'
+class F5DeviceCreateView(CreateView):
+    model = F5Device
+    form_class = F5DeviceForm
+    template_name = "f5/update_device.html"
+    success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -237,11 +237,11 @@ class LBDeviceCategoryCreateView(CreateView):
         messages.add_message(self.request, constants.SUCCESS, 'Create success')
         return super().form_valid(form)
 
-class LBDeviceCategoryUpdateView(UpdateView):
-    model = LBDeviceCategory
-    form_class = LBDeviceCategoryForm
-    template_name = "lb/update_device_category.html"
-    success_url = '/cm/lb/list-device-category'
+class F5DeviceUpdateView(UpdateView):
+    model = F5Device
+    form_class = F5DeviceForm
+    template_name = "f5/update_device.html"
+    success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -252,10 +252,10 @@ class LBDeviceCategoryUpdateView(UpdateView):
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
 
-class LBDeviceCategoryDeleteView(DeleteView):
-    model = LBDeviceCategory
-    template_name = 'lb/list_device_category.html'
-    success_url = '/cm/lb/list-device-category'
+class F5DeviceDeleteView(DeleteView):
+    model = F5Device
+    template_name = 'f5/list_device.html'
+    success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -271,10 +271,10 @@ class LBDeviceCategoryDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
 
-class LBDeviceCategoryListView(ListView):
-    model = LBDeviceCategory
+class F5DeviceListView(ListView):
+    model = F5Device
     context_object_name = 'objects'
-    template_name = "lb/list_device_category.html"
+    template_name = "f5/list_device.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} ICMS | Create Device Category {% endblock title %}
+{% block title %} ICMS | Update Device {% endblock title %}
 
 {% load crispy_forms_tags %}
 
@@ -10,14 +10,14 @@
     <form action method="POST" class="form-horizontal" role="form">
       {% csrf_token %}
       <div class="form-group">
-        <legend class="form-group">Create device category</legend>
+        <legend class="form-group">Update device</legend>
       </div>
       <div class="form-group">
         {{ form | crispy }}
       </div>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary form-group">Create</button>
+        <button type="submit" class="btn btn-primary form-group">Update</button>
       </div>
     </form>
   </div>

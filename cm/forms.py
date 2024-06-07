@@ -48,30 +48,20 @@ class CheckpointRuleForm(forms.ModelForm):
             'status'
         ]
         
-
-class LBDeviceCategoryForm(forms.ModelForm):
+class F5DeviceForm(forms.ModelForm):
     
     class Meta:
-        model = LBDeviceCategory
-        fields = [
-            'device_category'
-        ]
-        
-class LBDeviceForm(forms.ModelForm):
-    
-    class Meta:
-        model = LBDevice
+        model = F5Device
         fields = [
             'device_ip',
-            'device_name',
-            'device_category'
+            'device_name'
         ]
         
 
-class LBCreateVirtualServerForm(forms.ModelForm):
+class F5CreateVirtualServerForm(forms.ModelForm):
 
     class Meta:
-        model = LBCreateVirtualServer
+        model = F5CreateVirtualServer
         fields = [
             'service_name',
             'vs_name',
