@@ -59,10 +59,11 @@ def login(request):
         otp = request.POST.get("otp")
         client_ip = get_client_ip(request)
         user = authenticate(username=username, password=password)
-        obj = ClientLoginFailedSession.objects.filter(client_ip=client_ip, username=username)
+        getlist = ClientLoginFailedSession.objects.filter(client_ip=client_ip, username=username).count()
         login_failed_count = 0
-        if obj.count() > 0:
-            login_failed_count = obj[0].failed_count
+        if getlist > 0:
+            obj = ClientLoginFailedSession.objects.get(client_ip=client_ip, username=username)
+            login_failed_count = obj.failed_count
         if login_failed_count <= 5:
             retries_login_count = 5 - login_failed_count
             if user is not None:
@@ -74,10 +75,18 @@ def login(request):
                     return redirect('/')
             else:
                 if login_failed_count <= 5:
-                    obj = ClientLoginFailedSession.objects.get(client_ip=client_ip, username=username)
-                    failed_count = obj.failed_count
-                    obj.failed_count = failed_count + 1
-                    obj.save()
+                    if getlist > 0:
+                        obj = ClientLoginFailedSession.objects.get(client_ip=client_ip, username=username)
+                        failed_count = obj.failed_count
+                        obj.failed_count = failed_count + 1
+                        obj.save()
+                    else:
+                        obj = ClientLoginFailedSession(
+                            client_ip=client_ip, 
+                            username=username,
+                            failed_count=1
+                        )
+                        obj.save()
             messages.add_message(request, constants.ERROR, f'Login failed, The account will be locked after {retries_login_count} failed attempts ')
         else:
             messages.add_message(request, constants.ERROR, f'Account: {username} has been locked, please contact with Administrator')
