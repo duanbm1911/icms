@@ -173,7 +173,7 @@
     <div class="panel panel-default">
       <div class="panel-body">{% block content %} {% endblock content %}</div>
       <div class="panel-footer">
-        <center>Infrastructure Centralized Management System ©️ 2023 | Develop by DuanBM | <strong>Your IP address: {{request.META.HTTP_CLIENT_IP}}</strong> </center>
+        <center>Infrastructure Centralized Management System ©️ 2023 | Develop by DuanBM | <strong>Your IP address: {% if request.META.HTTP_CLIENT_IP != none %}{{request.META.HTTP_CLIENT_IP}} {% else %} {{request.META.REMOTE_ADDR}} {% endif %}</strong> </center>
       </div>
     </div>
   </div>
