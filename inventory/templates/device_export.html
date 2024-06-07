@@ -6,7 +6,7 @@
 {% load crispy_forms_tags %}
 
 <div class="form-group">
-  <legend>Export Device Databse Table</legend>
+  <legend>Export device databse table</legend>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
   <form action="/inventory/device-export" method="POST" class="form-horizontal" role="form">
@@ -43,9 +43,8 @@
 {% else %}
 <script>
     Swal.fire({
-        title: "Export success",
-        html: '<a href="{{message}}">Download file</a>',
-        icon: "success"
+      text: "{{ message }}",
+      icon: "success"
     });
 </script>
 {% endif %}

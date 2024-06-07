@@ -1,4 +1,5 @@
 from django.db.models import ProtectedError
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -10,6 +11,7 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
+from excel_response import ExcelResponse
 from django.conf import settings
 from inventory.models import *
 from inventory.forms import *
@@ -722,30 +724,32 @@ def device_export(request):
                 select_id = form.data['database_table']
                 if select_id == '1':
                     datalist = list()
+                    filename = "device"
                     queryset = Device.objects.all()
                     for item in queryset:
                         datalist.append({
                             'device_name': item.device_name,
                             'device_ip': item.device_ip,
-                            'device_branch': item.device_branch,
-                            'device_province': item.device_province,
-                            'device_type': item.device_type,
-                            'device_category': item.device_category,
-                            'device_vendor': item.device_vendor,
-                            'device_os': item.device_os,
+                            'device_branch': item.device_branch.device_branch,
+                            'device_province': item.device_province.device_province,
+                            'device_type': item.device_type.device_type,
+                            'device_category': item.device_category.device_category,
+                            'device_vendor': item.device_vendor.device_vendor,
+                            'device_os': item.device_os.device_os,
                             'device_firmware': item.device_firmware,
                             'device_stack': item.device_stack,
-                            'device_tag': item.device_tag,
+                            'device_tag': item.device_tag.device_tag,
                             'device_description': item.device_description,
                             'device_creation_time': str(item.device_creation_time),
                             'user_created': item.user_created
                         })
-                    df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device.csv'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 elif select_id == '2':
                     datalist = list()
+                    filename = 'device-management'
                     queryset = DeviceManagement.objects.all()
                     for item in queryset:
                         datalist.append({
@@ -763,12 +767,13 @@ def device_export(request):
                             'start_used_date': str(item.start_used_date),
                             'user_created': item.user_created
                         })
-                    df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-management.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-management.csv'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 elif select_id == '3':
                     datalist = list()
+                    filename = 'device-rack-layout'
                     queryset = DeviceRackLayout.objects.all()
                     for item in queryset:
                         datalist.append({
@@ -780,12 +785,13 @@ def device_export(request):
                             'device_rack_unit': item.device_rack_unit,
                             'user_created': item.user_created
                         })
-                    df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-rack-layout.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-rack-layout.csv'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 elif select_id == '4':
                     datalist = list()
+                    filename = 'device-configuration'
                     queryset = DeviceConfiguration.objects.all()
                     for item in queryset:
                         datalist.append({
@@ -798,14 +804,15 @@ def device_export(request):
                             'device_backup_config': item.device_backup_config,
                             'user_created': item.user_created
                         })
-                    df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-configuration.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-configuration.csv'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 elif select_id == '5':
                     list_device_firmware = Device.objects.all().values_list('device_name', 'device_ip', 'device_type__device_type', 'device_firmware')
                     list_firmware = DeviceFirmware.objects.all().values_list('device_type__device_type', 'firmware')
                     datalist = list()
+                    filename = 'device-incorrect-firmware'
                     for item in list_device_firmware:
                         device_name = item[0]
                         device_ip = item[1]
@@ -820,18 +827,16 @@ def device_export(request):
                                     'device_type': device_type,
                                     'device_firmware': device_firmware
                                 })
-                    df = pandas.DataFrame(datalist)
-                    df.to_csv(settings.MEDIA_ROOT + '/inventory/device-incorrect-firmware.csv', encoding='utf-8-sig')
-                    download_url = '/media/inventory/device-incorrect-firmware.csv'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 elif select_id == '6':
                     datepoint01 = datetime.date.today()
                     datepoint02 = datetime.date.today() + datetime.timedelta(days=180)
                     list_device_serial = DeviceManagement.objects.all().values_list('device_serial_number', flat=True)
-                    dataset01 = list()
-                    dataset02 = list()
-                    dataset03 = list()
-                    dataset04 = list()
+                    dataset = list()
+                    filename = 'device-expired-license'
                     for device_serial in list_device_serial:                     
                         datalist01 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_ma_date__gte=datepoint01, end_ma_date__lte=datepoint02)
                         datalist02 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_license_date__gte=datepoint01, end_license_date__lte=datepoint02)
@@ -839,57 +844,54 @@ def device_export(request):
                         datalist04 = DeviceManagement.objects.filter(device_serial_number=device_serial, end_hw_support_date__gte=datepoint01, end_hw_support_date__lte=datepoint02)
                         if datalist01:
                             for item in datalist01:
-                                dataset01.append({
+                                dataset.append({
                                     'device_branch': item.device_ip.device_branch,
                                     'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
-                                    'end_ma': item.end_ma_date
+                                    'end_of_date': item.end_ma_date,
+                                    'description': 'end_ma'
                                 })
                         if datalist02:
                             for item in datalist02:
-                                dataset02.append({
+                                dataset.append({
                                     'device_branch': item.device_ip.device_branch,
                                     'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
-                                    'end_license': item.end_license_date
+                                    'end_of_date': item.end_license_date,
+                                    'description': 'end_license'
                                 })
                         if datalist03:
                             for item in datalist03:
-                                dataset03.append({
+                                dataset.append({
                                     'device_branch': item.device_ip.device_branch,
                                     'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
-                                    'end_hw_support': item.end_sw_support_date
+                                    'end_of_date': item.end_sw_support_date,
+                                    'description': 'end_hw_support'
                                 })
                         if datalist04:
                             for item in datalist04:
-                                dataset04.append({
+                                dataset.append({
                                     'device_branch': item.device_ip.device_branch,
                                     'device_province': item.device_ip.device_province,
                                     'device_name': item.device_ip.device_name,
                                     'device_ip': item.device_ip,
                                     'device_serial': item.device_serial_number,
-                                    'end_sw_support': item.end_hw_support_date
+                                    'end_of_date': item.end_hw_support_date,
+                                    'description': 'end_sw_support'
                                 })
-                    df01 = pandas.DataFrame(dataset01)
-                    df02 = pandas.DataFrame(dataset02)
-                    df03 = pandas.DataFrame(dataset03)
-                    df04 = pandas.DataFrame(dataset04)
-                    with pandas.ExcelWriter(settings.MEDIA_ROOT + '/inventory/device-expired-license.xlsx') as w:
-                        df01.to_excel(w, sheet_name="End MA")
-                        df02.to_excel(w, sheet_name="End License")
-                        df03.to_excel(w, sheet_name="End SW support")
-                        df04.to_excel(w, sheet_name="End HW support")
-                    download_url = '/media/inventory/device-expired-license.xlsx'
-                    messages.add_message(request, constants.SUCCESS, download_url)
+                    if dataset:
+                        return ExcelResponse(dataset, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
                 else:
-                    messages.add_message(request, constants.ERROR, 'Database selected is not validate')
+                    messages.add_message(request, constants.ERROR, 'Database selected is not valid')
     except Exception as error:
         messages.add_message(request, constants.ERROR, error)
     return render(request, template_name='device_export.html', context=data)
