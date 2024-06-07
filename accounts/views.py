@@ -58,7 +58,6 @@ def login(request):
         password = request.POST.get("password")
         otp = request.POST.get("otp")
         client_ip = get_client_ip(request)
-        user = authenticate(username=username, password=password)
         getlist = ClientLoginFailedSession.objects.filter(client_ip=client_ip, username=username).count()
         login_failed_count = 0
         if getlist > 0:
@@ -66,6 +65,7 @@ def login(request):
             login_failed_count = obj.failed_count
         if login_failed_count <= 5:
             retries_login_count = 5 - login_failed_count
+            user = authenticate(username=username, password=password)
             if user is not None:
                 verify_otp_result = verify_otp(user, otp)
                 if verify_otp_result:
