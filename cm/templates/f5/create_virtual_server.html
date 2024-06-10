@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} ICMS | Create Virtual Server {% endblock title %}
+
+{% block content %}
+<h2 class="form-group">Create virtual server</h2>
+<div class="form-group" id="dataTable"></div>
+<button class="btn btn-primary" id="add">Add rule</button>
+<button class="btn btn-success" id="submit">Create</button>
+{% endblock content %}
+
+
+{% block css %}
+<link rel="stylesheet" href="/static/core/css/handson-table.css">
+{% endblock css %}
+
+{% block js %}
+<script src="/static/core/js/handson-table.js"></script>
+<script src="/static/core/js/sweet-alert.js"></script>
+<script src="/static/cm/f5/js/create-virtual-server.js"></script>
+{% endblock js %}

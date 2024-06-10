@@ -54,7 +54,8 @@ class F5DeviceForm(forms.ModelForm):
         model = F5Device
         fields = [
             'device_ip',
-            'device_name'
+            'device_name',
+            'snat_name'
         ]
         
 
@@ -63,11 +64,12 @@ class F5CreateVirtualServerForm(forms.ModelForm):
     class Meta:
         model = F5CreateVirtualServer
         fields = [
+            'f5_device_ip',
             'service_name',
             'vs_name',
             'vs_ip',
             'vs_port',
-            'pool_name',
+            'pool_member',
             'client_ssl_profile',
             'server_ssl_profile'
         ]

@@ -39,6 +39,7 @@ class CheckpointRule(models.Model):
 class F5Device(models.Model):
     device_ip = models.GenericIPAddressField()
     device_name = models.CharField(max_length=200)
+    snat_name = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return str(self.device_ip)
@@ -50,8 +51,10 @@ class F5CreateVirtualServer(models.Model):
     vs_ip = models.GenericIPAddressField()
     vs_port = models.IntegerField()
     pool_name = models.CharField(max_length=200)
+    pool_member = models.CharField(max_length=1000)
     client_ssl_profile = models.CharField(max_length=200)
     server_ssl_profile = models.CharField(max_length=200)
+    user_created = models.CharField(max_length=200)
     
     def __str__(self):
         return str(self.vs_ip)

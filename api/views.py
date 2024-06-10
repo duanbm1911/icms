@@ -677,3 +677,15 @@ def cm_checkpoint_update_rule_status(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    
+
+@login_required()
+def cm_f5_get_list_device(request):
+    if request.user.groups.filter(name='ADMIN').exists():
+        if request.method == 'GET':
+            datalist = F5Device.objects.all().values_list('device_ip', flat=True)
+            return JsonResponse({'data': list(datalist)}, status=200)
+        else:
+            return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    else:
+        return JsonResponse({'erorr': 'forbidden'}, status=403)

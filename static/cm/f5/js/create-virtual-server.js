@@ -1,0 +1,73 @@
+$(document).ready(function () {
+  var datalist01 = [[]];
+  $.ajax({
+    type: "GET",
+    url: '/api/cm/f5/get-list-device',
+    success: function (response) {
+      var datalist02 = response.data
+      var placeholder = document.getElementById('dataTable');
+      var myDataGrid = new Handsontable(placeholder, {
+        data: datalist01,
+        rowHeaders: true,
+        colWidths: 220,
+        rowHeights: 100,
+        colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile'],
+        manualColumnResize: true,
+        columns: [
+          {
+            type: 'autocomplete',
+            source: datalist02,
+            strict: true,
+            allowInvalid: false
+          }, {}, {}, {}, {}, {}
+        ],
+        autoWrapRow: true,
+        autoWrapCol: true
+      });
+      document.querySelector('#add').addEventListener('click', function () {
+        var col = myDataGrid.countRows();
+        myDataGrid.alter('insert_row_below', col, 1)
+      })
+      document.querySelector('#submit').addEventListener('click', function () {
+        $('#submit').prop('disabled', true)
+        let datalist03 = myDataGrid.getData()
+        $.ajax({
+          type: "POST",
+          url: '/api/cm/f5/create-virtual-server',
+          dataType: "json",
+          data: {
+            'datalist': datalist03
+          },
+          success: function (response) {
+            if (response.status == 'success') {
+              Swal.fire({
+                text: response.message,
+                icon: "success"
+              }).then(function() {
+                window.location = '/cm/f5/list-virtual-server';
+              })
+            }
+            else{
+              Swal.fire({
+                text: response.message,
+                icon: "error"
+              }).then(function () {
+                $('#submit').prop('disabled', false)
+              })
+            }
+          },
+          error: function (response) {
+            Swal.fire({
+              text: response.responseJSON.message,
+              icon: "error"
+            }).then(function () {
+              $('#submit').text('Submit');
+              $('#submit').prop('disabled', false)
+            })
+          }
+        })
+      })
+    }
+  })
+})
+

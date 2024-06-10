@@ -225,7 +225,7 @@ class CheckpointRuleUpdateView(UpdateView):
 class F5DeviceCreateView(CreateView):
     model = F5Device
     form_class = F5DeviceForm
-    template_name = "f5/update_device.html"
+    template_name = "f5/create_device.html"
     success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
@@ -275,6 +275,50 @@ class F5DeviceListView(ListView):
     model = F5Device
     context_object_name = 'objects'
     template_name = "f5/list_device.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+
+class F5CreateVirtualServerUpdateView(UpdateView):
+    model = F5CreateVirtualServer
+    form_class = F5CreateVirtualServerForm
+    template_name = "f5/update_virtual_server.html"
+    success_url = '/cm/f5/list-virtual-server'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class F5CreateVirtualServerDeleteView(DeleteView):
+    model = F5CreateVirtualServer
+    template_name = 'f5/list_virtual_server.html'
+    success_url = '/cm/f5/list-virtual-server'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class F5CreateVirtualServerListView(ListView):
+    model = F5CreateVirtualServer
+    context_object_name = 'objects'
+    template_name = "f5/list_virtual_server.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

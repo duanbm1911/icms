@@ -20,5 +20,8 @@ urlpatterns = [
     path('f5/list-device', F5DeviceListView.as_view()),
     path('f5/objects/create-device', F5DeviceCreateView.as_view()),
     path('f5/objects/update-device/<int:pk>', F5DeviceUpdateView.as_view()),
-    path('f5/objects/delete-device/<int:pk>', F5DeviceDeleteView.as_view())
+    path('f5/objects/delete-device/<int:pk>', F5DeviceDeleteView.as_view()),
+    path('f5/list-virtual-server', F5CreateVirtualServerListView.as_view()),
+    path('f5/objects/update-virtual-server/<int:pk>', F5CreateVirtualServerUpdateView.as_view()),
+    path('f5/objects/delete-virtual-server/<int:pk>', F5CreateVirtualServerDeleteView.as_view())
 ]

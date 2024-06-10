@@ -23,5 +23,6 @@ urlpatterns = [
     path('cm/checkpoint/create-rule', views.cm_checkpoint_create_rule),
     path('cm/checkpoint/get-list-policy', views.cm_checkpoint_get_list_policy),
     path('cm/checkpoint/get-list-rule', views.cm_checkpoint_get_list_rule),
-    path('cm/checkpoint/update-rule-status', views.cm_checkpoint_update_rule_status)
+    path('cm/checkpoint/update-rule-status', views.cm_checkpoint_update_rule_status),
+    path('cm/f5/get-list-device', views.cm_f5_get_list_device)
 ]

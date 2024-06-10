@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
-{% block title %}ICMS | List F5 Device{% endblock title %}
+{% block title %}ICMS | List Virtual Server{% endblock title %}
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="table-responsive">
         <table class="table table-hover table-bordered" id="list-device-table">
             <thead>
-                <th>Device IP</th>
-                <th>Device name</th>
+                <th>F5 Device name</th>
+                <th>Service Name</th>
+                <th>VS name</th>
+                <th>VS IP</th>
+                <th>Pool name</th>
+                <th>Pool member</th>
                 <th>SNAT name</th>
+                <th>User created</th>
                 <th>Action</th>
                 </tr>
             </thead>
@@ -15,9 +20,14 @@
 
                 {% for obj in objects %}
                 <tr>
-                    <td>{{ obj.device_ip }}</td>
-                    <td>{{ obj.device_name }}</td>
+                    <td>{{ obj.f5_device_ip.device_name }}</td>
+                    <td>{{ obj.service_name }}</td>
+                    <td>{{ obj.vs_name }}</td>
+                    <td>{{ obj.vs_ip }}:{{ obj.vs_port }}</td>
+                    <td>{{ obj.pool_name }}</td>
+                    <td>{{ obj.pool_member }}</td>
                     <td>{{ obj.snat_name }}</td>
+                    <td>{{ obj.user_created }}</td>
                     <td>
                         <a href="/cm/f5/objects/update-device/{{ obj.id }}"><span
                                 class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
