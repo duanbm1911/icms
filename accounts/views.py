@@ -66,13 +66,12 @@ def login(request):
         if login_failed_count <= 5:
             retries_login_count = 5 - login_failed_count
             user = authenticate(username=username, password=password)
-            if user is not None:
-                verify_otp_result = verify_otp(user, otp)
-                if verify_otp_result:
-                    auth_login(request, user)
-                    login_failed = ClientLoginFailedSession.objects.filter(client_ip=client_ip, username=username)
-                    login_failed.delete()
-                    return redirect('/')
+            verify_otp_result = verify_otp(user, otp)
+            if user is not None and verify_otp_result:
+                auth_login(request, user)
+                login_failed = ClientLoginFailedSession.objects.filter(client_ip=client_ip, username=username)
+                login_failed.delete()
+                return redirect('/')
             else:
                 if login_failed_count <= 5:
                     if getlist > 0:
