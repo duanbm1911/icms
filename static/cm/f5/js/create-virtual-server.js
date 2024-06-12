@@ -9,7 +9,7 @@ $(document).ready(function () {
       var myDataGrid = new Handsontable(placeholder, {
         data: datalist01,
         rowHeaders: true,
-        colWidths: 220,
+        colWidths: 200,
         rowHeights: 100,
         colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile'],
         manualColumnResize: true,
@@ -19,7 +19,34 @@ $(document).ready(function () {
             source: datalist02,
             strict: true,
             allowInvalid: false
-          }, {}, {}, {}, {}, {}
+          }, {}, {}, {}, {
+            type: 'autocomplete',
+            source (query, process) {
+              let row = this.row
+              let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
+              $.ajax({
+              type: "GET",
+              url: '/api/cm/f5/get-list-client-ssl-profile?f5_device_ip=' + f5_device_ip,
+              success: function (response) {
+                process(response.datalist)
+              }
+            })
+          },
+          },
+          {
+            type: 'autocomplete',
+            source (query, process) {
+              let row = this.row
+              let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
+              $.ajax({
+              type: "GET",
+              url: '/api/cm/f5/get-list-server-ssl-profile?f5_device_ip=' + f5_device_ip,
+              success: function (response) {
+                process(response.datalist)
+              }
+            })
+          },
+          }
         ],
         autoWrapRow: true,
         autoWrapCol: true

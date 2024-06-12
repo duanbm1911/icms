@@ -683,9 +683,78 @@ def cm_checkpoint_update_rule_status(request):
 def cm_f5_get_list_device(request):
     if request.user.groups.filter(name='ADMIN').exists():
         if request.method == 'GET':
-            datalist = F5Device.objects.all().values_list('device_ip', flat=True)
+            datalist = F5Device.objects.all().values_list('f5_device_ip', flat=True)
             return JsonResponse({'data': list(datalist)}, status=200)
         else:
             return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     else:
         return JsonResponse({'erorr': 'forbidden'}, status=403)
+    
+    
+@login_required()
+@csrf_exempt
+def cm_f5_create_virtual_server(request):
+    try:
+        if request.user.groups.filter(name='ADMIN').exists():
+            if request.method == 'POST':
+                list_obj = list(request.POST)
+                list_error_message = str()
+                list_rule = list()
+                status = 'Created'
+                user_created = request.user
+                for obj in list_obj:
+                    index = list_obj.index(obj)
+                    data = request.POST.getlist(obj)
+                    print(index, data)
+                    # error_message = check_access_rule_input(data, index)
+
+                    # else:
+                        # list_error_message += error_message + '\n'
+                if list_error_message:
+                    return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
+                else:
+                    # for item in list_rule:
+                    #     model = CheckpointRule(
+                    #         policy=CheckpointPolicy.objects.get(policy=item[0]),
+                    #         description=item[1],
+                    #         source=item[2],
+                    #         destination=item[3],
+                    #         protocol=item[4],
+                    #         schedule=item[5],
+                    #         status=item[6],
+                    #         user_created=item[7],
+                    #     )
+                    #     model.save()
+                    return JsonResponse({'status': 'success', 'message': 'Create virtual server success'}, status=200)
+            else:
+                return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
+        else:
+            return JsonResponse({'erorr': 'forbidden'}, status=403)
+    except Exception as error:
+        return JsonResponse({'status': 'failed', 'message': f'Exception error: {error}'}, status=500)
+    
+    
+@logged_in_or_basicauth()
+def f5_get_list_client_ssl_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5ClientSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
+
+@logged_in_or_basicauth()
+def f5_get_list_server_ssl_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5ServerSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
+
+@login_required()
+@csrf_exempt
+def f5_update_ssl_profile(request):
+    pass

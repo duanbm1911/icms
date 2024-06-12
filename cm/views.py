@@ -323,3 +323,16 @@ class F5CreateVirtualServerListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+
+class F5CreateVirtualServerCreateView(CreateView):
+    model = F5CreateVirtualServer
+    form_class = F5CreateVirtualServerForm
+    template_name = "f5/create_virtual_server.html"
+    success_url = '/cm/f5/objects/list-virtual-server'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='checkpoint/403.html')
+        return super().dispatch(request, *args, **kwargs)

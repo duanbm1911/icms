@@ -24,5 +24,9 @@ urlpatterns = [
     path('cm/checkpoint/get-list-policy', views.cm_checkpoint_get_list_policy),
     path('cm/checkpoint/get-list-rule', views.cm_checkpoint_get_list_rule),
     path('cm/checkpoint/update-rule-status', views.cm_checkpoint_update_rule_status),
-    path('cm/f5/get-list-device', views.cm_f5_get_list_device)
+    path('cm/f5/get-list-device', views.cm_f5_get_list_device),
+    path('cm/f5/create-virtual-server', views.cm_f5_create_virtual_server),
+    path('cm/f5/get-list-client-ssl-profile', views.f5_get_list_client_ssl_profile),
+    path('cm/f5/get-list-server-ssl-profile', views.f5_get_list_server_ssl_profile),
+    path('cm/f5/update-ssl-profile', views.f5_update_ssl_profile)
 ]

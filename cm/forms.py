@@ -53,9 +53,8 @@ class F5DeviceForm(forms.ModelForm):
     class Meta:
         model = F5Device
         fields = [
-            'device_ip',
-            'device_name',
-            'snat_name'
+            'f5_device_ip',
+            'f5_device_name',
         ]
         
 

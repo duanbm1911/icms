@@ -7,7 +7,6 @@
             <thead>
                 <th>Device IP</th>
                 <th>Device name</th>
-                <th>SNAT name</th>
                 <th>Action</th>
                 </tr>
             </thead>
@@ -15,9 +14,8 @@
 
                 {% for obj in objects %}
                 <tr>
-                    <td>{{ obj.device_ip }}</td>
-                    <td>{{ obj.device_name }}</td>
-                    <td>{{ obj.snat_name }}</td>
+                    <td>{{ obj.f5_device_ip }}</td>
+                    <td>{{ obj.f5_device_name }}</td>
                     <td>
                         <a href="/cm/f5/objects/update-device/{{ obj.id }}"><span
                                 class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>

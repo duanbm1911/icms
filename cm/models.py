@@ -37,12 +37,11 @@ class CheckpointRule(models.Model):
     
     
 class F5Device(models.Model):
-    device_ip = models.GenericIPAddressField()
-    device_name = models.CharField(max_length=200)
-    snat_name = models.CharField(max_length=200, blank=True, null=True)
+    f5_device_ip = models.GenericIPAddressField()
+    f5_device_name = models.CharField(max_length=200)
 
     def __str__(self):
-        return str(self.device_ip)
+        return str(self.f5_device_ip)
 
 class F5CreateVirtualServer(models.Model):
     f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
@@ -59,3 +58,26 @@ class F5CreateVirtualServer(models.Model):
     def __str__(self):
         return str(self.vs_ip)
     
+    
+class F5ClientSSLProfile(models.Model):
+    f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    profile_name = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.f5_device_ip)
+    
+    
+class F5ServerSSLProfile(models.Model):
+    f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    profile_name = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.f5_device_ip)
+    
+    
+class F5SNAT(models.Model):
+    f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    snat_name = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.f5_device_ip)
