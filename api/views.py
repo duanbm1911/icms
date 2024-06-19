@@ -740,6 +740,7 @@ def cm_f5_create_virtual_server(request):
                             pool_member=item[3],
                             client_ssl_profile=item[4],
                             server_ssl_profile=item[5],
+                            status=status,
                             user_created=user_created
                         )
                         model.save()

@@ -53,6 +53,8 @@ class F5CreateVirtualServer(models.Model):
     pool_member = models.CharField(max_length=1000)
     client_ssl_profile = models.CharField(max_length=200, blank=True)
     server_ssl_profile = models.CharField(max_length=200, blank=True)
+    status = models.CharField(max_length=200, blank=True)
+    message = models.CharField(max_length=1000, blank=True)
     user_created = models.CharField(max_length=200)
     
     def __str__(self):
