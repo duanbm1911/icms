@@ -15,15 +15,51 @@ def is_domain(domain):
     else:
         return False
 
+def is_number(number):
+    try:
+        int(number)
+        if int(number) < 0 or int(number) > 65536:
+            return False
+        return True
+    except:
+        return False
 
-def check_access_rule_input(data, index):
+def check_pool_member(datalist):
+    for item in datalist:
+        if item.split(':') != [''] and len(item.split(':')) > 1:
+            member_ip = item.split(':')[0]
+            member_port = item.split(':')[1]
+            if not is_ipaddress(member_ip):
+                return False
+            elif not is_number(member_port):
+                return False
+        else:
+            return False
+    return True
+
+def check_virtual_server(data):
+    if data.split(':') != [''] and len(data.split(':')) > 1:
+        vs_ip = data.split(':')[0]
+        vs_port = data.split(':')[1]
+        if not is_ipaddress(vs_ip):
+            return False
+        elif not is_number(vs_port):
+            return False
+        return True
+    else:
+        return False
+
+def check_create_vs_input(data, index):
     rule_index = index + 1
     error_message = str()
-    if data != []:
-      service_name = data[1]
-      virtual_server = data[2]
-      pool_member = data[3]
-      client_profile = data[4]
-      server_profile = data[5]
-      
+    if data:
+        service_name = data[1]
+        virtual_server = data[2]
+        pool_member = data[3].split('\n')
+        if service_name == "":
+            error_message = f'Rule index {rule_index}: Service name is not valid'
+        elif not check_virtual_server(virtual_server):
+            error_message = f'Rule index {rule_index}: Virtual server is not valid'
+        elif not check_pool_member(pool_member):
+            error_message = f'Rule index {rule_index}: Pool member is not valid'
     return error_message

@@ -51,8 +51,8 @@ class F5CreateVirtualServer(models.Model):
     vs_port = models.IntegerField()
     pool_name = models.CharField(max_length=200)
     pool_member = models.CharField(max_length=1000)
-    client_ssl_profile = models.CharField(max_length=200)
-    server_ssl_profile = models.CharField(max_length=200)
+    client_ssl_profile = models.CharField(max_length=200, blank=True)
+    server_ssl_profile = models.CharField(max_length=200, blank=True)
     user_created = models.CharField(max_length=200)
     
     def __str__(self):

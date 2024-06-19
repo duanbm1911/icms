@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from src.cm.checkpoint.func import check_access_rule_input
+from src.cm.f5.func import check_create_vs_input
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -575,7 +576,7 @@ def cm_checkpoint_create_rule(request):
             if request.method == 'POST':
                 list_obj = list(request.POST)
                 list_error_message = str()
-                list_rule = list()
+                datalist = list()
                 status = 'Created'
                 user_created = request.user
                 for obj in list_obj:
@@ -589,7 +590,7 @@ def cm_checkpoint_create_rule(request):
                         destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
                         protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
                         schedule = data[5]
-                        list_rule.append([
+                        datalist.append([
                             policy, 
                             description, 
                             json.dumps(source), 
@@ -604,7 +605,7 @@ def cm_checkpoint_create_rule(request):
                 if list_error_message:
                     return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
                 else:
-                    for item in list_rule:
+                    for item in datalist:
                         model = CheckpointRule(
                             policy=CheckpointPolicy.objects.get(policy=item[0]),
                             description=item[1],
@@ -699,32 +700,49 @@ def cm_f5_create_virtual_server(request):
             if request.method == 'POST':
                 list_obj = list(request.POST)
                 list_error_message = str()
-                list_rule = list()
+                datalist = list()
                 status = 'Created'
                 user_created = request.user
                 for obj in list_obj:
                     index = list_obj.index(obj)
                     data = request.POST.getlist(obj)
-                    print(index, data)
-                    # error_message = check_access_rule_input(data, index)
-
-                    # else:
-                        # list_error_message += error_message + '\n'
+                    error_message = check_create_vs_input(data, index)
+                    if not error_message:
+                        f5_device_ip = data[0]
+                        service_name = data[1]
+                        virtual_server = data[2]
+                        pool_member = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
+                        client_ssl_profile = data[4]
+                        server_ssl_profile = data[5]
+                        datalist.append([
+                            f5_device_ip,
+                            service_name,
+                            virtual_server,
+                            json.dumps(pool_member),
+                            client_ssl_profile,
+                            server_ssl_profile,
+                        ])
+                    else:
+                        list_error_message += error_message + '\n'
                 if list_error_message:
                     return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
                 else:
-                    # for item in list_rule:
-                    #     model = CheckpointRule(
-                    #         policy=CheckpointPolicy.objects.get(policy=item[0]),
-                    #         description=item[1],
-                    #         source=item[2],
-                    #         destination=item[3],
-                    #         protocol=item[4],
-                    #         schedule=item[5],
-                    #         status=item[6],
-                    #         user_created=item[7],
-                    #     )
-                    #     model.save()
+                    for item in datalist:
+                        vs_ip = item[2].split(':')[0]
+                        vs_port = item[2].split(':')[1]
+                        model = F5CreateVirtualServer(
+                            f5_device_ip=F5Device.objects.get(f5_device_ip=item[0]),
+                            service_name=item[1],
+                            vs_ip = vs_ip,
+                            vs_port = vs_port,
+                            vs_name=f'{service_name}-{vs_ip}-{vs_port}-vs',
+                            pool_name=f'{service_name}-{vs_ip}-{vs_port}-pool',
+                            pool_member=item[3],
+                            client_ssl_profile=item[4],
+                            server_ssl_profile=item[5],
+                            user_created=user_created
+                        )
+                        model.save()
                     return JsonResponse({'status': 'success', 'message': 'Create virtual server success'}, status=200)
             else:
                 return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
