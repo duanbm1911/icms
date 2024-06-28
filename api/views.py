@@ -840,8 +840,6 @@ def f5_update_irule_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-
-
 @logged_in_or_basicauth()
 @csrf_exempt
 def f5_update_waf_profile(request):
@@ -860,7 +858,7 @@ def f5_update_waf_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
-# @logged_in_or_basicauth()
+@logged_in_or_basicauth()
 @csrf_exempt
 def f5_update_virtual_server_status(request):
     if request.method == 'POST':
@@ -880,7 +878,6 @@ def f5_update_virtual_server_status(request):
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
-
 
 @logged_in_or_basicauth()
 @csrf_exempt
