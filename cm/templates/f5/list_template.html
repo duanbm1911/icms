@@ -1,19 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}ICMS | List Virtual Server{% endblock title %}
+{% block title %}ICMS | List F5 Template{% endblock title %}
 {% block content %}
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="table-responsive">
-        <table class="table table-hover table-bordered" id="list-virtual-server-table">
+        <table class="table table-hover table-bordered" id="list-template-table">
             <thead>
-                <th>F5 device</th>
-                <th>F5 template</th>
-                <th>Service</th>
-                <th>VS IP</th>
-                <th>Pool member</th>
-                <th>Client profile</th>
-                <th>Server profile</th>
-                <th>Status</th>
-                <th>User created</th>
+                <th>Template name</th>
                 <th>Action</th>
                 </tr>
             </thead>
@@ -21,19 +13,13 @@
 
                 {% for obj in objects %}
                 <tr>
-                    <td>{{ obj.f5_device_ip.f5_device_ip }}</td>
-                    <td>{{ obj.f5_template.template_name }}</td>
-                    <td>{{ obj.service_name }}</td>
-                    <td>{{ obj.vs_ip }}:{{ obj.vs_port }}</td>
-                    <td>{{ obj.pool_member }}</td>
-                    <td>{{ obj.client_ssl_profile }}</td>
-                    <td>{{ obj.server_ssl_profile }}</td>
-                    <td>{{ obj.status }}</td>
-                    <td>{{ obj.user_created }}</td>
+                    <td>{{ obj.template_name }}</td>
                     <td>
-                        <a href="/cm/f5/objects/update-virtual-server/{{ obj.id }}"><span
-                                class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
-                        <a data-toggle="modal" href='#delete-virtual-server-modal' id="{{ obj.id }}"><span
+                        <a href="/cm/f5/objects/update-template/{{ obj.id }}"><span class="glyphicon glyphicon-wrench"
+                                aria-hidden="true"></span></a>
+                        <a href="/cm/f5/objects/detail-template/{{ obj.id }}"><span
+                                class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a data-toggle="modal" href='#delete-template-modal' id="{{ obj.id }}"><span
                                 class="glyphicon glyphicon-trash" aria-hidden="true" id="{{ obj.id }}"></span></a>
                     </td>
                 </tr>
@@ -44,17 +30,17 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="delete-virtual-server-modal">
+<div class="modal fade" id="delete-template-modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action method="post" id='delete-virtual-server-form'>
+            <form action method="post" id='delete-template-form'>
                 {% csrf_token %}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Delete virtual server</h4>
+                    <h4 class="modal-title">Delete template</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure to delete this virtual server?</p>
+                    <p>Are you sure to delete this template?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -74,7 +60,7 @@
 
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
-<script src="/static/cm/f5/js/list-virtual-server.js"></script>
+<script src="/static/cm/f5/js/list-template.js"></script>
 <script src="/static/core/js/sweet-alert.js"></script>
 {% if messages %}
 {% for message in messages %}

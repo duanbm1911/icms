@@ -28,5 +28,11 @@ urlpatterns = [
     path('cm/f5/create-virtual-server', views.cm_f5_create_virtual_server),
     path('cm/f5/get-list-client-ssl-profile', views.f5_get_list_client_ssl_profile),
     path('cm/f5/get-list-server-ssl-profile', views.f5_get_list_server_ssl_profile),
-    path('cm/f5/update-ssl-profile', views.f5_update_ssl_profile)
+    path('cm/f5/update-client-ssl-profile', views.f5_update_client_ssl_profile),
+    path('cm/f5/update-server-ssl-profile', views.f5_update_server_ssl_profile),
+    path('cm/f5/update-irule-profile', views.f5_update_irule_profile),
+    path('cm/f5/update-waf-profile', views.f5_update_waf_profile),
+    path('cm/f5/get-list-template', views.f5_get_list_template),
+    path('cm/f5/get-list-virtual-server', views.f5_get_list_virtual_server),
+    path('cm/f5/update-virtual-server-status', views.f5_update_virtual_server_status)
 ]

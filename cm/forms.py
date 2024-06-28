@@ -64,6 +64,7 @@ class F5CreateVirtualServerForm(forms.ModelForm):
         model = F5CreateVirtualServer
         fields = [
             'f5_device_ip',
+            'f5_template',
             'service_name',
             'vs_name',
             'vs_ip',
@@ -72,3 +73,41 @@ class F5CreateVirtualServerForm(forms.ModelForm):
             'client_ssl_profile',
             'server_ssl_profile'
         ]
+        
+
+class F5TemplateForm(forms.ModelForm):
+    
+    irules = forms.ModelMultipleChoiceField(
+        queryset=F5Irule.objects.all(),
+        to_field_name='irule_name',
+        required=False
+    )
+    waf_profile = forms.ModelChoiceField(
+        queryset=F5WafProfile.objects.all(),
+        to_field_name='waf_profile',
+        required=False
+    )
+
+    class Meta:
+        model = F5Template
+        fields = [
+            'template_name',
+            'protocol',
+            'client_protocol_profile',
+            'server_protocol_profile',
+            'client_http_profile',
+            'server_http_profile',
+            'snat_name',
+            'http_analytics_profile',
+            'tcp_analytics_profile',
+            'http_compression_profile',
+            'web_acceleration_profile',
+            'irules',
+            'waf_profile'
+        ]
+    
+    def clean_waf_profile(self):
+        waf_profile = self.cleaned_data["waf_profile"]
+        if waf_profile == None:
+            waf_profile = str()
+        return waf_profile

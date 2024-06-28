@@ -45,6 +45,7 @@ class F5Device(models.Model):
 
 class F5CreateVirtualServer(models.Model):
     f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    f5_template = models.ForeignKey('F5Template', on_delete=models.PROTECT)
     service_name = models.CharField(max_length=200)
     vs_name = models.CharField(max_length=200)
     vs_ip = models.GenericIPAddressField()
@@ -58,15 +59,15 @@ class F5CreateVirtualServer(models.Model):
     user_created = models.CharField(max_length=200)
     
     def __str__(self):
-        return str(self.vs_ip)
+        return str(self.service_name)
     
-    
+
 class F5ClientSSLProfile(models.Model):
     f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
     profile_name = models.CharField(max_length=200)
     
     def __str__(self):
-        return str(self.f5_device_ip)
+        return str(self.profile_name)
     
     
 class F5ServerSSLProfile(models.Model):
@@ -74,12 +75,37 @@ class F5ServerSSLProfile(models.Model):
     profile_name = models.CharField(max_length=200)
     
     def __str__(self):
-        return str(self.f5_device_ip)
+        return str(self.profile_name)
     
-    
-class F5SNAT(models.Model):
+
+class F5Irule(models.Model):
     f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
-    snat_name = models.CharField(max_length=200)
+    irule_name = models.CharField(max_length=200)
     
     def __str__(self):
-        return str(self.f5_device_ip)
+        return str(self.irule_name)
+
+class F5WafProfile(models.Model):
+    f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    waf_profile = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.waf_profile)
+
+class F5Template(models.Model):
+    template_name = models.CharField(max_length=200, unique=True)
+    protocol = models.CharField(max_length=200, blank=True)
+    client_protocol_profile = models.CharField(max_length=200, blank=True)
+    server_protocol_profile = models.CharField(max_length=200, blank=True)
+    client_http_profile = models.CharField(max_length=200, blank=True)
+    server_http_profile = models.CharField(max_length=200, blank=True)
+    snat_name = models.CharField(max_length=200, blank=True)
+    http_analytics_profile = models.CharField(max_length=200, blank=True)
+    tcp_analytics_profile = models.CharField(max_length=200, blank=True)
+    http_compression_profile = models.CharField(max_length=200, blank=True)
+    web_acceleration_profile = models.CharField(max_length=200, blank=True)
+    irules = models.ManyToManyField(F5Irule, blank=True,  default=None)
+    waf_profile = models.CharField(max_length=200, blank=True, null=True)
+    
+    def __str__(self):
+        return str(self.template_name)

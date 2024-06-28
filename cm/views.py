@@ -334,5 +334,70 @@ class F5CreateVirtualServerCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.groups.filter(name='ADMIN').exists():
-            return render(request, template_name='checkpoint/403.html')
+            return render(request, template_name='f5/403.html')
         return super().dispatch(request, *args, **kwargs)
+    
+
+class F5TemplateUpdateView(UpdateView):
+    model = F5Template
+    form_class = F5TemplateForm
+    template_name = "f5/update_template.html"
+    success_url = '/cm/f5/list-template'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class F5TemplateDeleteView(DeleteView):
+    model = F5Template
+    template_name = 'f5/list_template.html'
+    success_url = '/cm/f5/list-template'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class F5TemplateListView(ListView):
+    model = F5Template
+    context_object_name = 'objects'
+    template_name = "f5/list_template.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+
+class F5TemplateCreateView(CreateView):
+    model = F5Template
+    form_class = F5TemplateForm
+    template_name = "f5/create_template.html"
+    success_url = '/cm/f5/list-template'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
+    
+class F5TemplateDetailView(DetailView):
+    model = F5Template
+    template_name = "f5/detail_template.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)

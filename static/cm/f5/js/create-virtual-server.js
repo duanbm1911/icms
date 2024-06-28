@@ -9,9 +9,9 @@ $(document).ready(function () {
       var myDataGrid = new Handsontable(placeholder, {
         data: datalist01,
         rowHeaders: true,
-        colWidths: 200,
+        colWidths: 180,
         rowHeights: 100,
-        colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile'],
+        colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile', 'F5 template'],
         manualColumnResize: true,
         columns: [
           {
@@ -21,31 +21,49 @@ $(document).ready(function () {
             allowInvalid: false
           }, {}, {}, {}, {
             type: 'autocomplete',
-            source (query, process) {
+            strict: true,
+            allowInvalid: false,
+            source(query, process) {
               let row = this.row
               let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
               $.ajax({
-              type: "GET",
-              url: '/api/cm/f5/get-list-client-ssl-profile?f5_device_ip=' + f5_device_ip,
-              success: function (response) {
-                process(response.datalist)
-              }
-            })
-          },
+                type: "GET",
+                url: '/api/cm/f5/get-list-client-ssl-profile?f5_device_ip=' + f5_device_ip,
+                success: function (response) {
+                  process(response.datalist)
+                }
+              })
+            },
           },
           {
             type: 'autocomplete',
-            source (query, process) {
+            strict: true,
+            allowInvalid: false,
+            source(query, process) {
               let row = this.row
               let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
               $.ajax({
-              type: "GET",
-              url: '/api/cm/f5/get-list-server-ssl-profile?f5_device_ip=' + f5_device_ip,
-              success: function (response) {
-                process(response.datalist)
-              }
-            })
+                type: "GET",
+                url: '/api/cm/f5/get-list-server-ssl-profile?f5_device_ip=' + f5_device_ip,
+                success: function (response) {
+                  process(response.datalist)
+                }
+              })
+            }
           },
+          {
+            type: 'autocomplete',
+            strict: true,
+            allowInvalid: false,
+            source(query, process) {
+              $.ajax({
+                type: "GET",
+                url: '/api/cm/f5/get-list-template',
+                success: function (response) {
+                  process(response.datalist)
+                }
+              })
+            }
           }
         ],
         autoWrapRow: true,
@@ -70,11 +88,11 @@ $(document).ready(function () {
               Swal.fire({
                 text: response.message,
                 icon: "success"
-              }).then(function() {
+              }).then(function () {
                 window.location = '/cm/f5/list-virtual-server';
               })
             }
-            else{
+            else {
               Swal.fire({
                 text: response.message,
                 icon: "error"

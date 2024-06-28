@@ -24,5 +24,10 @@ urlpatterns = [
     path('f5/list-virtual-server', F5CreateVirtualServerListView.as_view()),
     path('f5/objects/create-virtual-server', F5CreateVirtualServerCreateView.as_view()),
     path('f5/objects/update-virtual-server/<int:pk>', F5CreateVirtualServerUpdateView.as_view()),
-    path('f5/objects/delete-virtual-server/<int:pk>', F5CreateVirtualServerDeleteView.as_view())
+    path('f5/objects/delete-virtual-server/<int:pk>', F5CreateVirtualServerDeleteView.as_view()),
+    path('f5/list-template', F5TemplateListView.as_view()),
+    path('f5/objects/create-template', F5TemplateCreateView.as_view()),
+    path('f5/objects/detail-template/<int:pk>', F5TemplateDetailView.as_view()),
+    path('f5/objects/update-template/<int:pk>', F5TemplateUpdateView.as_view()),
+    path('f5/objects/delete-template/<int:pk>', F5TemplateDeleteView.as_view())
 ]
