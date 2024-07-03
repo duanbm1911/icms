@@ -784,6 +784,37 @@ def f5_get_list_template(request):
         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    
+@logged_in_or_basicauth()
+def f5_get_list_waf_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5WafProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('waf_profile', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    
+    
+@logged_in_or_basicauth()
+def f5_get_list_irule_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5Irule.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('irule_name', flat=True)
+        datalist = [
+                {
+                  'id': "1",
+                  'label': "Catuai"
+                }, {
+                  'id': "2",
+                  'label': "Bourbone"
+                }, {
+                  'id': "3",
+                  'label': "Geisha"
+                }
+              ]
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
 @logged_in_or_basicauth()

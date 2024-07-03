@@ -33,6 +33,8 @@ urlpatterns = [
     path('cm/f5/update-irule-profile', views.f5_update_irule_profile),
     path('cm/f5/update-waf-profile', views.f5_update_waf_profile),
     path('cm/f5/get-list-template', views.f5_get_list_template),
+    path('cm/f5/get-list-waf-profile', views.f5_get_list_waf_profile),
+    path('cm/f5/get-list-irule-profile', views.f5_get_list_irule_profile),
     path('cm/f5/get-list-virtual-server', views.f5_get_list_virtual_server),
     path('cm/f5/update-virtual-server-status', views.f5_update_virtual_server_status)
 ]

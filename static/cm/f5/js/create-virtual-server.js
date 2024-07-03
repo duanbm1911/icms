@@ -1,118 +1,164 @@
 $(document).ready(function () {
-  var datalist01 = [[]];
-  $.ajax({
-    type: "GET",
-    url: '/api/cm/f5/get-list-device',
-    success: function (response) {
-      var datalist02 = response.data
-      var placeholder = document.getElementById('dataTable');
-      var myDataGrid = new Handsontable(placeholder, {
-        data: datalist01,
-        rowHeaders: true,
-        colWidths: 180,
-        rowHeights: 100,
-        colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile', 'F5 template'],
-        manualColumnResize: true,
-        columns: [
-          {
-            type: 'autocomplete',
-            source: datalist02,
-            strict: true,
-            allowInvalid: false
-          }, {}, {}, {}, {
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source(query, process) {
-              let row = this.row
-              let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
-              $.ajax({
-                type: "GET",
-                url: '/api/cm/f5/get-list-client-ssl-profile?f5_device_ip=' + f5_device_ip,
-                success: function (response) {
-                  process(response.datalist)
-                }
-              })
-            },
-          },
-          {
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source(query, process) {
-              let row = this.row
-              let f5_device_ip = myDataGrid.getDataAtCell(row, 0)
-              $.ajax({
-                type: "GET",
-                url: '/api/cm/f5/get-list-server-ssl-profile?f5_device_ip=' + f5_device_ip,
-                success: function (response) {
-                  process(response.datalist)
-                }
-              })
+  var initData = [[]];
+  var container = document.getElementById('dataTable');
+  var hot = new Handsontable(container, {
+    data: initData,
+    rowHeaders: true,
+    colWidths: 250,
+    rowHeights: 100,
+    height: 400,
+    colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile', 'F5 template', 'Irule profile', 'WAF profile'],
+    manualColumnResize: true,
+    columns: [
+      {
+        type: 'autocomplete',
+        source(query, process) {
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-device',
+            success: function (response) {
+              process(response.data)
             }
-          },
-          {
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source(query, process) {
-              $.ajax({
-                type: "GET",
-                url: '/api/cm/f5/get-list-template',
-                success: function (response) {
-                  process(response.datalist)
-                }
-              })
+          })
+        },
+        strict: true,
+        allowInvalid: false
+      }, {}, {}, {}, {
+        type: 'autocomplete',
+        allowInvalid: false,
+        source(query, process) {
+          let row = this.row
+          let f5_device_ip = hot.getDataAtCell(row, 0)
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-client-ssl-profile?f5_device_ip=' + f5_device_ip,
+            success: function (response) {
+              process(response.datalist)
             }
-          }
-        ],
-        autoWrapRow: true,
-        autoWrapCol: true
-      });
-      document.querySelector('#add').addEventListener('click', function () {
-        var col = myDataGrid.countRows();
-        myDataGrid.alter('insert_row_below', col, 1)
-      })
-      document.querySelector('#submit').addEventListener('click', function () {
-        $('#submit').prop('disabled', true)
-        let datalist03 = myDataGrid.getData()
-        $.ajax({
-          type: "POST",
-          url: '/api/cm/f5/create-virtual-server',
-          dataType: "json",
-          data: {
-            'datalist': datalist03
-          },
-          success: function (response) {
-            if (response.status == 'success') {
-              Swal.fire({
-                text: response.message,
-                icon: "success"
-              }).then(function () {
-                window.location = '/cm/f5/list-virtual-server';
-              })
+          })
+        },
+      },
+      {
+        type: 'autocomplete',
+        allowInvalid: false,
+        source(query, process) {
+          let row = this.row
+          let f5_device_ip = hot.getDataAtCell(row, 0)
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-server-ssl-profile?f5_device_ip=' + f5_device_ip,
+            success: function (response) {
+              process(response.datalist)
             }
-            else {
-              Swal.fire({
-                text: response.message,
-                icon: "error"
-              }).then(function () {
-                $('#submit').prop('disabled', false)
-              })
+          })
+        }
+      },
+      {
+        type: 'autocomplete',
+        strict: true,
+        allowInvalid: false,
+        source(query, process) {
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-template',
+            success: function (response) {
+              process(response.datalist)
             }
-          },
-          error: function (response) {
-            Swal.fire({
-              text: response.responseJSON.message,
-              icon: "error"
-            }).then(function () {
-              $('#submit').text('Submit');
-              $('#submit').prop('disabled', false)
-            })
-          }
-        })
-      })
+          })
+        }
+      },
+      {
+        renderer: customDropdownRenderer,
+        editor: "chosen",
+        chosenOptions: {
+          multiple: true,
+          data: []
+        }
+      },
+      {
+        type: 'autocomplete',
+        allowInvalid: false,
+        source(query, process) {
+          let row = this.row
+          let f5_device_ip = hot.getDataAtCell(row, 0)
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-waf-profile?f5_device_ip=' + f5_device_ip,
+            success: function (response) {
+              process(response.datalist)
+            }
+          })
+        }
+      }
+    ],
+    autoWrapRow: true,
+    autoWrapCol: true
+  });
+  function customDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
+    var selectedId;
+    var f5_device_ip = instance.getDataAtRow(row)[0]
+    console.log(f5_device_ip)
+    var optionsList = cellProperties.chosenOptions.data;
+    if (typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
+      Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
+      return td;
     }
+    var values = (value + "").split(",");
+    value = [];
+    for (var index = 0; index < optionsList.length; index++) {
+
+      if (values.indexOf(optionsList[index].id + "") > -1) {
+        selectedId = optionsList[index].id;
+        value.push(optionsList[index].label);
+      }
+    }
+    value = value.join(", ");
+
+    Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
+    return td;
+  }
+  document.querySelector('#add').addEventListener('click', function () {
+    var col = hot.countRows();
+    hot.alter('insert_row', col, 1)
+  })
+  document.querySelector('#submit').addEventListener('click', function () {
+    $('#submit').prop('disabled', true)
+    let datalist = hot.getData()
+    $.ajax({
+      type: "POST",
+      url: '/api/cm/f5/create-virtual-server',
+      dataType: "json",
+      data: {
+        'datalist': datalist
+      },
+      success: function (response) {
+        if (response.status == 'success') {
+          Swal.fire({
+            text: response.message,
+            icon: "success"
+          }).then(function () {
+            window.location = '/cm/f5/list-virtual-server';
+          })
+        }
+        else {
+          Swal.fire({
+            text: response.message,
+            icon: "error"
+          }).then(function () {
+            $('#submit').prop('disabled', false)
+          })
+        }
+      },
+      error: function (response) {
+        Swal.fire({
+          text: response.responseJSON.message,
+          icon: "error"
+        }).then(function () {
+          $('#submit').text('Submit');
+          $('#submit').prop('disabled', false)
+        })
+      }
+    })
   })
 })
 
