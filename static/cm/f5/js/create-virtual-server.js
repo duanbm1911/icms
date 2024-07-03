@@ -97,26 +97,33 @@ $(document).ready(function () {
   function customDropdownRenderer(instance, td, row, col, prop, value, cellProperties) {
     var selectedId;
     var f5_device_ip = instance.getDataAtRow(row)[0]
-    console.log(f5_device_ip)
+    $.ajax({
+      type: "GET",
+      url: '/api/cm/f5/get-list-irule-profile?f5_device_ip=' + f5_device_ip,
+      success: function (response) {
+        cellProperties.chosenOptions.data = response.datalist
+      }
+    })
     var optionsList = cellProperties.chosenOptions.data;
-    if (typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
-      Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
-      return td;
+    if(typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
+        Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
+        return td;
     }
+
     var values = (value + "").split(",");
     value = [];
     for (var index = 0; index < optionsList.length; index++) {
 
-      if (values.indexOf(optionsList[index].id + "") > -1) {
-        selectedId = optionsList[index].id;
-        value.push(optionsList[index].label);
-      }
+        if (values.indexOf(optionsList[index].id + "") > -1) {
+            selectedId = optionsList[index].id;
+            value.push(optionsList[index].label);
+        }
     }
     value = value.join(", ");
 
     Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
     return td;
-  }
+  };
   document.querySelector('#add').addEventListener('click', function () {
     var col = hot.countRows();
     hot.alter('insert_row', col, 1)
@@ -124,6 +131,7 @@ $(document).ready(function () {
   document.querySelector('#submit').addEventListener('click', function () {
     $('#submit').prop('disabled', true)
     let datalist = hot.getData()
+    console.log(datalist)
     $.ajax({
       type: "POST",
       url: '/api/cm/f5/create-virtual-server',

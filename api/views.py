@@ -798,20 +798,14 @@ def f5_get_list_waf_profile(request):
 @logged_in_or_basicauth()
 def f5_get_list_irule_profile(request):
     if request.method == 'GET':
+        datalist = list()
         f5_device_ip = request.GET.get('f5_device_ip', None)
-        datalist = F5Irule.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('irule_name', flat=True)
-        datalist = [
-                {
-                  'id': "1",
-                  'label': "Catuai"
-                }, {
-                  'id': "2",
-                  'label': "Bourbone"
-                }, {
-                  'id': "3",
-                  'label': "Geisha"
-                }
-              ]
+        objects = F5Irule.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('irule_name', flat=True)
+        for item in list(objects):
+            datalist.append({
+                'id': item,
+                'label': item
+            })
         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)

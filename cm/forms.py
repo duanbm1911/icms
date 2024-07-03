@@ -71,22 +71,13 @@ class F5CreateVirtualServerForm(forms.ModelForm):
             'vs_port',
             'pool_member',
             'client_ssl_profile',
-            'server_ssl_profile'
+            'server_ssl_profile',
+            'irules',
+            'waf_profile'
         ]
         
 
 class F5TemplateForm(forms.ModelForm):
-    
-    irules = forms.ModelMultipleChoiceField(
-        queryset=F5Irule.objects.all(),
-        to_field_name='irule_name',
-        required=False
-    )
-    waf_profile = forms.ModelChoiceField(
-        queryset=F5WafProfile.objects.all(),
-        to_field_name='waf_profile',
-        required=False
-    )
 
     class Meta:
         model = F5Template
@@ -102,13 +93,5 @@ class F5TemplateForm(forms.ModelForm):
             'http_analytics_profile',
             'tcp_analytics_profile',
             'http_compression_profile',
-            'web_acceleration_profile',
-            'irules',
-            'waf_profile'
+            'web_acceleration_profile'
         ]
-    
-    def clean_waf_profile(self):
-        waf_profile = self.cleaned_data["waf_profile"]
-        if waf_profile == None:
-            waf_profile = str()
-        return waf_profile

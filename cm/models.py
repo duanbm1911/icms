@@ -54,6 +54,8 @@ class F5CreateVirtualServer(models.Model):
     pool_member = models.CharField(max_length=1000)
     client_ssl_profile = models.CharField(max_length=200, blank=True)
     server_ssl_profile = models.CharField(max_length=200, blank=True)
+    irules = models.CharField(max_length=200, blank=True, null=True)
+    waf_profile = models.CharField(max_length=200, blank=True, null=True)
     status = models.CharField(max_length=200, blank=True)
     message = models.CharField(max_length=1000, blank=True)
     user_created = models.CharField(max_length=200)
@@ -105,8 +107,6 @@ class F5Template(models.Model):
     tcp_analytics_profile = models.CharField(max_length=200, blank=True)
     http_compression_profile = models.CharField(max_length=200, blank=True)
     web_acceleration_profile = models.CharField(max_length=200, blank=True)
-    irules = models.ManyToManyField(F5Irule, blank=True,  default=None)
-    waf_profile = models.CharField(max_length=200, blank=True, null=True)
     
     def __str__(self):
         return str(self.template_name)
