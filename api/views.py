@@ -693,8 +693,8 @@ def cm_f5_get_list_device(request):
         return JsonResponse({'status': 'failed', 'erorr': 'forbidden'}, status=403)
     
     
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def cm_f5_create_virtual_server(request):
     try:
         if request.user.groups.filter(name='ADMIN').exists():
@@ -843,8 +843,8 @@ def f5_get_list_irule_profile(request):
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_client_ssl_profile(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -861,8 +861,8 @@ def f5_update_client_ssl_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_server_ssl_profile(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -879,8 +879,8 @@ def f5_update_server_ssl_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_irule_profile(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -897,8 +897,8 @@ def f5_update_irule_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_waf_profile(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -915,8 +915,8 @@ def f5_update_waf_profile(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_virtual_server_status(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -936,8 +936,8 @@ def f5_update_virtual_server_status(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-@logged_in_or_basicauth()
 @csrf_exempt
+@logged_in_or_basicauth()
 def f5_get_list_virtual_server(request):
     datalist = list()
     if request.method == 'GET':
