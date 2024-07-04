@@ -32,6 +32,7 @@ urlpatterns = [
     path('cm/f5/update-server-ssl-profile', views.f5_update_server_ssl_profile),
     path('cm/f5/update-irule-profile', views.f5_update_irule_profile),
     path('cm/f5/update-waf-profile', views.f5_update_waf_profile),
+    path('cm/f5/update-pool-monitor', views.f5_update_pool_monitor),
     path('cm/f5/get-list-template', views.f5_get_list_template),
     path('cm/f5/get-list-waf-profile', views.f5_get_list_waf_profile),
     path('cm/f5/get-list-irule-profile', views.f5_get_list_irule_profile),

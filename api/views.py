@@ -917,6 +917,26 @@ def f5_update_waf_profile(request):
     
 @csrf_exempt
 @logged_in_or_basicauth()
+def f5_update_pool_monitor(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_pool_monitor in dataset.items():
+            print(f5_device_ip, list_pool_monitor)
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for pool_monitor in list_pool_monitor:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5PoolMemberMonitor.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        pool_monitor=pool_monitor
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+    
+@csrf_exempt
+@logged_in_or_basicauth()
 def f5_update_virtual_server_status(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -956,6 +976,7 @@ def f5_get_list_virtual_server(request):
             client_ssl_profile = obj.client_ssl_profile
             server_ssl_profile = obj.server_ssl_profile
             f5_temp_obj = F5Template.objects.get(template_name=f5_template)
+            partition = f5_temp_obj.partition
             protocol = f5_temp_obj.protocol
             client_protocol_profile = f5_temp_obj.client_protocol_profile
             server_protocol_profile = f5_temp_obj.server_protocol_profile
@@ -982,6 +1003,7 @@ def f5_get_list_virtual_server(request):
                 'pool_lb_method': pool_lb_method,
                 'client_ssl_profile': client_ssl_profile,
                 'server_ssl_profile': server_ssl_profile,
+                'partition': partition,
                 'protocol': protocol,
                 'client_protocol_profile': client_protocol_profile,
                 'server_protocol_profile': server_protocol_profile,
