@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var initData = [[]];
+  var initData = [["","","","","","","","","","",""]];
   var container = document.getElementById('dataTable');
   var hot = new Handsontable(container, {
     data: initData,
@@ -7,7 +7,19 @@ $(document).ready(function () {
     colWidths: 250,
     rowHeights: 100,
     height: 400,
-    colHeaders: ['F5 device', 'Service name', 'Virtual server IP', 'Pool member', 'Client SSL profile', 'Server SSL profile', 'F5 template', 'Irule profile', 'WAF profile'],
+    colHeaders: [
+      'F5 device (required)', 
+      'Service name (required)', 
+      'Virtual server IP (required)', 
+      'Pool member (required)', 
+      'Pool monitor (required)',
+      'Pool LB method (required)',
+      'Client SSL profile', 
+      'Server SSL profile', 
+      'Irule profile', 
+      'WAF profile', 
+      'F5 template (required)'
+    ],
     manualColumnResize: true,
     columns: [
       {
@@ -23,7 +35,40 @@ $(document).ready(function () {
         },
         strict: true,
         allowInvalid: false
-      }, {}, {}, {}, {
+      }, {}, {}, {}, 
+      {
+        type: 'autocomplete',
+        strict: true,
+        allowInvalid: false,
+        source(query, process) {
+          let row = this.row
+          let f5_device_ip = hot.getDataAtCell(row, 0)
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-pool-monitor?f5_device_ip=' + f5_device_ip,
+            success: function (response) {
+              process(response.datalist)
+            }
+          })
+        }
+      },
+      {
+        type: 'autocomplete',
+        strict: true,
+        allowInvalid: false,
+        source(query, process) {
+          let row = this.row
+          let f5_device_ip = hot.getDataAtCell(row, 0)
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-pool-lb-method?f5_device_ip=' + f5_device_ip,
+            success: function (response) {
+              process(response.datalist)
+            }
+          })
+        }
+      },
+      {
         type: 'autocomplete',
         allowInvalid: false,
         source(query, process) {
@@ -54,20 +99,6 @@ $(document).ready(function () {
         }
       },
       {
-        type: 'autocomplete',
-        strict: true,
-        allowInvalid: false,
-        source(query, process) {
-          $.ajax({
-            type: "GET",
-            url: '/api/cm/f5/get-list-template',
-            success: function (response) {
-              process(response.datalist)
-            }
-          })
-        }
-      },
-      {
         renderer: customDropdownRenderer,
         editor: "chosen",
         chosenOptions: {
@@ -89,6 +120,21 @@ $(document).ready(function () {
             }
           })
         }
+      },
+      {
+        type: 'autocomplete',
+        strict: true,
+        allowInvalid: false,
+        allowEmpty: false,
+        source(query, process) {
+          $.ajax({
+            type: "GET",
+            url: '/api/cm/f5/get-list-template',
+            success: function (response) {
+              process(response.datalist)
+            }
+          })
+        }
       }
     ],
     autoWrapRow: true,
@@ -105,9 +151,9 @@ $(document).ready(function () {
       }
     })
     var optionsList = cellProperties.chosenOptions.data;
-    if(typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
-        Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
-        return td;
+    if(typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || optionsList.length === 0 || !optionsList.length) {
+      Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
+      return td;
     }
 
     var values = (value + "").split(",");
@@ -120,10 +166,10 @@ $(document).ready(function () {
         }
     }
     value = value.join(", ");
-
     Handsontable.cellTypes.text.renderer(instance, td, row, col, prop, value, cellProperties);
     return td;
   };
+
   document.querySelector('#add').addEventListener('click', function () {
     var col = hot.countRows();
     hot.alter('insert_row', col, 1)
@@ -131,7 +177,7 @@ $(document).ready(function () {
   document.querySelector('#submit').addEventListener('click', function () {
     $('#submit').prop('disabled', true)
     let datalist = hot.getData()
-    console.log(datalist)
+    console.log(datalist);
     $.ajax({
       type: "POST",
       url: '/api/cm/f5/create-virtual-server',

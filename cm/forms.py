@@ -70,6 +70,8 @@ class F5CreateVirtualServerForm(forms.ModelForm):
             'vs_ip',
             'vs_port',
             'pool_member',
+            'pool_monitor',
+            'pool_lb_method',
             'client_ssl_profile',
             'server_ssl_profile',
             'irules',

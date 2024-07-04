@@ -713,16 +713,26 @@ def cm_f5_create_virtual_server(request):
                         service_name = data[1]
                         virtual_server = data[2]
                         pool_member = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
-                        client_ssl_profile = data[4]
-                        server_ssl_profile = data[5]
-                        f5_template = data[6]
+                        pool_monitor = data[4]
+                        pool_lb_method = data[5]
+                        client_ssl_profile = data[6]
+                        server_ssl_profile = data[7]
+                        irules = []
+                        if data[8]:
+                            irules = [i for i in data[8].split(',')]
+                        waf_profile = data[9]
+                        f5_template = data[10]
                         datalist.append([
                             f5_device_ip,
                             service_name,
                             virtual_server,
                             json.dumps(pool_member),
+                            pool_monitor,
+                            pool_lb_method,
                             client_ssl_profile,
                             server_ssl_profile,
+                            json.dumps(irules),
+                            waf_profile,
                             f5_template
                         ])
                     else:
@@ -741,9 +751,13 @@ def cm_f5_create_virtual_server(request):
                             vs_name=f'{service_name}-{vs_ip}-{vs_port}-vs',
                             pool_name=f'{service_name}-{vs_ip}-{vs_port}-pool',
                             pool_member=item[3],
-                            client_ssl_profile=item[4],
-                            server_ssl_profile=item[5],
-                            f5_template=F5Template.objects.get(template_name=f5_template),
+                            pool_monitor=item[4],
+                            pool_lb_method=item[5],
+                            client_ssl_profile=item[6],
+                            server_ssl_profile=item[7],
+                            irules=item[8],
+                            waf_profile=item[9],
+                            f5_template=F5Template.objects.get(template_name=item[10]),
                             status=status,
                             user_created=user_created
                         )
@@ -772,6 +786,24 @@ def f5_get_list_server_ssl_profile(request):
     if request.method == 'GET':
         f5_device_ip = request.GET.get('f5_device_ip', None)
         datalist = F5ServerSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    
+@logged_in_or_basicauth()
+def f5_get_list_pool_monitor(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5PoolMemberMonitor.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('pool_monitor', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
+
+@logged_in_or_basicauth()
+def f5_get_list_pool_lb_method(request):
+    if request.method == 'GET':
+        datalist = F5PoolMemberMethod.objects.all().values_list('pool_method', flat=True)
         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
@@ -896,10 +928,10 @@ def f5_update_virtual_server_status(request):
                 F5CreateVirtualServer.objects.update_or_create(
                     id=task_id,
                     defaults={
-                            'status': status,
-                            'message': message
+                        'status': status,
+                        'message': message
                         }
-                )
+                    )
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
@@ -919,6 +951,8 @@ def f5_get_list_virtual_server(request):
             vs_port = obj.vs_port
             pool_name = obj.pool_name
             pool_member = json.loads(obj.pool_member)
+            pool_monitor = obj.pool_monitor
+            pool_lb_method = obj.pool_lb_method
             client_ssl_profile = obj.client_ssl_profile
             server_ssl_profile = obj.server_ssl_profile
             f5_temp_obj = F5Template.objects.get(template_name=f5_template)
@@ -932,8 +966,10 @@ def f5_get_list_virtual_server(request):
             tcp_analytics_profile = f5_temp_obj.tcp_analytics_profile
             http_compression_profile = f5_temp_obj.http_compression_profile
             web_acceleration_profile = f5_temp_obj.web_acceleration_profile
-            waf_profile = f5_temp_obj.waf_profile
-            irules = list(f5_temp_obj.irules.all().values_list('irule_name', flat=True))
+            waf_profile = obj.waf_profile
+            irules = []
+            if obj.irules is not None:
+                irules = json.loads(obj.irules)
             datalist.append({
                 'task_id': task_id,
                 'f5_device_ip': f5_device_ip,
@@ -942,6 +978,8 @@ def f5_get_list_virtual_server(request):
                 'vs_port': vs_port,
                 'pool_name': pool_name,
                 'pool_member': pool_member,
+                'pool_monitor': pool_monitor,
+                'pool_lb_method': pool_lb_method,
                 'client_ssl_profile': client_ssl_profile,
                 'server_ssl_profile': server_ssl_profile,
                 'protocol': protocol,

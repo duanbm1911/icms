@@ -53,13 +53,25 @@ def check_create_vs_input(data, index):
     rule_index = index + 1
     error_message = str()
     if data:
+        f5_device_ip = data[0]
         service_name = data[1]
         virtual_server = data[2]
         pool_member = data[3].split('\n')
-        if service_name == "":
+        pool_monitor= data[4]
+        pool_lb_method = data[5]
+        f5_template_name = data[8]
+        if f5_device_ip == "":
+            error_message = f'Rule index {rule_index}: F5 device is not valid'
+        elif service_name == "":
             error_message = f'Rule index {rule_index}: Service name is not valid'
         elif not check_virtual_server(virtual_server):
             error_message = f'Rule index {rule_index}: Virtual server is not valid'
         elif not check_pool_member(pool_member):
             error_message = f'Rule index {rule_index}: Pool member is not valid'
+        elif pool_monitor == "":
+            error_message = f'Rule index {rule_index}: Pool monitor profile is not valid'
+        elif pool_lb_method == "":
+            error_message = f'Rule index {rule_index}: Pool LB method is not valid'
+        elif f5_template_name == "":
+            error_message = f'Rule index {rule_index}: F5 template name is not valid'
     return error_message

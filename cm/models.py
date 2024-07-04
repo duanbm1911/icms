@@ -52,10 +52,12 @@ class F5CreateVirtualServer(models.Model):
     vs_port = models.IntegerField()
     pool_name = models.CharField(max_length=200)
     pool_member = models.CharField(max_length=1000)
+    pool_monitor = models.CharField(max_length=1000)
+    pool_lb_method = models.CharField(max_length=1000)
     client_ssl_profile = models.CharField(max_length=200, blank=True)
     server_ssl_profile = models.CharField(max_length=200, blank=True)
-    irules = models.CharField(max_length=200, blank=True, null=True)
-    waf_profile = models.CharField(max_length=200, blank=True, null=True)
+    irules = models.CharField(max_length=200, blank=True)
+    waf_profile = models.CharField(max_length=200, blank=True)
     status = models.CharField(max_length=200, blank=True)
     message = models.CharField(max_length=1000, blank=True)
     user_created = models.CharField(max_length=200)
@@ -93,6 +95,19 @@ class F5WafProfile(models.Model):
     
     def __str__(self):
         return str(self.waf_profile)
+    
+class F5PoolMemberMonitor(models.Model):
+    f5_device_ip = models.ForeignKey('F5Device', on_delete=models.PROTECT)
+    pool_monitor = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.pool_monitor)
+    
+class F5PoolMemberMethod(models.Model):
+    pool_method = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.pool_method)
 
 class F5Template(models.Model):
     template_name = models.CharField(max_length=200, unique=True)
