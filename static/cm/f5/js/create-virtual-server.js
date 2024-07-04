@@ -29,7 +29,7 @@ $(document).ready(function () {
             type: "GET",
             url: '/api/cm/f5/get-list-device',
             success: function (response) {
-              process(response.data)
+              process(response.datalist)
             }
           })
         },
