@@ -27,7 +27,7 @@ $(document).ready(function () {
         source(query, process) {
           $.ajax({
             type: "GET",
-            url: '/api/cm/f5/get-list-device',
+            url: '/api/cm/f5/get-devices',
             success: function (response) {
               process(response.datalist)
             }

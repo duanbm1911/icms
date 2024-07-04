@@ -681,16 +681,27 @@ def cm_checkpoint_update_rule_status(request):
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     
 
-# @logged_in_or_basicauth()
+@logged_in_or_basicauth()
 def cm_f5_get_list_device(request):
-    # if request.user.groups.filter(name='ADMIN').exists():
-    if request.method == 'GET':
-        datalist = F5Device.objects.all().values_list('f5_device_ip', flat=True)
-        return JsonResponse({'status': 'success', 'datalist': list(datalist)}, status=200)
+    if request.user.groups.filter(name='ADMIN').exists():
+        if request.method == 'GET':
+            datalist = F5Device.objects.all().values_list('f5_device_ip', flat=True)
+            return JsonResponse({'status': 'success', 'datalist': list(datalist)}, status=200)
+        else:
+            return JsonResponse({'status': 'failed', 'erorr': 'Method is not allowed'}, status=405)
     else:
-        return JsonResponse({'status': 'failed', 'erorr': 'Method is not allowed'}, status=405)
-    # else:
-    #     return JsonResponse({'status': 'failed', 'erorr': 'forbidden'}, status=403)
+        return JsonResponse({'status': 'failed', 'erorr': 'forbidden'}, status=403)
+    
+@login_required()
+def cm_f5_get_devices(request):
+    if request.user.groups.filter(name='ADMIN').exists():
+        if request.method == 'GET':
+            datalist = F5Device.objects.all().values_list('f5_device_ip', flat=True)
+            return JsonResponse({'status': 'success', 'datalist': list(datalist)}, status=200)
+        else:
+            return JsonResponse({'status': 'failed', 'erorr': 'Method is not allowed'}, status=405)
+    else:
+        return JsonResponse({'status': 'failed', 'erorr': 'forbidden'}, status=403)
     
     
 @csrf_exempt
