@@ -681,7 +681,7 @@ def cm_checkpoint_update_rule_status(request):
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     
 
-@logged_in_or_basicauth()
+# @logged_in_or_basicauth()
 def cm_f5_get_list_device(request):
     if request.user.groups.filter(name='ADMIN').exists():
         if request.method == 'GET':
