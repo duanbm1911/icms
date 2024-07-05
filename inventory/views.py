@@ -339,7 +339,7 @@ def create_multiple_device(request):
             worksheet_02 = wb["Device_management"]
             worksheet_03 = wb["Device_rack_layout"]
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
-                item = [i.value if i is not None else "" for i in item]
+                item = ["" if i.value is None else i.value for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
                 validate_xss_result = validate_xss(list_string=item)
                 if validate_xss_result:

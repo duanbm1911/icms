@@ -193,14 +193,15 @@ def create_multiple_subnet(request):
             wb = openpyxl.load_workbook(uploaded_file)
             worksheet = wb["IPPlan"]
             for item in worksheet.iter_rows(min_row=2):
-                item = [i.value if i is not None else "" for i in item]
+                item = ["" if i.value is None else i.value for i in item]
+                print(item)
+                region = item[0]
+                location = item[1]
+                subnet = item[2]
+                name = item[3]
+                description = item[4]
                 validate_xss_result = validate_xss(list_string=item)
                 if validate_xss_result:
-                    region = item[0]
-                    location = item[1]
-                    subnet = item[2]
-                    name = item[3]
-                    description = item[4]
                     if region != "" or location != "" or subnet != "":
                         obj_count_01 = Region.objects.filter(region=region).count()
                         obj_count_02 = Location.objects.filter(location=location).count()
