@@ -194,7 +194,6 @@ def create_multiple_subnet(request):
             worksheet = wb["IPPlan"]
             for item in worksheet.iter_rows(min_row=2):
                 item = ["" if i.value is None else i.value for i in item]
-                print(item)
                 region = item[0]
                 location = item[1]
                 subnet = item[2]
