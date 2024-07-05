@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class CheckpointPolicy(models.Model):
-    policy = models.CharField(max_length=500, unique=True)
+    policy = models.CharField(max_length=200, unique=True)
     layer = models.CharField(max_length=100, blank=True, null=True)
     section = models.CharField(max_length=100, blank=True, null=True)
     site = models.ForeignKey('CheckpointSite', on_delete=models.CASCADE)
