@@ -17,7 +17,7 @@ urlpatterns = [
     path('checkpoint/objects/list-site', CheckpointSiteListView.as_view()),
     path('checkpoint/objects/update-site/<int:pk>', CheckpointSiteUpdateView.as_view()),
     path('checkpoint/objects/delete-site/<int:pk>', CheckpointSiteDeleteView.as_view()),
-    path('f5/list-device', F5DeviceListView.as_view()),
+    # path('f5/list-device', F5DeviceListView.as_view()),
     # path('f5/objects/create-device', F5DeviceCreateView.as_view()),
     # path('f5/objects/update-device/<int:pk>', F5DeviceUpdateView.as_view()),
     # path('f5/objects/delete-device/<int:pk>', F5DeviceDeleteView.as_view()),
