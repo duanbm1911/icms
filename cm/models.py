@@ -37,7 +37,7 @@ class CheckpointRule(models.Model):
     
     
 class F5Device(models.Model):
-    f5_device_ip = models.GenericIPAddressField()
+    f5_device_ip = models.CharField(max_length=200)
     f5_device_name = models.CharField(max_length=200)
 
     def __str__(self):
