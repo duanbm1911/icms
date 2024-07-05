@@ -85,7 +85,7 @@ class F5TemplateForm(forms.ModelForm):
         model = F5Template
         fields = [
             'template_name',
-            # 'partition',
+            'partition',
             'protocol',
             'client_protocol_profile',
             'server_protocol_profile',
