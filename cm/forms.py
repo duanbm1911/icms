@@ -58,25 +58,25 @@ class F5DeviceForm(forms.ModelForm):
         ]
         
 
-class F5CreateVirtualServerForm(forms.ModelForm):
+# class F5CreateVirtualServerForm(forms.ModelForm):
 
-    class Meta:
-        model = F5CreateVirtualServer
-        fields = [
-            'f5_device_ip',
-            'f5_template',
-            'service_name',
-            'vs_name',
-            'vs_ip',
-            'vs_port',
-            'pool_member',
-            'pool_monitor',
-            'pool_lb_method',
-            'client_ssl_profile',
-            'server_ssl_profile',
-            'irules',
-            'waf_profile'
-        ]
+#     class Meta:
+#         model = F5CreateVirtualServer
+#         fields = [
+#             'f5_device_ip',
+#             'f5_template',
+#             'service_name',
+#             'vs_name',
+#             'vs_ip',
+#             'vs_port',
+#             'pool_member',
+#             'pool_monitor',
+#             'pool_lb_method',
+#             'client_ssl_profile',
+#             'server_ssl_profile',
+#             'irules',
+#             'waf_profile'
+#         ]
         
 
 class F5TemplateForm(forms.ModelForm):
