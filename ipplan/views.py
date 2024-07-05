@@ -192,8 +192,8 @@ def create_multiple_subnet(request):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
             worksheet = wb["IPPlan"]
-            for item in worksheet.iter_rows(min_row=2, values_only=True):
-                item = ["" if i is None else i for i in item]
+            for item in worksheet.iter_rows(min_row=2):
+                item = [i.value if i is not None else "" for i in item]
                 validate_xss_result = validate_xss(list_string=item)
                 if validate_xss_result:
                     region = item[0]
