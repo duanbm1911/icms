@@ -932,7 +932,6 @@ def f5_update_pool_monitor(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
         for f5_device_ip, list_pool_monitor in dataset.items():
-            print(f5_device_ip, list_pool_monitor)
             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
             if checklist > 0:
                 for pool_monitor in list_pool_monitor:    
