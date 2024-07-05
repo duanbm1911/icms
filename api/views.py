@@ -704,330 +704,330 @@ def cm_f5_get_devices(request):
         return JsonResponse({'status': 'failed', 'erorr': 'forbidden'}, status=403)
     
     
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def cm_f5_create_virtual_server(request):
-#     try:
-#         if request.user.groups.filter(name='ADMIN').exists():
-#             if request.method == 'POST':
-#                 list_obj = list(request.POST)
-#                 list_error_message = str()
-#                 datalist = list()
-#                 status = 'Created'
-#                 user_created = request.user
-#                 for obj in list_obj:
-#                     index = list_obj.index(obj)
-#                     data = request.POST.getlist(obj)
-#                     error_message = check_create_vs_input(data, index)
-#                     if not error_message:
-#                         f5_device_ip = data[0]
-#                         service_name = data[1]
-#                         virtual_server = data[2]
-#                         pool_member = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
-#                         pool_monitor = data[4]
-#                         pool_lb_method = data[5]
-#                         client_ssl_profile = data[6]
-#                         server_ssl_profile = data[7]
-#                         irules = []
-#                         if data[8]:
-#                             irules = [i for i in data[8].split(',')]
-#                         waf_profile = data[9]
-#                         f5_template = data[10]
-#                         datalist.append([
-#                             f5_device_ip,
-#                             service_name,
-#                             virtual_server,
-#                             json.dumps(pool_member),
-#                             pool_monitor,
-#                             pool_lb_method,
-#                             client_ssl_profile,
-#                             server_ssl_profile,
-#                             json.dumps(irules),
-#                             waf_profile,
-#                             f5_template
-#                         ])
-#                     else:
-#                         list_error_message += error_message + '\n'
-#                 if list_error_message:
-#                     return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
-#                 else:
-#                     for item in datalist:
-#                         vs_ip = item[2].split(':')[0]
-#                         vs_port = item[2].split(':')[1]
-#                         model = F5CreateVirtualServer(
-#                             f5_device_ip=F5Device.objects.get(f5_device_ip=item[0]),
-#                             service_name=item[1],
-#                             vs_ip=vs_ip,
-#                             vs_port=vs_port,
-#                             vs_name=f'{service_name}-{vs_ip}-{vs_port}-vs',
-#                             pool_name=f'{service_name}-{vs_ip}-{vs_port}-pool',
-#                             pool_member=item[3],
-#                             pool_monitor=item[4],
-#                             pool_lb_method=item[5],
-#                             client_ssl_profile=item[6],
-#                             server_ssl_profile=item[7],
-#                             irules=item[8],
-#                             waf_profile=item[9],
-#                             f5_template=F5Template.objects.get(template_name=item[10]),
-#                             status=status,
-#                             user_created=user_created
-#                         )
-#                         model.save()
-#                     return JsonResponse({'status': 'success', 'message': 'Create virtual server success'}, status=200)
-#             else:
-#                 return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
-#         else:
-#             return JsonResponse({'erorr': 'forbidden'}, status=403)
-#     except Exception as error:
-#         return JsonResponse({'status': 'failed', 'message': f'Exception error: {error}'}, status=500)
+@csrf_exempt
+@logged_in_or_basicauth()
+def cm_f5_create_virtual_server(request):
+    try:
+        if request.user.groups.filter(name='ADMIN').exists():
+            if request.method == 'POST':
+                list_obj = list(request.POST)
+                list_error_message = str()
+                datalist = list()
+                status = 'Created'
+                user_created = request.user
+                for obj in list_obj:
+                    index = list_obj.index(obj)
+                    data = request.POST.getlist(obj)
+                    error_message = check_create_vs_input(data, index)
+                    if not error_message:
+                        f5_device_ip = data[0]
+                        service_name = data[1]
+                        virtual_server = data[2]
+                        pool_member = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
+                        pool_monitor = data[4]
+                        pool_lb_method = data[5]
+                        client_ssl_profile = data[6]
+                        server_ssl_profile = data[7]
+                        irules = []
+                        if data[8]:
+                            irules = [i for i in data[8].split(',')]
+                        waf_profile = data[9]
+                        f5_template = data[10]
+                        datalist.append([
+                            f5_device_ip,
+                            service_name,
+                            virtual_server,
+                            json.dumps(pool_member),
+                            pool_monitor,
+                            pool_lb_method,
+                            client_ssl_profile,
+                            server_ssl_profile,
+                            json.dumps(irules),
+                            waf_profile,
+                            f5_template
+                        ])
+                    else:
+                        list_error_message += error_message + '\n'
+                if list_error_message:
+                    return JsonResponse({'status': 'failed', 'message': list_error_message}, status=200)
+                else:
+                    for item in datalist:
+                        vs_ip = item[2].split(':')[0]
+                        vs_port = item[2].split(':')[1]
+                        model = F5CreateVirtualServer(
+                            f5_device_ip=F5Device.objects.get(f5_device_ip=item[0]),
+                            service_name=item[1],
+                            vs_ip=vs_ip,
+                            vs_port=vs_port,
+                            vs_name=f'{service_name}-{vs_ip}-{vs_port}-vs',
+                            pool_name=f'{service_name}-{vs_ip}-{vs_port}-pool',
+                            pool_member=item[3],
+                            pool_monitor=item[4],
+                            pool_lb_method=item[5],
+                            client_ssl_profile=item[6],
+                            server_ssl_profile=item[7],
+                            irules=item[8],
+                            waf_profile=item[9],
+                            f5_template=F5Template.objects.get(template_name=item[10]),
+                            status=status,
+                            user_created=user_created
+                        )
+                        model.save()
+                    return JsonResponse({'status': 'success', 'message': 'Create virtual server success'}, status=200)
+            else:
+                return JsonResponse({'status': 'failed', 'message': 'Request method is not allowed'}, status=405)
+        else:
+            return JsonResponse({'erorr': 'forbidden'}, status=403)
+    except Exception as error:
+        return JsonResponse({'status': 'failed', 'message': f'Exception error: {error}'}, status=500)
     
     
-# @logged_in_or_basicauth()
-# def f5_get_list_client_ssl_profile(request):
-#     if request.method == 'GET':
-#         f5_device_ip = request.GET.get('f5_device_ip', None)
-#         datalist = F5ClientSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_client_ssl_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5ClientSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
-# @logged_in_or_basicauth()
-# def f5_get_list_server_ssl_profile(request):
-#     if request.method == 'GET':
-#         f5_device_ip = request.GET.get('f5_device_ip', None)
-#         datalist = F5ServerSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_server_ssl_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5ServerSSLProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('profile_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     
-# @logged_in_or_basicauth()
-# def f5_get_list_pool_monitor(request):
-#     if request.method == 'GET':
-#         f5_device_ip = request.GET.get('f5_device_ip', None)
-#         datalist = F5PoolMemberMonitor.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('pool_monitor', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_pool_monitor(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5PoolMemberMonitor.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('pool_monitor', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
-# @logged_in_or_basicauth()
-# def f5_get_list_pool_lb_method(request):
-#     if request.method == 'GET':
-#         datalist = F5PoolMemberMethod.objects.all().values_list('pool_method', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_pool_lb_method(request):
+    if request.method == 'GET':
+        datalist = F5PoolMemberMethod.objects.all().values_list('pool_method', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
-# @logged_in_or_basicauth()
-# def f5_get_list_template(request):
-#     if request.method == 'GET':
-#         datalist = F5Template.objects.all().values_list('template_name', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_template(request):
+    if request.method == 'GET':
+        datalist = F5Template.objects.all().values_list('template_name', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     
-# @logged_in_or_basicauth()
-# def f5_get_list_waf_profile(request):
-#     if request.method == 'GET':
-#         f5_device_ip = request.GET.get('f5_device_ip', None)
-#         datalist = F5WafProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('waf_profile', flat=True)
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_waf_profile(request):
+    if request.method == 'GET':
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        datalist = F5WafProfile.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('waf_profile', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     
     
-# @logged_in_or_basicauth()
-# def f5_get_list_irule_profile(request):
-#     if request.method == 'GET':
-#         datalist = list()
-#         f5_device_ip = request.GET.get('f5_device_ip', None)
-#         objects = F5Irule.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('irule_name', flat=True)
-#         for item in list(objects):
-#             datalist.append({
-#                 'id': item,
-#                 'label': item
-#             })
-#         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@logged_in_or_basicauth()
+def f5_get_list_irule_profile(request):
+    if request.method == 'GET':
+        datalist = list()
+        f5_device_ip = request.GET.get('f5_device_ip', None)
+        objects = F5Irule.objects.filter(f5_device_ip__f5_device_ip=f5_device_ip).values_list('irule_name', flat=True)
+        for item in list(objects):
+            datalist.append({
+                'id': item,
+                'label': item
+            })
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
 
 
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_client_ssl_profile(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for f5_device_ip, list_client_ssl_profile in dataset.items():
-#             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
-#             if checklist > 0:
-#                 for client_ssl_profile in list_client_ssl_profile:    
-#                     f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
-#                     F5ClientSSLProfile.objects.update_or_create(
-#                         f5_device_ip=f5_device_obj,
-#                         profile_name=client_ssl_profile
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_client_ssl_profile(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_client_ssl_profile in dataset.items():
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for client_ssl_profile in list_client_ssl_profile:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5ClientSSLProfile.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        profile_name=client_ssl_profile
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_server_ssl_profile(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for f5_device_ip, list_server_ssl_profile in dataset.items():
-#             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
-#             if checklist > 0:
-#                 for server_ssl_profile in list_server_ssl_profile:    
-#                     f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
-#                     F5ServerSSLProfile.objects.update_or_create(
-#                         f5_device_ip=f5_device_obj,
-#                         profile_name=server_ssl_profile
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_server_ssl_profile(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_server_ssl_profile in dataset.items():
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for server_ssl_profile in list_server_ssl_profile:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5ServerSSLProfile.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        profile_name=server_ssl_profile
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_irule_profile(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for f5_device_ip, list_irule_profile in dataset.items():
-#             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
-#             if checklist > 0:
-#                 for irule_profile in list_irule_profile:    
-#                     f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
-#                     F5Irule.objects.update_or_create(
-#                         f5_device_ip=f5_device_obj,
-#                         irule_name=irule_profile
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_irule_profile(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_irule_profile in dataset.items():
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for irule_profile in list_irule_profile:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5Irule.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        irule_name=irule_profile
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_waf_profile(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for f5_device_ip, list_waf_profile in dataset.items():
-#             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
-#             if checklist > 0:
-#                 for waf_profile in list_waf_profile:    
-#                     f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
-#                     F5WafProfile.objects.update_or_create(
-#                         f5_device_ip=f5_device_obj,
-#                         waf_profile=waf_profile
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_waf_profile(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_waf_profile in dataset.items():
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for waf_profile in list_waf_profile:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5WafProfile.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        waf_profile=waf_profile
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_pool_monitor(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for f5_device_ip, list_pool_monitor in dataset.items():
-#             print(f5_device_ip, list_pool_monitor)
-#             checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
-#             if checklist > 0:
-#                 for pool_monitor in list_pool_monitor:    
-#                     f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
-#                     F5PoolMemberMonitor.objects.update_or_create(
-#                         f5_device_ip=f5_device_obj,
-#                         pool_monitor=pool_monitor
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_pool_monitor(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for f5_device_ip, list_pool_monitor in dataset.items():
+            print(f5_device_ip, list_pool_monitor)
+            checklist = F5Device.objects.filter(f5_device_ip=f5_device_ip).count()
+            if checklist > 0:
+                for pool_monitor in list_pool_monitor:    
+                    f5_device_obj = F5Device.objects.get(f5_device_ip=f5_device_ip)
+                    F5PoolMemberMonitor.objects.update_or_create(
+                        f5_device_ip=f5_device_obj,
+                        pool_monitor=pool_monitor
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
     
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_update_virtual_server_status(request):
-#     if request.method == 'POST':
-#         dataset = json.loads(request.body.decode('utf-8'))
-#         for task_id, data in dataset.items():
-#             checklist = F5CreateVirtualServer.objects.filter(id=task_id).count()
-#             if checklist > 0:
-#                 status = data[0]
-#                 message = data[1]
-#                 F5CreateVirtualServer.objects.update_or_create(
-#                     id=task_id,
-#                     defaults={
-#                         'status': status,
-#                         'message': message
-#                         }
-#                     )
-#         return JsonResponse({'status': 'success'}, status=200)
-#     else:
-#         return JsonResponse({'error_message': 'method not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_update_virtual_server_status(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for task_id, data in dataset.items():
+            checklist = F5CreateVirtualServer.objects.filter(id=task_id).count()
+            if checklist > 0:
+                status = data[0]
+                message = data[1]
+                F5CreateVirtualServer.objects.update_or_create(
+                    id=task_id,
+                    defaults={
+                        'status': status,
+                        'message': message
+                        }
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
-# @csrf_exempt
-# @logged_in_or_basicauth()
-# def f5_get_list_virtual_server(request):
-#     datalist = list()
-#     if request.method == 'GET':
-#         list_obj = F5CreateVirtualServer.objects.filter(status='Created')
-#         for obj in list_obj:
-#             task_id = obj.id
-#             f5_device_ip = str(obj.f5_device_ip)
-#             f5_template = obj.f5_template
-#             vs_name = obj.vs_name
-#             vs_ip = obj.vs_ip
-#             vs_port = obj.vs_port
-#             pool_name = obj.pool_name
-#             pool_member = json.loads(obj.pool_member)
-#             pool_monitor = obj.pool_monitor
-#             pool_lb_method = obj.pool_lb_method
-#             client_ssl_profile = obj.client_ssl_profile
-#             server_ssl_profile = obj.server_ssl_profile
-#             f5_temp_obj = F5Template.objects.get(template_name=f5_template)
-#             partition = f5_temp_obj.partition
-#             protocol = f5_temp_obj.protocol
-#             client_protocol_profile = f5_temp_obj.client_protocol_profile
-#             server_protocol_profile = f5_temp_obj.server_protocol_profile
-#             client_http_profile = f5_temp_obj.client_http_profile
-#             server_http_profile = f5_temp_obj.server_http_profile
-#             snat_name = f5_temp_obj.snat_name
-#             http_analytics_profile = f5_temp_obj.http_analytics_profile
-#             tcp_analytics_profile = f5_temp_obj.tcp_analytics_profile
-#             http_compression_profile = f5_temp_obj.http_compression_profile
-#             web_acceleration_profile = f5_temp_obj.web_acceleration_profile
-#             waf_profile = obj.waf_profile
-#             irules = []
-#             if obj.irules is not None:
-#                 irules = json.loads(obj.irules)
-#             datalist.append({
-#                 'task_id': task_id,
-#                 'f5_device_ip': f5_device_ip,
-#                 'vs_name': vs_name,
-#                 'vs_ip': vs_ip,
-#                 'vs_port': vs_port,
-#                 'pool_name': pool_name,
-#                 'pool_member': pool_member,
-#                 'pool_monitor': pool_monitor,
-#                 'pool_lb_method': pool_lb_method,
-#                 'client_ssl_profile': client_ssl_profile,
-#                 'server_ssl_profile': server_ssl_profile,
-#                 'partition': partition,
-#                 'protocol': protocol,
-#                 'client_protocol_profile': client_protocol_profile,
-#                 'server_protocol_profile': server_protocol_profile,
-#                 'client_http_profile': client_http_profile,
-#                 'server_http_profile': server_http_profile,
-#                 'snat_name': snat_name,
-#                 'http_analytics_profile': http_analytics_profile,
-#                 'tcp_analytics_profile': tcp_analytics_profile,
-#                 'http_compression_profile': http_compression_profile,
-#                 'web_acceleration_profile': web_acceleration_profile,
-#                 'waf_profile': waf_profile,
-#                 'irules': irules
-#             })
-#         return JsonResponse({'status': 'success', 'datalist': datalist}) 
-#     else:
-#         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+@csrf_exempt
+@logged_in_or_basicauth()
+def f5_get_list_virtual_server(request):
+    datalist = list()
+    if request.method == 'GET':
+        list_obj = F5CreateVirtualServer.objects.filter(status='Created')
+        for obj in list_obj:
+            task_id = obj.id
+            f5_device_ip = str(obj.f5_device_ip)
+            f5_template = obj.f5_template
+            vs_name = obj.vs_name
+            vs_ip = obj.vs_ip
+            vs_port = obj.vs_port
+            pool_name = obj.pool_name
+            pool_member = json.loads(obj.pool_member)
+            pool_monitor = obj.pool_monitor
+            pool_lb_method = obj.pool_lb_method
+            client_ssl_profile = obj.client_ssl_profile
+            server_ssl_profile = obj.server_ssl_profile
+            f5_temp_obj = F5Template.objects.get(template_name=f5_template)
+            partition = f5_temp_obj.partition
+            protocol = f5_temp_obj.protocol
+            client_protocol_profile = f5_temp_obj.client_protocol_profile
+            server_protocol_profile = f5_temp_obj.server_protocol_profile
+            client_http_profile = f5_temp_obj.client_http_profile
+            server_http_profile = f5_temp_obj.server_http_profile
+            snat_name = f5_temp_obj.snat_name
+            http_analytics_profile = f5_temp_obj.http_analytics_profile
+            tcp_analytics_profile = f5_temp_obj.tcp_analytics_profile
+            http_compression_profile = f5_temp_obj.http_compression_profile
+            web_acceleration_profile = f5_temp_obj.web_acceleration_profile
+            waf_profile = obj.waf_profile
+            irules = []
+            if obj.irules is not None:
+                irules = json.loads(obj.irules)
+            datalist.append({
+                'task_id': task_id,
+                'f5_device_ip': f5_device_ip,
+                'vs_name': vs_name,
+                'vs_ip': vs_ip,
+                'vs_port': vs_port,
+                'pool_name': pool_name,
+                'pool_member': pool_member,
+                'pool_monitor': pool_monitor,
+                'pool_lb_method': pool_lb_method,
+                'client_ssl_profile': client_ssl_profile,
+                'server_ssl_profile': server_ssl_profile,
+                'partition': partition,
+                'protocol': protocol,
+                'client_protocol_profile': client_protocol_profile,
+                'server_protocol_profile': server_protocol_profile,
+                'client_http_profile': client_http_profile,
+                'server_http_profile': server_http_profile,
+                'snat_name': snat_name,
+                'http_analytics_profile': http_analytics_profile,
+                'tcp_analytics_profile': tcp_analytics_profile,
+                'http_compression_profile': http_compression_profile,
+                'web_acceleration_profile': web_acceleration_profile,
+                'waf_profile': waf_profile,
+                'irules': irules
+            })
+        return JsonResponse({'status': 'success', 'datalist': datalist}) 
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
