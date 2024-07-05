@@ -111,7 +111,7 @@ class F5PoolMemberMethod(models.Model):
 
 class F5Template(models.Model):
     template_name = models.CharField(max_length=200, unique=True)
-    partition = models.CharField(max_length=200, blank=True)
+    # partition = models.CharField(max_length=200, blank=True)
     protocol = models.CharField(max_length=200, blank=True)
     client_protocol_profile = models.CharField(max_length=200, blank=True)
     server_protocol_profile = models.CharField(max_length=200, blank=True)
