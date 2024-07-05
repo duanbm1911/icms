@@ -87,13 +87,13 @@ class F5TemplateForm(forms.ModelForm):
             'template_name',
             'partition',
             'protocol',
-            'client_protocol_profile',
-            'server_protocol_profile',
-            'client_http_profile',
-            'server_http_profile',
-            'snat_name',
-            'http_analytics_profile',
-            'tcp_analytics_profile',
-            'http_compression_profile',
-            'web_acceleration_profile'
+            # 'client_protocol_profile',
+            # 'server_protocol_profile',
+            # 'client_http_profile',
+            # 'server_http_profile',
+            # 'snat_name',
+            # 'http_analytics_profile',
+            # 'tcp_analytics_profile',
+            # 'http_compression_profile',
+            # 'web_acceleration_profile'
         ]
