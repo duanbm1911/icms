@@ -1,6 +1,13 @@
 from ipaddress import IPv4Network
 from ipaddress import IPv4Address
 
+def is_ip(ip):
+    try:
+        IPv4Address(ip)
+        return True
+    except:
+        return False
+
 def is_subnet(subnet):
     try:
         IPv4Network(subnet)
