@@ -248,16 +248,31 @@ def create_multiple_subnet(request):
 
 
 def request_multiple_ip(request):
-    if request.method == 'POST' and request.FILES.get('upload-file'):
-        uploaded_file = request.FILES['upload-file']
-        wb = openpyxl.load_workbook(uploaded_file)
-        worksheet = wb["DATA"]
-        list_subnet = Subnet.objects.all().values_list('subnet', flat=True)
-        for item in worksheet.iter_rows(min_row=2):
-            item = ["" if i.value is None else i.value for i in item]
-            description = item[0]
-            ip = item[1]
-            status = item[2]
-            subnet = [subnet for subnet in list_subnet if is_ip(ip) is True and is_subnet(subnet) is True and ipaddress.IPv4Address(ip) in ipaddress.ip_network(subnet)]
-            print(ip, subnet)
+    try:
+        if request.method == 'POST' and request.FILES.get('upload-file'):
+            uploaded_file = request.FILES['upload-file']
+            wb = openpyxl.load_workbook(uploaded_file)
+            worksheet = wb["DATA"]
+            list_subnet = Subnet.objects.all().values_list('subnet', flat=True)
+            for item in worksheet.iter_rows(min_row=2):
+                item = ["" if i.value is None else i.value for i in item]
+                description = item[0]
+                ip = item[1]
+                status = item[2]
+                subnet = [subnet for subnet in list_subnet if is_ip(ip) is True and is_subnet(subnet) is True and ipaddress.IPv4Address(ip) in ipaddress.ip_network(subnet)]
+                get_ip_status = IpStatus.objects.filter(status=status).count()
+                if subnet and get_ip_status > 0:
+                    subnet_obj = Subnet.objects.get(subnet=subnet[-1])
+                    status_obj = IpStatus.objects.get(status=status)
+                    IpAddressModel.objects.update_or_create(
+                        ip_address=ip,
+                        defaults={
+                            'status': status_obj,
+                            'subnet': subnet_obj,
+                            'description': description
+                        }
+                    )
+            messages.add_message(request, constants.SUCCESS, 'Import IP success')
+    except Exception as error:
+        messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
     return render(request, template_name='request_multiple_ip.html')
