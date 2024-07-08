@@ -120,7 +120,8 @@ class F5Template(models.Model):
     snat_name = models.CharField(max_length=200, blank=True)
     http_analytics_profile = models.CharField(max_length=200, blank=True)
     tcp_analytics_profile = models.CharField(max_length=200, blank=True)
-    web_socket_profile = models.CharField(max_length=200, blank=True)
+    client_web_socket_profile = models.CharField(max_length=200, blank=True)
+    server_web_socket_profile = models.CharField(max_length=200, blank=True)
     http_compression_profile = models.CharField(max_length=200, blank=True)
     web_acceleration_profile = models.CharField(max_length=200, blank=True)
     

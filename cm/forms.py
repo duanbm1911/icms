@@ -80,6 +80,8 @@ class F5CreateVirtualServerForm(forms.ModelForm):
         
 
 class F5TemplateForm(forms.ModelForm):
+    
+    client_protocol_profile = forms.CharField(required=True)
 
     class Meta:
         model = F5Template
@@ -94,7 +96,8 @@ class F5TemplateForm(forms.ModelForm):
             'snat_name',
             'http_analytics_profile',
             'tcp_analytics_profile',
-            'web_socket_profile',
+            'client_web_socket_profile',
+            'server_web_socket_profile',
             'http_compression_profile',
             'web_acceleration_profile'
         ]

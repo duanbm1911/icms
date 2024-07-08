@@ -997,7 +997,8 @@ def f5_get_list_virtual_server(request):
             tcp_analytics_profile = f5_temp_obj.tcp_analytics_profile
             http_compression_profile = f5_temp_obj.http_compression_profile
             web_acceleration_profile = f5_temp_obj.web_acceleration_profile
-            web_socket_profile = f5_temp_obj.web_socket_profile
+            client_web_socket_profile = f5_temp_obj.client_web_socket_profile
+            server_web_socket_profile = f5_temp_obj.server_web_socket_profile
             waf_profile = obj.waf_profile
             irules = []
             if obj.irules is not None:
@@ -1025,7 +1026,8 @@ def f5_get_list_virtual_server(request):
                 'tcp_analytics_profile': tcp_analytics_profile,
                 'http_compression_profile': http_compression_profile,
                 'web_acceleration_profile': web_acceleration_profile,
-                'web_socket_profile': web_socket_profile,
+                'client_web_socket_profile': client_web_socket_profile,
+                'server_web_socket_profile': server_web_socket_profile,
                 'waf_profile': waf_profile,
                 'irules': irules
             })
