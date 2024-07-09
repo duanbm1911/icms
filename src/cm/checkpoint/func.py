@@ -22,6 +22,14 @@ def is_domain(domain):
         return True
     else:
         return False
+    
+def is_user(user):
+    obj = user.split('/')
+    if len(obj) < 2:
+        return False
+    elif 'user' != obj[0] or 'partner' != obj[0]:
+        return False
+    return True
 
 def check_list_object(datalist):
     for item in datalist:
@@ -30,6 +38,8 @@ def check_list_object(datalist):
         elif item != 'any' and is_subnet(item) is True:
             pass
         elif item != 'any' and is_domain(item) is True:
+            pass
+        elif item != 'any' and is_user(item) is True:
             pass
         elif item == 'any' and len(datalist) == 1:
             pass
