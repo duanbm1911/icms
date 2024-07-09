@@ -25,10 +25,9 @@ def is_domain(domain):
     
 def is_user(user):
     obj = user.split('/')
-    if len(obj) < 2:
-        return False
-    elif 'user' != obj[0] or 'partner' != obj[0]:
-        return False
+    print(obj[0])
+    if len(obj) == 2 and 'user' == obj[0] or 'partner' == obj[0]:
+        return True
     return True
 
 def check_list_object(datalist):
