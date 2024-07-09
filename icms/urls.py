@@ -21,7 +21,7 @@ from django.conf import settings
 from core.admin import admin_site
 
 urlpatterns = [
-    path('icms-admin/', admin_site.urls),
+    # path('icms-admin/', admin_site.urls),
     path('accounts/', include('accounts.urls')),
     path('inventory/', include('inventory.urls')),
     path('ipplan/', include('ipplan.urls')),
