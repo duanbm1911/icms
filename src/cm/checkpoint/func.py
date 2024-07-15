@@ -27,7 +27,7 @@ def is_user(user):
     obj = user.split('/')
     if len(obj) == 2 and 'user' == obj[0] or 'partner' == obj[0]:
         return True
-    return True
+    return False
 
 def check_list_object(datalist):
     for item in datalist:
@@ -87,7 +87,7 @@ def check_access_rule_input(data, index):
         source = [i.replace(' ', '').replace('\r', '') for i in data[2].split('\n')]
         destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
         protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
-        schedule = data[5]
+        section = data[5]
         if policy == "":
             error_message = f'Rule index {rule_index}: Policy template name can not be empty'
         elif description == "":
@@ -106,4 +106,6 @@ def check_access_rule_input(data, index):
             error_message = f'Rule index {rule_index}: Destination address is invalid'
         elif not check_list_protocol(protocol):
             error_message = f'Rule index {rule_index}: Protocol is invalid'
+        elif section == "":
+            error_message = f'Rule index {rule_index}: Rule section is invalid'
     return error_message

@@ -10,7 +10,6 @@ class CheckpointPolicyForm(forms.ModelForm):
         fields = [
             'policy',
             'layer',
-            'section',
             'site'
         ]
 
@@ -33,7 +32,7 @@ class CheckpointRuleForm(forms.ModelForm):
         ('Success', 'Success'),
         ('Install-Only', 'Install-Only')
     )
-    
+    section = forms.ChoiceField(choices=CheckpointRuleSection.objects.all())
     status = forms.ChoiceField(choices=STATUS)
     
     class Meta:
@@ -45,6 +44,7 @@ class CheckpointRuleForm(forms.ModelForm):
             'destination',
             'protocol',
             'schedule',
+            'section',
             'status'
         ]
         

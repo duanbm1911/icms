@@ -31,6 +31,7 @@ admin_site.register(DeviceTag)
 
 admin_site.register(CheckpointRule)
 admin_site.register(CheckpointSite)
+admin_site.register(CheckpointRuleSection)
 admin_site.register(CheckpointPolicy)
 
 admin_site.register(Region)

@@ -636,16 +636,46 @@ def cm_checkpoint_get_list_policy(request):
             return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
     else:
         return JsonResponse({'erorr': 'forbidden'}, status=403)
+    
+@csrf_exempt
+@logged_in_or_basicauth()
+def cm_checkpoint_update_rule_section(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for policy, list_rule_section in dataset.items():
+            checklist = CheckpointPolicy.objects.filter(policy=policy).count()
+            if checklist > 0:
+                for rule_section in list_rule_section:    
+                    obj = CheckpointPolicy.objects.get(policy=policy)
+                    CheckpointRuleSection.objects.update_or_create(
+                        policy=obj,
+                        section=rule_section
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+    
+    
+@logged_in_or_basicauth()
+def cm_checkpoint_get_list_rule_section(request):
+    if request.method == 'GET':
+        datalist = list()
+        policy = request.GET.get('policy', None)
+        datalist = CheckpointRuleSection.objects.filter(policy__policy=policy).values_list('section', flat=True)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+
 
 @logged_in_or_basicauth()
 def cm_checkpoint_get_list_rule(request):
     if request.method == 'GET':
         data = dict()
-        list_site = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer', 'section')
+        list_site = CheckpointPolicy.objects.all().values_list('site__site', 'site__smc', 'layer')
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-Only'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'status')
+                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-Only'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'section', 'status')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:
@@ -656,7 +686,6 @@ def cm_checkpoint_get_list_rule(request):
                 data[site] = {
                     'smc': item[1],
                     'layer': item[2],
-                    'section': item[3],
                     'rules': rules
                 }
         return JsonResponse({'data': data},  status=200)

@@ -229,8 +229,10 @@ class F5DeviceCreateView(CreateView):
     success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -244,8 +246,10 @@ class F5DeviceUpdateView(UpdateView):
     success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -258,8 +262,10 @@ class F5DeviceDeleteView(DeleteView):
     success_url = '/cm/f5/list-device'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -288,8 +294,10 @@ class F5CreateVirtualServerUpdateView(UpdateView):
     success_url = '/cm/f5/list-virtual-server'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -302,8 +310,10 @@ class F5CreateVirtualServerDeleteView(DeleteView):
     success_url = '/cm/f5/list-virtual-server'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -345,8 +355,10 @@ class F5TemplateUpdateView(UpdateView):
     success_url = '/cm/f5/list-template'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user_created = str(self.request.user)
@@ -359,8 +371,10 @@ class F5TemplateDeleteView(DeleteView):
     success_url = '/cm/f5/list-template'
 
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='f5/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         try:
