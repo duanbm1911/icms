@@ -694,7 +694,7 @@ def cm_checkpoint_get_list_rule(request):
         list_site = [list(i) for i in list_site]
         if list_site:
             for item in list_site:
-                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-Only'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'schedule', 'section', 'status')
+                rules = CheckpointRule.objects.filter(Q(status='Created') | Q(status='Install-Only'), policy__site__site=item[0]).values_list('id', 'policy__policy', 'description', 'source', 'destination', 'protocol', 'section', 'schedule','status')
                 rules = [list(i) for i in rules]
                 if rules:
                     for obj in rules:
