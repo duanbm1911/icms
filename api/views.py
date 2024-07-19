@@ -665,6 +665,22 @@ def cm_checkpoint_get_list_rule_section(request):
         return JsonResponse({'status': 'success', 'datalist': list(datalist)})
     else:
         return JsonResponse({'erorr': 'Method is not allowed'}, status=405)
+    
+
+@logged_in_or_basicauth()
+def cm_checkpoint_get_list_site(request):
+    if request.method == 'GET':
+        datalist = list()
+        list_smc = CheckpointSite.objects.all().values_list('smc', flat=True)
+        for smc in list(list_smc):
+            site = {}
+            list_policy = CheckpointPolicy.objects.filter(site__smc=smc).values_list('policy', flat=True)
+            site['smc'] = smc
+            site['policy'] = list(list_policy)
+            datalist.append(site)
+        return JsonResponse({'status': 'success', 'datalist': list(datalist)})
+    else:
+        return JsonResponse({'erorr': 'Method is not allowed'}, status=405)    
 
 
 @logged_in_or_basicauth()
