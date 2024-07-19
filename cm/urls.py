@@ -31,3 +31,11 @@
 #     path('f5/objects/update-template/<int:pk>', F5TemplateUpdateView.as_view()),
 #     path('f5/objects/delete-template/<int:pk>', F5TemplateDeleteView.as_view())
 # ]
+
+
+from django.urls import path
+from cm import views
+from cm.views import *
+
+
+urlpatterns = []
