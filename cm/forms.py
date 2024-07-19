@@ -32,7 +32,6 @@ class CheckpointRuleForm(forms.ModelForm):
         ('Success', 'Success'),
         ('Install-Only', 'Install-Only')
     )
-    section = forms.ChoiceField(choices=CheckpointRuleSection.objects.all())
     status = forms.ChoiceField(choices=STATUS)
     
     class Meta:
