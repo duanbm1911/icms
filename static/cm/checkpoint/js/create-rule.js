@@ -12,6 +12,8 @@ $(document).ready(function () {
     columns: [
       {
         type: 'autocomplete',
+        strict: true,
+        allowInvalid: false,
         source(query, process) {
           $.ajax({
             type: "GET",
