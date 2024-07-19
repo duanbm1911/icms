@@ -590,13 +590,15 @@ def cm_checkpoint_create_rule(request):
                         source = [i.replace(' ', '').replace('\r', '') for i in data[2].split('\n')]
                         destination = [i.replace(' ', '').replace('\r', '') for i in data[3].split('\n')]
                         protocol = [i.replace(' ', '').replace('\r', '') for i in data[4].split('\n')]
-                        schedule = data[5]
+                        section = data[5]
+                        schedule = data[6]
                         datalist.append([
                             policy, 
                             description, 
                             json.dumps(source), 
                             json.dumps(destination),
                             json.dumps(protocol),
+                            section,
                             schedule,
                             status,
                             user_created
@@ -613,9 +615,10 @@ def cm_checkpoint_create_rule(request):
                             source=item[2],
                             destination=item[3],
                             protocol=item[4],
-                            schedule=item[5],
-                            status=item[6],
-                            user_created=item[7],
+                            section=item[5]
+                            schedule=item[6],
+                            status=item[7],
+                            user_created=item[8],
                         )
                         model.save()
                     return JsonResponse({'status': 'success', 'message': 'Create rule success'}, status=200)

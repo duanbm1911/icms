@@ -44,7 +44,7 @@ class CheckpointRuleForm(forms.ModelForm):
             'destination',
             'protocol',
             'schedule',
-            # 'section',
+            'section',
             'status'
         ]
         
