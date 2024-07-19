@@ -21,6 +21,9 @@ class CheckpointRuleSection(models.Model):
     policy = models.ForeignKey('CheckpointPolicy', on_delete=models.CASCADE)
     section = models.CharField(max_length=100, blank=True)
     
+    class Meta:
+        managed = True
+    
     def __str__(self):
         return self.section
 
