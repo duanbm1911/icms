@@ -615,7 +615,7 @@ def cm_checkpoint_create_rule(request):
                             source=item[2],
                             destination=item[3],
                             protocol=item[4],
-                            section=item[5]
+                            section=item[5],
                             schedule=item[6],
                             status=item[7],
                             user_created=item[8],
