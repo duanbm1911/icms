@@ -18,14 +18,14 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
-# class CheckpointRuleView(TemplateView):
-#     template_name = "checkpoint/create_rule.html"
+class CheckpointRuleView(TemplateView):
+    template_name = "checkpoint/create_rule.html"
     
-#     @method_decorator(login_required)
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.user.groups.filter(name='ADMIN').exists():
-#             return render(request, template_name='checkpoint/403.html')
-#         return super().dispatch(request, *args, **kwargs)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='checkpoint/403.html')
+        return super().dispatch(request, *args, **kwargs)
 
 class CheckpointPolicyCreateView(CreateView):
     model = CheckpointPolicy

@@ -4,7 +4,7 @@ from cm.views import *
 
 
 urlpatterns = [
-    # path('checkpoint/create-rule', CheckpointRuleView.as_view()),
+    path('checkpoint/create-rule', CheckpointRuleView.as_view()),
     path('checkpoint/list-rule', CheckpointRuleListView.as_view()),
     path('checkpoint/delete-rule/<int:pk>', CheckpointRuleDeleteView.as_view()),
     path('checkpoint/detail-rule/<int:pk>', CheckpointRuleDetailView.as_view()),
