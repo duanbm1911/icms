@@ -276,3 +276,13 @@ def request_multiple_ip(request):
     except Exception as error:
         messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
     return render(request, template_name='request_multiple_ip.html')
+
+def list_subnet_tree(request):
+    context = {}
+    if request.method == 'GET':
+        regions = Region.objects.all()
+        locations = Location.objects.all()
+        subnets = Subnet.objects.all()
+        ips = IpAddressModel.objects.all()
+        context = {'regions': regions, 'locations': locations, 'subnets': subnets, 'ips': ips}
+    return render(request, 'list_subnet_tree.html', context=context)

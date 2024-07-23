@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ICMS | List subnet
+{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="form-group">
+    <legend>List subnet</legend>
+    <ul class="tree">
+        {% for region in regions %}
+        <li>
+            {{ region }}
+            <ul>
+                {% for location in locations %}
+                {% if location.region == region %}
+                <li>
+                    {{ location }}
+                    <ul>
+                        {% for subnet in subnets %}
+                        {% if subnet.location == location %}
+                        <li>{{ subnet }} - {{subnet.name}}
+                            <ul>
+                                {% for ip in ips %}
+                                {% if ip.subnet == subnet %}
+                                <li>{{ip}} - {{ip.description}} - {{ip.status}}</li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            {% endfor %}
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/ipplan/list-subnet"><button type="button" class="btn btn-warning">Back</button></a>
+</div>
+{% endblock content %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/ipplan/css/jquery.treemenu.css">
+<link rel="stylesheet" href="/static/ipplan/css/list-subnet-tree.css">
+{% endblock css %}
+
+
+{% block js %}
+<script src="/static/ipplan/js/jquery.treemenu.js"></script>
+<script src="/static/ipplan/js/list-subnet-tree.js"></script>
+{% endblock js %}

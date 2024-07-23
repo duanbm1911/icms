@@ -13,6 +13,7 @@ urlpatterns = [
     path('list-subnet', SubnetListView.as_view()),
     path('request-ip', views.request_ip_form),
     path('dashboard', views.dashboard),
+    path('list-subnet-tree', views.list_subnet_tree),
     path('list-ip/<int:pk>', views.list_ip, name='list-ip'),
     path('update-subnet/<int:pk>', SubnetUpdateView.as_view()),
     path('list-ip/<int:pk>/delete-ip/<int:id>', IpAddressModelDeleteView.as_view()),
