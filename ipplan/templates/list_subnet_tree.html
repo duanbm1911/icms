@@ -7,7 +7,7 @@ ICMS | List subnet
 
 {% block content %}
 <div class="form-group">
-    <legend>List subnet</legend>
+    <legend>List subnet (Tree view)</legend>
     <ul class="tree">
         {% for region in regions %}
         <li>
@@ -20,17 +20,11 @@ ICMS | List subnet
                     <ul>
                         {% for subnet in subnets %}
                         {% if subnet.location == location %}
-                        <li>{{ subnet }} - {{subnet.name}}
-                            <ul>
-                                {% for ip in ips %}
-                                {% if ip.subnet == subnet %}
-                                <li>{{ip}} - {{ip.description}} - {{ip.status}}</li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                            {% endfor %}
+                        <li>
+                            <a href="/ipplan/list-ip/{{subnet.id}}">{{ subnet }} - {{subnet.name}}</a>
                         </li>
+                        {% endif %}
+                        {% endfor %}
                     </ul>
                 </li>
                 {% endif %}
