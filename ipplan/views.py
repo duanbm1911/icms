@@ -283,6 +283,5 @@ def list_subnet_tree(request):
         regions = Region.objects.all()
         locations = Location.objects.all()
         subnets = Subnet.objects.all()
-        ips = IpAddressModel.objects.all()
-        context = {'regions': regions, 'locations': locations, 'subnets': subnets, 'ips': ips}
+        context = {'regions': regions, 'locations': locations, 'subnets': subnets}
     return render(request, 'list_subnet_tree.html', context=context)
