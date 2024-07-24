@@ -16,7 +16,7 @@ from ipplan.models import *
 from ipplan.forms import *
 from src.ipplan.func import *
 import pandas
-import ipaddress
+from ipaddress import ip_network, IPv4Address
 import openpyxl
 
 # Create your views here.
@@ -83,16 +83,14 @@ class SubnetListView(ListView):
     
 @login_required()
 def request_ip_form(request):
-    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if request.method == 'POST':
         form = RequestIpAddressForm(request.POST)
         if form.is_valid():
             subnet = form.cleaned_data.get('subnet')
-            count = form.cleaned_data.get('count')
+            ip_address = form.cleaned_data.get('ip_address')
             status = form.cleaned_data.get('status')
             description = form.cleaned_data.get('description')
-            used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
-            list_ips = get_available_ips(subnet=subnet, used_ips=used_ips, count=count)
+            list_ips = ip_address.split(",")
             for ip in list_ips:
                 model = IpAddressModel.objects.create(
                     ip_address = ip,
