@@ -19,7 +19,7 @@ ICMS | List IP Address
                         <th>Subnet</th>
                         <th>Status</th>
                         <th>Location</th>
-                        <th>User_created</th>
+                        <th>Description</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,7 +30,7 @@ ICMS | List IP Address
                         <td>{{ obj.subnet }}</td>
                         <td>{{ obj.status }}</td>
                         <td>{{ obj.subnet.location }}</td>
-                        <td>{{ obj.user_created }}</td>
+                        <td>{{ obj.description }}</td>
                         <td>
                             <a href="/ipplan/list-ip/{{obj.subnet.id}}/update-ip/{{obj.id}}"><span
                                     class="glyphicon glyphicon-wrench"
