@@ -98,7 +98,7 @@ def request_ip_form(request):
                     user_created = str(request.user)
                 )
                 model.save()
-            return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet, 'status': status})
+            return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet})
         else:
             return render(request, template_name='request_ip.html', context={'form': form})
     else:
