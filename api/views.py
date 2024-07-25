@@ -10,7 +10,9 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from inventory.models import *
 from ipplan.models import *
+from src.ipplan.func import *
 from cm.models import *
+from ipaddress import ip_network, IPv4Address
 import datetime
 import base64
 import json
@@ -334,6 +336,16 @@ def ipplan_dashboard_02(request):
             'toolTipContent': f'{replace_characters(obj)}:{count}'
         })
     return JsonResponse({'data': subnet_count})
+
+@login_required()
+def ipplan_get_list_ip_available(request):
+    subnet = request.GET.get('subnet', None)
+    if is_subnet(subnet):
+        ip_used = list(IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True))
+        ip_available = [str(i) for i in ip_network(subnet) if str(i) not in ip_used]
+        return JsonResponse({'status': 'success', 'data': ip_available})
+    else:
+        return JsonResponse({'status': 'failed', 'error': 'Subnet is invalid'})
 
 @logged_in_or_basicauth()
 def get_list_device(request):

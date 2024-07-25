@@ -3,7 +3,7 @@ from ipplan.models import *
 from src.ipplan.func import *
 from django.core.exceptions import ValidationError
 from ipaddress import ip_network, IPv4Address
-import re
+import re, json
 
 
 
@@ -69,8 +69,7 @@ class RequestIpAddressForm(forms.Form):
     """RequestIpAddressForm definition."""
 
     subnet = forms.ModelChoiceField(queryset=Subnet.objects.all())
-    ip_address = forms.CharField(max_length=1000, validators=[validate_xss],
-                    widget=forms.TextInput(attrs={'placeholder': 'Use "," between them in case of multiple'}))
+    ip_address = forms.CharField(validators=[validate_xss], widget=forms.SelectMultiple)
     status = forms.ModelChoiceField(queryset=IpStatus.objects.all())
     description = forms.CharField(max_length=200, validators=[validate_xss])
 
@@ -85,8 +84,8 @@ class RequestIpAddressForm(forms.Form):
 
     def clean_ip_address(self):
         subnet = self.cleaned_data.get('subnet')
-        ip_address = self.cleaned_data.get('ip_address')
-        list_ips = ip_address.split(",")
+        list_ips = self.cleaned_data.get('ip_address')
+        print(list_ips)
         used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
         list_ips_overlap = [i for i in list_ips if i in used_ips]
         list_ips_invalid = [i for i in list_ips if is_ip(i) is False or IPv4Address(i) not in ip_network(subnet)]
@@ -96,7 +95,7 @@ class RequestIpAddressForm(forms.Form):
         elif list_ips_invalid:
             list_ips_invalid = ",".join(list_ips_invalid)
             raise ValidationError(f'IP address: {list_ips_invalid} is invalid or not belong to subnet: {subnet}')
-        return ip_address
+        return ",".join(list_ips)
 
 class IpAddressModelForm(forms.ModelForm):
     """Form definition for IpAddressModel."""
