@@ -14,9 +14,10 @@
                 <thead>
                         <th>Name</th>
                         <th>Subnet</th>
+                        <th>Vlan</th>
+                        <th>Group</th>
                         <th>Location</th>
-                        <th>Regoin</th>
-                        <th>User created</th>
+                        <th>Region</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -26,9 +27,10 @@
                     <tr>
                         <td>{{ obj.name }}</td>
                         <td>{{ obj.subnet }}</td>
-                        <td>{{ obj.location }}</td>
-                        <td>{{ obj.location.region }}</td>
-                        <td>{{ obj.user_created }}</td>
+                        <td>{{ obj.vlan }}</td>
+                        <td>{{ obj.group }}</td>
+                        <td>{{ obj.group.location }}</td>
+                        <td>{{ obj.group.location.region }}</td>
                         <td>
                             <a href="/ipplan/update-subnet/{{obj.id}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                             <a data-toggle="modal" href='#delete-subnet-modal' id="{{ obj.id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>

@@ -88,20 +88,17 @@ def request_ip_form(request):
         form = RequestIpAddressForm(request.POST)
         if form.is_valid():
             subnet = form.cleaned_data.get('subnet')
-            ip_address = form.cleaned_data.get('ip_address')
-            status = form.cleaned_data.get('status')
+            ips = request.POST.getlist('ip')
             description = form.cleaned_data.get('description')
-            list_ips = ip_address.split(",")
-            for ip in list_ips:
-                model = IpAddressModel.objects.create(
-                    ip_address = ip,
-                    subnet = subnet,
-                    status = status,
+            for ip in ips:
+                model = IpAddressModel(
+                    ip = ip,
+                    subnet = Subnet.objects.get(subnet=subnet),
                     description = description,
-                    user_created = request.user
+                    user_created = str(request.user)
                 )
-                model.save
-            return render(request, template_name='request_ip_result.html', context={'list_ips': list_ips, 'subnet': subnet, 'status': status})
+                model.save()
+            return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet, 'status': status})
         else:
             return render(request, template_name='request_ip.html', context={'form': form})
     else:
@@ -114,8 +111,8 @@ def dashboard(request):
 
 @login_required()
 def list_ip(request, pk):
-    list_ip = IpAddressModel.objects.filter(subnet__id=pk)
-    return render(request, template_name='list_ip.html', context={'list_ip': list_ip})
+    ips = IpAddressModel.objects.filter(subnet__id=pk)
+    return render(request, template_name='list_ip.html', context={'ips': ips})
 
 
 class IpAddressModelDeleteView(DeleteView):
@@ -191,56 +188,69 @@ def create_multiple_subnet(request):
         if request.method == 'POST' and request.FILES.get('upload-file'):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
-            worksheet = wb["IPPlan"]
+            worksheet = wb["subnets"]
             for item in worksheet.iter_rows(min_row=2):
                 item = ["" if i.value is None else i.value for i in item]
                 region = item[0]
                 location = item[1]
-                subnet = item[2]
-                name = item[3]
-                description = item[4]
-                validate_xss_result = validate_xss(list_string=item)
-                if validate_xss_result:
-                    if region != "" or location != "" or subnet != "":
-                        obj_count_01 = Region.objects.filter(region=region).count()
-                        obj_count_02 = Location.objects.filter(location=location).count()
-                        obj_count_03 = Subnet.objects.filter(subnet=subnet).count()
-                        if obj_count_01 == 0:
-                            model = Region(
-                                region=region,
-                                description=region,
-                                user_created=request.user
-                            )
-                            model.save()
+                group = item[2]
+                group_subnet = item[3]
+                subnet = item[4]
+                vlan = item[5]
+                name = item[6]
+                description = item[7]
+                user_created = str(request.user)
+                if check_create_multiple_subnet(item):
+                    obj_count_01 = Region.objects.filter(region=region).count()
+                    obj_count_02 = Location.objects.filter(location=location).count()
+                    obj_count_03 = SubnetGroup.objects.filter(group=group).count()
+                    obj_count_04 = Subnet.objects.filter(subnet=subnet).count()
+                    if obj_count_01 == 0:
+                        model = Region(
+                            region=region,
+                            description=region,
+                            user_created=user_created
+                        )
+                        model.save()
+                    if obj_count_02 == 0:
                         obj_01 = Region.objects.get(region=region)
-                        if obj_count_02 == 0:
-                            model = Location(
-                                location=location,
-                                region=obj_01,
-                                description=region,
-                                user_created=request.user
-                            )
-                            model.save()
-                        if obj_count_03 == 0:
-                            obj_02 = Location.objects.get(location=location)
-                            model = Subnet(
-                                subnet=subnet,
-                                location=obj_02,
-                                name=name,
-                                description=description,
-                                user_created=request.user
-                            )
-                            model.save()
-                        else:
-                            model = Subnet.objects.get(subnet=subnet)
-                            model.location = Location.objects.get(location=location)
-                            model.name = name
-                            model.description = description
-                            model.user_created = str(request.user)
-                            model.save()
-                    messages.add_message(request, constants.SUCCESS, 'Import subnet success')
-                else:
-                    raise Exception('The input string contains unusual characters')
+                        model = Location(
+                            location=location,
+                            region=obj_01,
+                            description=region,
+                            user_created=user_created
+                        )
+                        model.save()
+                    if obj_count_03 == 0:
+                        obj_02 = Location.objects.get(location=location)
+                        model = SubnetGroup(
+                            group=group,
+                            location=obj_02,
+                            group_subnet=group_subnet,
+                            description=group,
+                            user_created=user_created
+                        )
+                        model.save()
+                    if obj_count_04 == 0:
+                        obj_03 = SubnetGroup.objects.get(group=group)
+                        model = Subnet(
+                            subnet=subnet,
+                            group=obj_03,
+                            name=name,
+                            vlan=vlan,
+                            description=description,
+                            user_created=user_created
+                        )
+                        model.save()
+                    else:
+                        model = Subnet.objects.get(subnet=subnet)
+                        model.group = SubnetGroup.objects.get(group=group)
+                        model.name = name
+                        model.vlan = vlan
+                        model.description = description
+                        model.user_created = user_created
+                        model.save()
+                messages.add_message(request, constants.SUCCESS, 'Import subnet success')
     except Exception as error:
         messages.add_message(request, constants.ERROR, f'An error occurred: {error}')
     return render(request, template_name='create_multiple_subnet.html')
@@ -251,22 +261,18 @@ def request_multiple_ip(request):
         if request.method == 'POST' and request.FILES.get('upload-file'):
             uploaded_file = request.FILES['upload-file']
             wb = openpyxl.load_workbook(uploaded_file)
-            worksheet = wb["DATA"]
+            worksheet = wb["list_ip"]
             list_subnet = Subnet.objects.all().values_list('subnet', flat=True)
             for item in worksheet.iter_rows(min_row=2):
                 item = ["" if i.value is None else i.value for i in item]
                 description = item[0]
                 ip = item[1]
-                status = item[2]
                 subnet = [subnet for subnet in list_subnet if is_ip(ip) is True and is_subnet(subnet) is True and IPv4Address(ip) in ip_network(subnet)]
-                get_ip_status = IpStatus.objects.filter(status=status).count()
-                if subnet and get_ip_status > 0:
+                if subnet:
                     subnet_obj = Subnet.objects.get(subnet=subnet[-1])
-                    status_obj = IpStatus.objects.get(status=status)
                     IpAddressModel.objects.update_or_create(
                         ip_address=ip,
                         defaults={
-                            'status': status_obj,
                             'subnet': subnet_obj,
                             'description': description
                         }
@@ -281,14 +287,15 @@ def list_subnet_tree(request):
     if request.method == 'GET':
         regions = Region.objects.all()
         locations = Location.objects.all()
+        groups = SubnetGroup.objects.all()
         subnets = Subnet.objects.all()
-        context = {'regions': regions, 'locations': locations, 'subnets': subnets}
+        context = {
+            'regions': regions, 
+            'locations': locations, 
+            'groups': groups,
+            'subnets': subnets
+            }
     return render(request, 'list_subnet_tree.html', context=context)
-
-
-
-####
-
 
 class SubnetGroupCreateView(CreateView):
     model = SubnetGroup
@@ -320,7 +327,7 @@ class SubnetGroupUpdateView(UpdateView):
         messages.add_message(self.request, constants.SUCCESS, 'Update success')
         return super().form_valid(form)
 
-class DeviceTagDeleteView(DeleteView):
+class SubnetGroupDeleteView(DeleteView):
     model = SubnetGroup
     template_name = 'list_subnet_group.html'
     success_url = '/ipplan/list-subnet-group'
@@ -339,7 +346,7 @@ class DeviceTagDeleteView(DeleteView):
             messages.add_message(self.request, constants.ERROR, error)
         return redirect(self.success_url)
 
-class DeviceTagListView(ListView):
+class SubnetGroupListView(ListView):
     model = SubnetGroup
     context_object_name = 'objects'
     template_name = "list_subnet_group.html"

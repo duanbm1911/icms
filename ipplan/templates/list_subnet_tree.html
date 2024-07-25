@@ -18,10 +18,19 @@ ICMS | List subnet
                 <li>
                     {{ location }}
                     <ul>
-                        {% for subnet in subnets %}
-                        {% if subnet.location == location %}
+                        {% for group in groups %}
+                        {% if group.location == location %}
                         <li>
-                            <a href="/ipplan/list-ip/{{subnet.id}}">{{ subnet }} - {{subnet.name}}</a>
+                            {{ group }}
+                            <ul>
+                                {% for subnet in subnets %}
+                                {% if subnet.group == group %}
+                                <li>
+                                    <a href="/ipplan/list-ip/{{subnet.id}}">{{ subnet }} - {{subnet.name}}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
                         </li>
                         {% endif %}
                         {% endfor %}

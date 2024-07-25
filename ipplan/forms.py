@@ -6,8 +6,6 @@ from ipaddress import ip_network, IPv4Address
 import re, json
 
 
-
-
 def validate_xss(value):
     regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
     result = re.search(regex, value)
@@ -45,8 +43,8 @@ class SubnetGroupForm(forms.ModelForm):
     class Meta:
         """Meta definition for Locationform."""
 
-        model = Location
-        fields = ('group', 'location', 'description',)
+        model = SubnetGroup
+        fields = ('group', 'group_subnet', 'location', 'description',)
 
 class SubnetForm(forms.ModelForm):
     """Form definition for Subnet."""
@@ -82,8 +80,7 @@ class RequestIpAddressForm(forms.Form):
     """RequestIpAddressForm definition."""
 
     subnet = forms.ModelChoiceField(queryset=Subnet.objects.all())
-    ip_address = forms.CharField(validators=[validate_xss], widget=forms.SelectMultiple)
-    status = forms.ModelChoiceField(queryset=IpStatus.objects.all())
+    ip = forms.CharField(validators=[validate_xss], widget=forms.SelectMultiple)
     description = forms.CharField(max_length=200, validators=[validate_xss])
 
     def clean_subnet(self):
@@ -95,19 +92,6 @@ class RequestIpAddressForm(forms.Form):
             raise ValidationError("This subnet is not in database")
         return subnet
 
-    def clean_ip_address(self):
-        subnet = self.cleaned_data.get('subnet')
-        list_ips = self.cleaned_data.get('ip_address')
-        used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
-        list_ips_overlap = [i for i in list_ips if i in used_ips]
-        list_ips_invalid = [i for i in list_ips if is_ip(i) is False or IPv4Address(i) not in ip_network(subnet)]
-        if list_ips_overlap:
-            list_ips_overlap = ",".join(list_ips_overlap)
-            raise ValidationError(f'IP address: {list_ips_overlap} already used')
-        elif list_ips_invalid:
-            list_ips_invalid = ",".join(list_ips_invalid)
-            raise ValidationError(f'IP address: {list_ips_invalid} is invalid or not belong to subnet: {subnet}')
-        return ",".join(list_ips)
 
 class IpAddressModelForm(forms.ModelForm):
     """Form definition for IpAddressModel."""
@@ -116,14 +100,15 @@ class IpAddressModelForm(forms.ModelForm):
         """Meta definition for IpAddressModelform."""
 
         model = IpAddressModel
-        fields = ('ip_address', 'subnet', 'status', 'description', )
+        fields = ('ip', 'subnet', 'description', )
 
 class IpAddressModelUpdatelForm(forms.ModelForm):
     """Form definition for IpAddressModelUpdatelForm."""
+
     description = forms.CharField(validators=[validate_xss])
     
     class Meta:
         """Meta definition for IpAddressModelUpdatelForm."""
 
         model = IpAddressModel
-        fields = ('ip_address', 'status', 'description', )
+        fields = ('ip', 'description', )

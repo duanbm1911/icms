@@ -38,7 +38,6 @@ admin_site.register(Region)
 admin_site.register(Location)
 admin_site.register(Subnet)
 admin_site.register(SubnetGroup)
-admin_site.register(IpStatus)
 admin_site.register(IpAddressModel)
 
 admin_site.register(User)

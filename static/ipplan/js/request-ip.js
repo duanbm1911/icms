@@ -1,24 +1,24 @@
 $(document).ready(function () {
     $('#id_subnet').select2()
-    $('#id_ip_address').select2()
+    $('#id_ip').select2()
     $('#id_subnet').change(function() {
-        let subnet_id = $('#id_subnet option:selected').text()
+        let subnet = $('#id_subnet option:selected').text()
         $.ajax({
             type: 'GET',
-            url: '/api/ipplan/get-list-ip-available?subnet=' + subnet_id,
+            url: '/api/ipplan/get-list-ip-available?subnet=' + subnet,
             dataType:"json",
             success: function(response) {
                 if (response.status == 'success') {
                     var list_ip_available = response.data
-                    $('#id_ip_address').text('')
+                    $('#id_ip').text('')
                     list_ip_available.forEach(ip => {
-                        $('#id_ip_address').append($('<option>', { 
+                        $('#id_ip').append($('<option>', { 
                             value: ip,
                             text : ip 
                         }))
                     });
                     $('#ip-available').text('')
-                    $('#ip-available').html('<strong style="color:red">Available: ' + list_ip_available.length + ' IP</strong>')
+                    $('#ip-available').html('<strong style="color:green">Available: ' + list_ip_available.length + ' IP</strong>')
                 }
                 else {
                     $('#ip-available').text('')
@@ -27,4 +27,8 @@ $(document).ready(function () {
             },
         });
     });
+    $('#request-ip-form').on('submit', function() {
+        let list_ip = $('#id_ip').val()
+        // $('#id_ip').text(list_ip)
+    })
 });

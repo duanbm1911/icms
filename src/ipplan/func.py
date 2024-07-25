@@ -35,68 +35,38 @@ def check_subnet_overlap(subnet, subnets):
             overlapped.append(other)
     return overlapped
 
-def check_list_ipaddress(datalist):
+def is_vlan(vlan):
     try:
-        for ip in datalist:
-            if ip != 'any':
-                IPv4Address(ip)
-        return True
+        if 0 <= int(vlan) <= 4096:
+            return True
+        else:
+            return False
     except:
         return False
 
-def check_list_protocol(datalist):
-    try:
-        for item in datalist:
-            list_item = item.split('-')
-            if len(list_item) == 2:
-                if 'tcp' not in list_item[0] or 'udp' not in list_item[0]:
-                    return False
-                else:
-                    int(list_item[1])
-            elif len(list_item) == 3:
-                if 'tcp' not in list_item[0] or 'udp' not in list_item[0]:
-                    return False
-                else:
-                    int(list_item[1])
-                    int(list_item[2])
-                    if int(list_item[1]) > int(list_item[2]):
-                        return False
-                    elif int(list_item[1]) < 0 or int(list_item[1]) > 65536:
-                        return False
-                    elif int(list_item[2]) < 0 or int(list_item[2]) > 65536:
-                        return False
-            else:
-                return False
-        return True
-    except:
-        return False
-
-
-def check_access_rule_input(data):
-    error_message = str()
-    if data != []:
-        policy = data[0]
-        description = data[1]
-        source = data[2].split('\n')
-        destination = data[3].split('\n')
-        protocol = data[4].split('\n')
-        schedule = data[5]
-        if policy == "":
-            error_message = f'Policy template name can not be empty'
-        elif description == "":
-            error_message = f'Policy template description can not be empty'
-        elif source == ['']:
-            error_message = f'Source address is invalid'
-        elif 'any' in source and len(source) > 1:
-            error_message = f'Source address is invalid'
-        elif not check_list_ipaddress(source):
-            error_message = f'Source address is invalid'
-        elif destination == ['']:
-            error_message = f'Destination address is invalid'
-        elif 'any' in destination and len(destination) > 1:
-            error_message = f'Destination address is invalid'
-        elif not check_list_ipaddress(destination):
-            error_message = f'Destination address is invalid'
-        elif not check_list_protocol(protocol):
-            error_message = f'Protocol is invalid'
-    return error_message
+def check_create_multiple_subnet(item):
+    error = False
+    region = item[0]
+    location = item[1]
+    group = item[2]
+    group_subnet = item[3]
+    subnet = item[4]
+    vlan = item[5]
+    name = item[6]
+    if region == '':
+        error = True
+    elif location == '':
+        error = True
+    elif group == '':
+        erorr = True
+    elif is_subnet(group_subnet) is False:
+        error = True
+    elif is_subnet(subnet) is False:
+        error = True
+    elif is_vlan(vlan) is False:
+        error = True
+    elif name == '':
+        error = True
+    else:
+        return error
+    
