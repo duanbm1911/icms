@@ -34,6 +34,19 @@ class LocationForm(forms.ModelForm):
 
         model = Location
         fields = ('location', 'region', 'description',)
+        
+class SubnetGroupForm(forms.ModelForm):
+    """Form definition for SubnetGroup."""
+    
+    group = forms.CharField(validators=[validate_xss], label='Group name')
+    location = forms.CharField(validators=[validate_xss])
+    description = forms.CharField(validators=[validate_xss])
+    
+    class Meta:
+        """Meta definition for Locationform."""
+
+        model = Location
+        fields = ('group', 'location', 'description',)
 
 class SubnetForm(forms.ModelForm):
     """Form definition for Subnet."""
@@ -44,12 +57,12 @@ class SubnetForm(forms.ModelForm):
         """Meta definition for Subnetform."""
 
         model = Subnet
-        fields = ('subnet', 'name', 'location', 'description')
+        fields = ('subnet', 'name', 'group', 'description')
 
     def clean_subnet(self):
         subnet = self.cleaned_data.get('subnet')
         if is_subnet(subnet) is False:
-            raise ValidationError("Subnet is not validated")
+            raise ValidationError("Subnet is invalid")
         return subnet
 
 
@@ -62,7 +75,7 @@ class SubnetUpdateForm(forms.ModelForm):
         """Meta definition for Subnetform."""
 
         model = Subnet
-        fields = ('name', 'location', 'description')
+        fields = ('name', 'group', 'description')
         
 
 class RequestIpAddressForm(forms.Form):
@@ -85,7 +98,6 @@ class RequestIpAddressForm(forms.Form):
     def clean_ip_address(self):
         subnet = self.cleaned_data.get('subnet')
         list_ips = self.cleaned_data.get('ip_address')
-        print(list_ips)
         used_ips = IpAddressModel.objects.filter(subnet__subnet=subnet).values_list('ip_address', flat=True)
         list_ips_overlap = [i for i in list_ips if i in used_ips]
         list_ips_invalid = [i for i in list_ips if is_ip(i) is False or IPv4Address(i) not in ip_network(subnet)]

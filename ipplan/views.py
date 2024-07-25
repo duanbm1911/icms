@@ -12,6 +12,7 @@ from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 from django.http import JsonResponse
+from django.db.models import ProtectedError
 from ipplan.models import *
 from ipplan.forms import *
 from src.ipplan.func import *
@@ -257,7 +258,7 @@ def request_multiple_ip(request):
                 description = item[0]
                 ip = item[1]
                 status = item[2]
-                subnet = [subnet for subnet in list_subnet if is_ip(ip) is True and is_subnet(subnet) is True and ipaddress.IPv4Address(ip) in ipaddress.ip_network(subnet)]
+                subnet = [subnet for subnet in list_subnet if is_ip(ip) is True and is_subnet(subnet) is True and IPv4Address(ip) in ip_network(subnet)]
                 get_ip_status = IpStatus.objects.filter(status=status).count()
                 if subnet and get_ip_status > 0:
                     subnet_obj = Subnet.objects.get(subnet=subnet[-1])
@@ -283,3 +284,66 @@ def list_subnet_tree(request):
         subnets = Subnet.objects.all()
         context = {'regions': regions, 'locations': locations, 'subnets': subnets}
     return render(request, 'list_subnet_tree.html', context=context)
+
+
+
+####
+
+
+class SubnetGroupCreateView(CreateView):
+    model = SubnetGroup
+    form_class = SubnetGroupForm
+    template_name = "create_subnet_group.html"
+    success_url = '/ipplan/list-subnet-group'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Create success')
+        return super().form_valid(form)
+
+class SubnetGroupUpdateView(UpdateView):
+    model = SubnetGroup
+    form_class = SubnetGroupForm
+    template_name = "update_subnet_group.html"
+    success_url = '/ipplan/list-subnet-group'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+
+class DeviceTagDeleteView(DeleteView):
+    model = SubnetGroup
+    template_name = 'list_subnet_group.html'
+    success_url = '/ipplan/list-subnet-group'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class DeviceTagListView(ListView):
+    model = SubnetGroup
+    context_object_name = 'objects'
+    template_name = "list_subnet_group.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
