@@ -45,7 +45,7 @@ def is_vlan(vlan):
         return False
 
 def check_create_multiple_subnet(item):
-    error = False
+    status = True
     region = item[0]
     location = item[1]
     group = item[2]
@@ -54,19 +54,19 @@ def check_create_multiple_subnet(item):
     vlan = item[5]
     name = item[6]
     if region == '':
-        error = True
+        status = False
     elif location == '':
-        error = True
+        status = False
     elif group == '':
-        erorr = True
+        status = False
     elif is_subnet(group_subnet) is False:
-        error = True
+        status = False
     elif is_subnet(subnet) is False:
-        error = True
+        status = False
     elif is_vlan(vlan) is False:
-        error = True
+        status = False
     elif name == '':
-        error = True
+        status = False
     else:
-        return error
+        return status
     
