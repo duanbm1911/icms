@@ -350,6 +350,34 @@ def ipplan_get_list_ip_available(request):
         return JsonResponse({'status': 'failed', 'error': 'Subnet is invalid'})
 
 @logged_in_or_basicauth()
+def ipplan_update_ip_status(request):
+    if request.method == 'POST':
+        dataset = json.loads(request.body.decode('utf-8'))
+        for subnet, objects in dataset.items():
+            checklist = Subnet.objects.filter(subnet=subnet).count()
+            if checklist > 0:
+                for object in objects:
+                    subnet_obj = Subnet.objects.get(subnet=subnet)
+                    IpAddressModel.objects.update_or_create(
+                        subnet=subnet_obj,
+                        ip=object['ip'],
+                        status=object['status'],
+                        description='Discovered automatically',
+                        user_created=str(request.user)
+                    )
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+    
+@logged_in_or_basicauth()
+def ipplan_get_list_subnet(request):
+    if request.method == 'GET':
+        datalist = list(Subnet.objects.all().values_list('subnet', flat=True))
+        return JsonResponse({'datalist': datalist}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+@logged_in_or_basicauth()
 def get_list_device(request):
     if request.method == 'GET':
         datalist = list()
