@@ -16,13 +16,17 @@ ICMS | Request IP result
                     <tr>
                         <th>IP</th>
                         <th>Subnet</th>
+                        <th>Description</th>
+                        <th>User created</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for ip in ips %}
                     <tr>
-                        <td>{{ip}}</td>
-                        <td>{{subnet}}</td>
+                        <td>{{ ip }}</td>
+                        <td>{{ subnet }}</td>
+                        <td>{{ description }}</td>
+                        <td>{{ user_created }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -21,7 +21,7 @@ ICMS | List subnet
                         {% for group in groups %}
                         {% if group.location == location %}
                         <li>
-                            {{ group }}
+                            {{ group }} ({{ group.group_subnet }})
                             <ul>
                                 {% for subnet in subnets %}
                                 {% if subnet.group == group %}

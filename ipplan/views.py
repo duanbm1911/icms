@@ -23,7 +23,7 @@ import openpyxl
 # Create your views here.
 
 
-def validate_xss(list_string):
+def is_xss_validate(list_string):
     regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
     for string in list_string:
         result = re.search(regex, string)
@@ -98,7 +98,7 @@ def request_ip_form(request):
                     user_created = str(request.user)
                 )
                 model.save()
-            return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet})
+            return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet, 'description': description, 'user_created': str(request.user)})
         else:
             return render(request, template_name='request_ip.html', context={'form': form})
     else:

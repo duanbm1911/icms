@@ -25,7 +25,7 @@ MESSAGE_TAGS = {
 }
 
 
-def validate_xss(list_string):
+def is_xss_validate(list_string):
     regex = '<([A-Za-z_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
     for string in list_string:
         result = re.search(regex, string)
@@ -341,8 +341,7 @@ def create_multiple_device(request):
             for item in worksheet_01.iter_rows(min_row=2, values_only=True):
                 item = ["" if i.value is None else i.value for i in item]
                 obj_count = Device.objects.filter(device_ip=item[1]).count()
-                validate_xss_result = validate_xss(list_string=item)
-                if validate_xss_result:
+                if is_xss_validate(list_string=item):
                     if obj_count == 0:
                         obj_count_01 = DeviceBranch.objects.filter(device_branch=item[2]).count()
                         obj_count_02 = DeviceProvince.objects.filter(device_province=item[3]).count()
@@ -432,8 +431,7 @@ def create_multiple_device(request):
                 else:
                     raise Exception('The input string contains unusual characters')
             for item in worksheet_02.iter_rows(min_row=2, values_only=True):
-                validate_xss_result = validate_xss(list_string=item)
-                if validate_xss_result:
+                if is_xss_validate(list_string=item):
                     if item[0] is not None and item[1] is not None:
                         obj_count = Device.objects.filter(device_ip=item[1]).count()
                         if obj_count == 1:
@@ -458,8 +456,7 @@ def create_multiple_device(request):
                 else:
                     raise Exception('The input string contains unusual characters')
             for item in worksheet_03.iter_rows(min_row=2, values_only=True):
-                validate_xss_result = validate_xss(list_string=item)
-                if validate_xss_result:
+                if is_xss_validate(list_string=item):
                     if item[0] is not None and item[1] is not None:
                         obj_count = Device.objects.filter(device_ip=item[1]).count()
                         if obj_count != 0:

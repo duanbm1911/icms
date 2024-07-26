@@ -4,15 +4,15 @@ from django.core.exceptions import ValidationError
 import re
 
 
-def validate_xss(value):
+def is_xss_validate(value):
     regex = '<([A-Za-z0-9_{}()/]+(\s|=)*)+>(.*<[A-Za-z/>]+)*'
     result = re.search(regex, value)
     if result:
         raise ValidationError('The input string contains unusual characters')
     
 class DeviceForm(forms.ModelForm):
-    device_name = forms.CharField(validators=[validate_xss])
-    device_description = forms.CharField(validators=[validate_xss])
+    device_name = forms.CharField(validators=[is_xss_validate])
+    device_description = forms.CharField(validators=[is_xss_validate])
     class Meta:
         
         model = Device
@@ -32,8 +32,8 @@ class DeviceForm(forms.ModelForm):
     
 
 class DeviceProvinceForm(forms.ModelForm):
-    device_province = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_province = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceProvince
@@ -43,8 +43,8 @@ class DeviceProvinceForm(forms.ModelForm):
             ]
 
 class DeviceOSForm(forms.ModelForm):
-    device_os = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_os = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceOS
@@ -54,8 +54,8 @@ class DeviceOSForm(forms.ModelForm):
             ]
 
 class DeviceTypeForm(forms.ModelForm):
-    device_type = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_type = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceType
@@ -65,8 +65,8 @@ class DeviceTypeForm(forms.ModelForm):
             ]
 
 class DeviceCategoryForm(forms.ModelForm):
-    device_category = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_category = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceCategory
@@ -76,8 +76,8 @@ class DeviceCategoryForm(forms.ModelForm):
             ]
 
 class DeviceVendorForm(forms.ModelForm):
-    device_vendor = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_vendor = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceVendor
@@ -87,8 +87,8 @@ class DeviceVendorForm(forms.ModelForm):
             ]
         
 class DeviceBranchForm(forms.ModelForm):
-    device_branch = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_branch = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceBranch
@@ -98,8 +98,8 @@ class DeviceBranchForm(forms.ModelForm):
             ]
         
 class DeviceTagForm(forms.ModelForm):
-    device_tag = forms.CharField(validators=[validate_xss])
-    description = forms.CharField(validators=[validate_xss])
+    device_tag = forms.CharField(validators=[is_xss_validate])
+    description = forms.CharField(validators=[is_xss_validate])
     class Meta:
 
         model = DeviceTag
@@ -120,7 +120,7 @@ class DeviceManagementForm(forms.ModelForm):
     end_sw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     end_hw_support_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
     start_used_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}), required=False)
-    device_serial_number = forms.CharField(validators=[validate_xss])
+    device_serial_number = forms.CharField(validators=[is_xss_validate])
     class Meta:
         model = DeviceManagement
         fields = [
