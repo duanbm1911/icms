@@ -301,7 +301,7 @@ class SubnetGroupCreateView(CreateView):
     model = SubnetGroup
     form_class = SubnetGroupForm
     template_name = "create_subnet_group.html"
-    success_url = '/ipplan/list-subnet-group'
+    success_url = '/ipplan/create-subnet-group'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
