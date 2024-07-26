@@ -9,13 +9,13 @@ $.ajax({
 			theme: "light2", // "light1", "light2", "dark1", "dark2"
 			exportEnabled: true,
 			title: {
-				text: "Count subnet by location",
+				text: "Count subnet group by location",
 				fontFamily: "tahoma",
 				fontSize: 20,
 				fontWeight: "normal"
 			},
 			axisY: {
-				title: "Subnet",
+				title: "Subnet group",
 				suffix: ""
 			},
 			axisX: {
