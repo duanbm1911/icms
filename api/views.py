@@ -329,7 +329,7 @@ def ipplan_dashboard_02(request):
     subnet_count = list()
     list_location = list(Location.objects.values_list('location', flat=True))
     for obj in list_location:
-        count = Subnet.objects.filter(location__location=obj).count()
+        count = SubnetGroup.objects.filter(location__location=obj).count()
         subnet_count.append({
             'label': str(obj),
             'y': count,
