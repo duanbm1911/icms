@@ -37,7 +37,6 @@ class SubnetGroupForm(forms.ModelForm):
     """Form definition for SubnetGroup."""
     
     group = forms.CharField(validators=[validate_xss], label='Group name')
-    location = forms.CharField(validators=[validate_xss])
     description = forms.CharField(validators=[validate_xss])
     
     class Meta:
