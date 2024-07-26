@@ -349,6 +349,7 @@ def ipplan_get_list_ip_available(request):
     else:
         return JsonResponse({'status': 'failed', 'error': 'Subnet is invalid'})
 
+@csrf_exempt
 @logged_in_or_basicauth()
 def ipplan_update_ip_status(request):
     if request.method == 'POST':
