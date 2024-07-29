@@ -111,3 +111,4 @@ class IpAddressModelUpdatelForm(forms.ModelForm):
 
         model = IpAddressModel
         fields = ('ip', 'description', )
+        

@@ -146,7 +146,6 @@ class IpAddressModelUpdateView(UpdateView):
 
     def get_success_url(self):
         pk = self.kwargs["pk"]
-        pk1 = self.kwargs['id']
         return reverse("list-ip", kwargs={"pk": pk})
 
 
