@@ -360,13 +360,12 @@ def ipplan_update_ip_status(request):
                 for result in results:
                     subnet_obj = Subnet.objects.get(subnet=subnet)
                     IpAddressModel.objects.update_or_create(
-                        subnet=subnet_obj,
                         ip=result['ip'],
-                        defaults= {
-                            'status'=result['status'],
-                            'user_created'=str(request.user)
-                        }
-                    )
+                        defaults={
+                            'subnet': subnet_obj,
+                            'status': result['status'],
+                            'user_created': str(request.user)
+                        })
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
