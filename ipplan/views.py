@@ -273,7 +273,8 @@ def request_multiple_ip(request):
                         ip_address=ip,
                         defaults={
                             'subnet': subnet_obj,
-                            'description': description
+                            'description': description,
+                            'user_created': str(request.user)
                         }
                     )
             messages.add_message(request, constants.SUCCESS, 'Import IP success')
