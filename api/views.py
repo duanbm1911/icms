@@ -341,10 +341,7 @@ def ipplan_dashboard_02(request):
 def ipplan_get_list_ip_available(request):
     subnet = request.GET.get('subnet', None)
     if is_subnet(subnet):
-        ip_used = list(IpAddressModel.objects.filter(subnet__subnet=subnet, status='failed', user_created='icms_api').values_list('ip', flat=True))
-        ip_available = [str(i) for i in ip_network(subnet) if str(i) not in ip_used]
-        ip_available.pop(0)
-        ip_available.pop(-1)
+        ip_available = list(IpAddressModel.objects.filter(subnet__subnet=subnet, status='failed', user_created='icms_api').values_list('ip', flat=True))
         return JsonResponse({'status': 'success', 'data': ip_available})
     else:
         return JsonResponse({'status': 'failed', 'error': 'Subnet is invalid'})
