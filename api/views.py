@@ -362,8 +362,10 @@ def ipplan_update_ip_status(request):
                     IpAddressModel.objects.update_or_create(
                         subnet=subnet_obj,
                         ip=result['ip'],
-                        status=result['status'],
-                        user_created=str(request.user)
+                        defaults= {
+                            'status'=result['status'],
+                            'user_created'=str(request.user)
+                        }
                     )
         return JsonResponse({'status': 'success'}, status=200)
     else:
