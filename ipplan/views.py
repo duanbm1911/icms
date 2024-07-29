@@ -91,13 +91,14 @@ def request_ip_form(request):
             ips = request.POST.getlist('ip')
             description = form.cleaned_data.get('description')
             for ip in ips:
-                model = IpAddressModel(
-                    ip = ip,
-                    subnet = Subnet.objects.get(subnet=subnet),
-                    description = description,
-                    user_created = str(request.user)
+                IpAddressModel.objects.update_or_create(
+                    ip=ip,
+                    defaults={
+                    'subnet': Subnet.objects.get(subnet=subnet),
+                    'description': description,
+                    'user_created': str(request.user)
+                    }
                 )
-                model.save()
             return render(request, template_name='request_ip_result.html', context={'ips': ips, 'subnet': subnet, 'description': description, 'user_created': str(request.user)})
         else:
             return render(request, template_name='request_ip.html', context={'form': form})
