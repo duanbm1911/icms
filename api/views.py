@@ -361,8 +361,15 @@ def ipplan_update_ip_status(request):
                         defaults={
                             'subnet': subnet_obj,
                             'status': result['status'],
+                        },
+                        create_defaults={
+                            'subnet': subnet_obj,
+                            'status': result['status'],
+                            'description': 'Discovered automatically',
                             'user_created': str(request.user)
-                        })
+                        }
+                    )
+
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
