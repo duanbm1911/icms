@@ -362,12 +362,12 @@ def ipplan_update_ip_status(request):
                             'subnet': subnet_obj,
                             'status': result['status'],
                         },
-                        create_defaults={
-                            'subnet': subnet_obj,
-                            'status': result['status'],
-                            'description': 'Discovered automatically',
-                            'user_created': str(request.user)
-                        }
+                        # create_defaults={
+                        #     'subnet': subnet_obj,
+                        #     'status': result['status'],
+                        #     'description': 'Discovered automatically',
+                        #     'user_created': str(request.user)
+                        # }
                     )
 
         return JsonResponse({'status': 'success'}, status=200)
