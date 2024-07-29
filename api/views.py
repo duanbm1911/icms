@@ -354,16 +354,15 @@ def ipplan_get_list_ip_available(request):
 def ipplan_update_ip_status(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
-        for subnet, ips in dataset.items():
+        for subnet, results in dataset.items():
             checklist = Subnet.objects.filter(subnet=subnet).count()
             if checklist > 0:
-                for ip in ips:
+                for result in results:
                     subnet_obj = Subnet.objects.get(subnet=subnet)
                     IpAddressModel.objects.update_or_create(
                         subnet=subnet_obj,
-                        ip=ip,
-                        status='success',
-                        description='Discovered automatically',
+                        ip=result['ip'],
+                        status=result['status'],
                         user_created=str(request.user)
                     )
         return JsonResponse({'status': 'success'}, status=200)
