@@ -347,7 +347,7 @@ def ipplan_get_list_ip_available(request):
         return JsonResponse({'status': 'failed', 'error': 'Subnet is invalid'})
 
 @csrf_exempt
-@logged_in_or_basicauth()
+# @logged_in_or_basicauth()
 def ipplan_update_ip_status(request):
     if request.method == 'POST':
         dataset = json.loads(request.body.decode('utf-8'))
@@ -362,14 +362,13 @@ def ipplan_update_ip_status(request):
                             'subnet': subnet_obj,
                             'status': result['status'],
                         },
-                        # create_defaults={
-                        #     'subnet': subnet_obj,
-                        #     'status': result['status'],
-                        #     'description': 'Discovered automatically',
-                        #     'user_created': str(request.user)
-                        # }
+                        create_defaults={
+                            'subnet': subnet_obj,
+                            'status': result['status'],
+                            'description': 'Discovered automatically',
+                            'user_created': str(request.user)
+                        }
                     )
-
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
