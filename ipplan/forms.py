@@ -54,7 +54,7 @@ class SubnetForm(forms.ModelForm):
         """Meta definition for Subnetform."""
 
         model = Subnet
-        fields = ('subnet', 'name', 'group', 'description')
+        fields = ('subnet', 'name', 'group', 'vlan', 'description')
 
     def clean_subnet(self):
         subnet = self.cleaned_data.get('subnet')
