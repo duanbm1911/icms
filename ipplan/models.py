@@ -47,7 +47,7 @@ class Subnet(models.Model):
     subnet = models.CharField(max_length=100, unique=True)
     group = models.ForeignKey('SubnetGroup', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    vlan = models.IntegerField(max_length=100, blank=True)
+    vlan = models.IntegerField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=200, blank=True)
     time_created = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
