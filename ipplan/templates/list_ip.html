@@ -41,7 +41,7 @@ ICMS | List IP Address
                         <td style="text-align: center;" id="ip-status">🔴</td>
                         {% endif %}
                         <td id="description">{{ obj.description }}</td>
-                        <td id="description">{{ obj.time_created | datetime:"d/m/Y HH:MM:SS" }}</td>
+                        <td id="description">{{ obj.time_created | date:"d/m/Y HH:MM:SS" }}</td>
                         <td>
                             <a href="/ipplan/list-ip/{{obj.subnet.id}}/update-ip/{{obj.id}}"><span
                                     class="glyphicon glyphicon-wrench"
