@@ -22,6 +22,7 @@ ICMS | List IP Address
                         <th>Group name</th>
                         <th>Status</th>
                         <th>Description</th>
+                        <th>Time update</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,6 +41,7 @@ ICMS | List IP Address
                         <td style="text-align: center;" id="ip-status">🔴</td>
                         {% endif %}
                         <td id="description">{{ obj.description }}</td>
+                        <td id="description">{{ obj.time_created }}</td>
                         <td>
                             <a href="/ipplan/list-ip/{{obj.subnet.id}}/update-ip/{{obj.id}}"><span
                                     class="glyphicon glyphicon-wrench"
