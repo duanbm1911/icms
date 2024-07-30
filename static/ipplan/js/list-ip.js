@@ -13,7 +13,7 @@ $(document).ready(function() {
       subnet = $('#subnet').text()
       $.ajax({
         type: "POST",
-        url: '/api/ipplan/discovery-ip',
+        url: '/api/ipplan/scan-ip',
         data: {
           'subnet': subnet
         },

@@ -469,7 +469,7 @@ def update_device_check_monitor(request):
 
 @login_required()
 @csrf_exempt
-def ipplan_discovery_ip(request):
+def ipplan_scan_ip(request):
     if request.method == 'POST':
         subnet = request.POST.get('subnet')
         jk_user = os.getenv('JENKINS_USER')

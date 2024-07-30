@@ -17,7 +17,7 @@ urlpatterns = [
     path('ipplan/get-list-ip-available', views.ipplan_get_list_ip_available),
     path('ipplan/update-ip-status', views.ipplan_update_ip_status),
     path('ipplan/get-list-subnet', views.ipplan_get_list_subnet),
-    path('ipplan/discovery-ip', views.ipplan_discovery_ip),
+    path('ipplan/scan-ip', views.ipplan_scan_ip),
     path('get-list-device', views.get_list_device),
     path('update-device-check-config', views.update_device_check_config),
     path('update-device-check-monitor', views.update_device_check_monitor),
