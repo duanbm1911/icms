@@ -475,7 +475,11 @@ def ipplan_discovery_ip(request):
         jk_user = os.getenv('JENKINS_USER')
         jk_passwd = os.getenv('JENKINS_TOKEN')
         try:
-            get_jenkins_crumb_result = get_jenkins_crumb(url=os.getenv('JENKINS_CRUMB'), jk_user=jk_user, jk_passwd=jk_passwd)
+            get_jenkins_crumb_result = get_jenkins_crumb(
+                url=os.getenv('JENKINS_CRUMB'), 
+                jk_user=jk_user, 
+                jk_passwd=jk_passwd
+                )
             if get_jenkins_crumb_result['status'] == 'success':
                 jk_crumb = get_jenkins_crumb_result['jk_crumb']
                 params = f'buildWithParameters?subnet={subnet}'
@@ -494,7 +498,7 @@ def ipplan_discovery_ip(request):
                 error = get_jenkins_crumb_result['error']
                 return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
         except Exception as error:
-            return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+            return JsonResponse({'status': 'failed', 'error': str(os.getenv('JENKINS_CRUMB'))}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
