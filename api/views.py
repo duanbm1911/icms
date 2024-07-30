@@ -490,10 +490,10 @@ def ipplan_discovery_ip(request):
                     jk_crumb=jk_crumb
                 )
                 if run_jenkins_job_result['status'] == 'success':
-                    return JsonResponse({'status': 'success'}, status=200)
+                    return JsonResponse({'status': 'success', 'message': 'Success'}, status=200)
                 else:
                     error = run_jenkins_job_result['error']
-                    return JsonResponse({'status': 'failed', 'error': str(os.getenv('IPPLAN_PING') + params)}, status=200)
+                    return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
             else:
                 error = get_jenkins_crumb_result['error']
                 return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
