@@ -72,7 +72,7 @@ class SubnetUpdateForm(forms.ModelForm):
         """Meta definition for Subnetform."""
 
         model = Subnet
-        fields = ('name', 'group', 'description')
+        fields = ('name', 'group', 'vlan', 'description')
         
 
 class RequestIpAddressForm(forms.Form):
