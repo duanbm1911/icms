@@ -493,10 +493,10 @@ def ipplan_discovery_ip(request):
                     return JsonResponse({'status': 'success'}, status=200)
                 else:
                     error = run_jenkins_job_result['error']
-                    return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+                    return JsonResponse({'status': 'failed', 'error': str(os.getenv('IPPLAN_PING') + params)}, status=200)
             else:
                 error = get_jenkins_crumb_result['error']
-                return JsonResponse({'status': 'failed', 'error': str(os.getenv('IPPLAN_PING') + params)}, status=200)
+                return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
         except Exception as error:
             return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
     else:
