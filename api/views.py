@@ -496,9 +496,9 @@ def ipplan_discovery_ip(request):
                     return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
             else:
                 error = get_jenkins_crumb_result['error']
-                return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+                return JsonResponse({'status': 'failed', 'error': str(os.getenv('JENKINS_CRUMB'))}, status=200)
         except Exception as error:
-            return JsonResponse({'status': 'failed', 'error': str(os.getenv('JENKINS_CRUMB'))}, status=200)
+            return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
 
