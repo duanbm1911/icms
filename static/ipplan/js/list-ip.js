@@ -10,7 +10,7 @@ $(document).ready(function() {
       });
     $('#btn-discovery').on('click', function() {
       $('#btn-discovery').prop('disabled', true)
-      subnet = $('#subnet').text()
+      subnet = $('#id-subnet').data('subnet')
       $.ajax({
         type: "POST",
         url: '/api/ipplan/scan-ip',

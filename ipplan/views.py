@@ -112,8 +112,10 @@ def dashboard(request):
 
 @login_required()
 def list_ip(request, pk):
-    ips = IpAddressModel.objects.filter(subnet__id=pk)
-    return render(request, template_name='list_ip.html', context={'ips': ips})
+    obj = Subnet.objects.get(id=pk)
+    subnet = obj.subnet
+    ips = IpAddressModel.objects.filter(subnet__subnet=subnet)
+    return render(request, template_name='list_ip.html', context={'ips': ips, 'subnet': subnet})
 
 
 class IpAddressModelDeleteView(DeleteView):
