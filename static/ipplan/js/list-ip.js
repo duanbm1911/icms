@@ -8,4 +8,34 @@ $(document).ready(function() {
         var href = "/ipplan/list-ip/" + subnet_id + "/delete-ip/" + ip_id
         $('#delete-ip-from').attr('action', href)
       });
+    $('#btn-discovery').on('click', function() {
+      $('#btn-discovery').prop('disabled', true)
+      subnet = $('#subnet').text()
+      $.ajax({
+        type: "POST",
+        url: '/api/ipplan/discovery-ip',
+        data: {
+          'subnet': subnet
+        },
+        dataType: 'json',
+        success: function(response){
+          if (response.status == 'success') {
+            Swal.fire({
+              text: response.message,
+              icon: "success"
+            }).then(function () {
+              $('#btn-discovery').prop('disabled', false)
+            })
+          }
+          else{
+            Swal.fire({
+              text: response.error,
+              icon: "error"
+            }).then(function () {
+              $('#btn-discovery').prop('disabled', false)
+            })
+          }
+        }
+      })
+    })
 });

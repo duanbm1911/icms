@@ -13,9 +13,9 @@ from ipplan.models import *
 from src.ipplan.func import *
 from cm.models import *
 from ipaddress import ip_network, IPv4Address
-import datetime
-import base64
-import json
+import datetime, base64, json, os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create your views here.
 
@@ -379,6 +379,7 @@ def ipplan_update_ip_status(request):
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
     
+
 @logged_in_or_basicauth()
 def ipplan_get_list_subnet(request):
     if request.method == 'GET':
@@ -464,7 +465,40 @@ def update_device_check_monitor(request):
         return JsonResponse({'status': 'success'}, status=200)
     else:
         return JsonResponse({'error_message': 'method not allowed'}, status=405)
-    
+
+
+@login_required()
+@csrf_exempt
+def ipplan_discovery_ip(request):
+    if request.method == 'POST':
+        subnet = request.POST.get('subnet')
+        jk_user = os.getenv('JENKINS_USER')
+        jk_passwd = os.getenv('JENKINS_TOKEN')
+        try:
+            get_jenkins_crumb_result = get_jenkins_crumb(url=os.getenv('JENKINS_CRUMB'), jk_user=jk_user, jk_passwd=jk_passwd)
+            if get_jenkins_crumb_result['status'] == 'success':
+                jk_crumb = get_jenkins_crumb_result['jk_crumb']
+                params = f'buildWithParameters?subnet={subnet}'
+                run_jenkins_job_result = run_jenkins_job(
+                    url=os.getenv('IPPLAN_PING') + params,
+                    jk_user=jk_user,
+                    jk_passwd=jk_passwd,
+                    jk_crumb=jk_crumb
+                )
+                if run_jenkins_job_result['status'] == 'success':
+                    return JsonResponse({'status': 'success'}, status=200)
+                else:
+                    error = run_jenkins_job_result['error']
+                    return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+            else:
+                error = get_jenkins_crumb_result['error']
+                return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+        except Exception as error:
+            return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
+    else:
+        return JsonResponse({'error_message': 'method not allowed'}, status=405)
+
+
 @csrf_exempt
 @logged_in_or_basicauth()
 def update_device_firmware(request):

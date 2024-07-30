@@ -27,18 +27,18 @@ ICMS | List IP Address
                 <tbody>
                     {% for obj in ips %}
                     <tr>
-                        <td>{{ obj.ip }}</td>
-                        <td>{{ obj.subnet }}</td>
-                        <td>{{ obj.subnet.name }}</td>
-                        <td>{{ obj.subnet.group }}</td>
+                        <td id="ip">{{ obj.ip }}</td>
+                        <td id="subnet">{{ obj.subnet }}</td>
+                        <td id="subnet-name">{{ obj.subnet.name }}</td>
+                        <td id="subnet-group">{{ obj.subnet.group }}</td>
                         {% if obj.status == "" %}
-                        <td style="text-align: center;">⚫️</td>
+                        <td style="text-align: center;" id="ip-status">⚫️</td>
                         {% elif obj.status == 'success' %}
-                        <td style="text-align: center;">🟢</td>
+                        <td style="text-align: center;" id="ip-status">🟢</td>
                         {% else %}
-                        <td style="text-align: center;">🔴</td>
+                        <td style="text-align: center;" id="ip-status">🔴</td>
                         {% endif %}
-                        <td>{{ obj.description }}</td>
+                        <td id="description">{{ obj.description }}</td>
                         <td>
                             <a href="/ipplan/list-ip/{{obj.subnet.id}}/update-ip/{{obj.id}}"><span
                                     class="glyphicon glyphicon-wrench"
@@ -61,6 +61,7 @@ ICMS | List IP Address
         <a href="/ipplan/list-subnet">
             <button type="button" class="btn btn-warning">Back</button>
         </a>
+        <button type="button" id="btn-discovery" class="btn btn-primary">Discovery</button>
     </div>
 </div>
 
@@ -95,5 +96,6 @@ ICMS | List IP Address
 
 {% block js %}
 <script src="/static/core/js/jquery-datatable.js"></script>
+<script src="/static/core/js/sweet-alert.js"></script>
 <script src="/static/ipplan/js/list-ip.js"></script>
 {% endblock js %}
