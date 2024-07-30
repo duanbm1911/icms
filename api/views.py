@@ -490,7 +490,7 @@ def ipplan_scan_ip(request):
                     jk_crumb=jk_crumb
                 )
                 if run_jenkins_job_result['status'] == 'success':
-                    return JsonResponse({'status': 'success', 'message': 'Success'}, status=200)
+                    return JsonResponse({'status': 'success', 'message': 'Create scan IP success'}, status=200)
                 else:
                     error = run_jenkins_job_result['error']
                     return JsonResponse({'status': 'failed', 'error': str(error)}, status=200)
