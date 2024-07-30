@@ -3,6 +3,8 @@ from ipaddress import IPv4Address
 from requests.auth import HTTPBasicAuth
 import requests
 import json
+import urllib3
+urllib3.disable_warnings()
 
 def is_ip(ip):
     try:
