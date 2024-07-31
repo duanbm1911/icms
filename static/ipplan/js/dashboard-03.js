@@ -9,7 +9,7 @@ $.ajax({
 			theme: "light2", // "light1", "light2", "dark1", "dark2"
 			exportEnabled: true,
 			title: {
-				text: "Count IP used group by subnet",
+				text: "Top 20 subnets with highest IP usage (%)",
 				fontFamily: "tahoma",
 				fontSize: 20,
 				fontWeight: "normal"
