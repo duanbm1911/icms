@@ -89,6 +89,8 @@ def get_jenkins_crumb(url, jk_user, jk_passwd):
             error = res.text
             return {'status': 'failed', 'error': error}
     except Exception as error:
+        if 'ConnectionError' in str(error):
+            error = 'Network error, ICMS can not connect to Jenkins'
         return {'status': 'failed', 'error': error}
 
 
@@ -104,4 +106,6 @@ def run_jenkins_job(url, jk_user, jk_passwd, jk_crumb):
             error = res.text
             return {'status': 'failed', 'error': error}
     except Exception as error:
+        if 'ConnectionError' in str(error):
+            error = 'Network error, ICMS can not connect to Jenkins'
         return {'status': 'failed', 'error': error}

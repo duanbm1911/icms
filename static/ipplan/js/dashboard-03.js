@@ -16,6 +16,7 @@ $.ajax({
 			},
 			axisY: {
 				title: "Percent",
+				maximum: 100,
 				suffix: ""
 			},
 			axisX: {
