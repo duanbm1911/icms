@@ -56,10 +56,14 @@ class SubnetForm(forms.ModelForm):
         model = Subnet
         fields = ('subnet', 'name', 'group', 'vlan', 'description')
 
-    def clean_subnet(self):
+    def clean(self):
         subnet = self.cleaned_data.get('subnet')
+        group_obj = self.cleaned_data.get('group')
+        group_subnet = group_obj.group_subnet
         if is_subnet(subnet) is False:
             raise ValidationError("Subnet is invalid")
+        elif ip_network(subnet) not in ip_network(group_subnet):
+            raise ValidationError("Subnet is not in group subnet")
         return subnet
 
 

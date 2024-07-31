@@ -1,5 +1,6 @@
 from ipaddress import IPv4Network
 from ipaddress import IPv4Address
+from ipaddress import ip_network
 from requests.auth import HTTPBasicAuth
 import requests
 import json
@@ -71,6 +72,8 @@ def check_create_multiple_subnet(item):
     elif is_vlan(vlan) is False:
         status = False
     elif name == '':
+        status = False
+    elif ip_network(subnet) not in (group_subnet):
         status = False
     else:
         return status
