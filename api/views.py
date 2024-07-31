@@ -350,7 +350,7 @@ def ipplan_dashboard_03(request):
             'y': percent,
             'toolTipContent': f'{percent}%'
         })
-    datalist = sorted(datalist, key=lambda x: x['y'], reverse=True)[:20]
+    datalist = sorted(datalist, key=lambda x: x['y'], reverse=True)
     return JsonResponse({'data': datalist})
 
 
