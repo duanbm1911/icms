@@ -14,6 +14,7 @@ urlpatterns = [
     path('inventory/report', views.inventory_report),
     path('ipplan/dashboard-01', views.ipplan_dashboard_01),
     path('ipplan/dashboard-02', views.ipplan_dashboard_02),
+    path('ipplan/dashboard-03', views.ipplan_dashboard_03),
     path('ipplan/get-list-ip-available', views.ipplan_get_list_ip_available),
     path('ipplan/update-ip-status', views.ipplan_update_ip_status),
     path('ipplan/get-list-subnet', views.ipplan_get_list_subnet),

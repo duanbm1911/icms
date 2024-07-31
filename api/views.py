@@ -338,6 +338,23 @@ def ipplan_dashboard_02(request):
     return JsonResponse({'data': subnet_count})
 
 @login_required()
+def ipplan_dashboard_03(request):
+    datalist = list()
+    subnets = Subnet.objects.all().values_list('subnet', flat=True)
+    for subnet in subnets:
+        count_subnet_ip = len([str(i) for i in ip_network(subnet).hosts()])
+        count_available_ip = IpAddressModel.objects.filter(subnet__subnet=subnet, status='failed', user_created='icms_api').count()
+        percent = 100 - int(int(count_available_ip)/int(count_subnet_ip)*100)
+        datalist.append({
+            'label': str(subnet),
+            'y': percent,
+            'toolTipContent': f'{percent}%'
+        })
+    datalist = sorted(datalist, key=lambda x: x['y'], reverse=True)[:20]
+    return JsonResponse({'data': datalist})
+
+
+@login_required()
 def ipplan_get_list_ip_available(request):
     subnet = request.GET.get('subnet', None)
     if is_subnet(subnet):

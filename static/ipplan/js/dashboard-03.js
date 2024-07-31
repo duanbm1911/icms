@@ -1,32 +1,34 @@
-var chart = new CanvasJS.Chart("chartContainer-03", {
-theme: "light2",
-animationEnabled: true,
-exportEnabled: true,
-title: {
-	text: "Count of error log",
-	fontFamily: "tahoma"
-},
-subtitles: [{
-	//text: "United Kingdom, 2016",
-	//fontSize: 16
-}],
-data: [{
-	type: "pie",
-	indexLabelFontSize: 18,
-	radius: 80,
-	indexLabel: "{label} - {y}",
-	yValueFormatString: "",
-	//click: explodePie,
-	dataPoints: [
-		{ y: 42, label: "DC/DR" },
-		{ y: 21, label: "Branch"},
-		{ y: 24.5, label: "HO-89LH" },
-		{ y: 9, label: "HO-VHT" },
-		{ y: 3.1, label: "HO-VAT" },
-		{ y: 3.1, label: "HO-MNT" }
-	]
-}]
-});
-chart.render();
+$.ajax({
+	url: '/api/ipplan/dashboard-03',
+	dataType: 'json',
+	type: 'GET',
+	success: function (data) {
+		console.log(data)
+		var chart = new CanvasJS.Chart("chartContainer-03", {
+			animationEnabled: true,
+			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			exportEnabled: true,
+			title: {
+				text: "Count IP used group by subnet",
+				fontFamily: "tahoma",
+				fontSize: 20,
+				fontWeight: "normal"
+			},
+			axisY: {
+				title: "Percent",
+				suffix: ""
+			},
+			axisX: {
+				title: ""
+			},
+			data: [{
+				type: "bar",
+				yValueFormatString: "",
+				dataPoints: data.data
+			}]
+		});
+		chart.render();
+	}
+})
 
 
