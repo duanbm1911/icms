@@ -348,7 +348,7 @@ def ipplan_dashboard_03(request):
         datalist.append({
             'label': str(subnet),
             'y': percent,
-            'toolTipContent': f'{percent}%'
+            'toolTipContent': f'{replace_characters(subnet)} - {percent}%'
         })
     datalist = sorted(datalist, key=lambda x: x['y'], reverse=True)[:20]
     return JsonResponse({'data': datalist})
