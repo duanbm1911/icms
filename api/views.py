@@ -344,11 +344,12 @@ def ipplan_dashboard_03(request):
     for subnet in subnets:
         count_subnet_ip = len([str(i) for i in ip_network(subnet).hosts()])
         count_available_ip = IpAddressModel.objects.filter(subnet__subnet=subnet, status='failed', user_created='icms_api').count()
-        percent = 100 - int(int(count_available_ip)/int(count_subnet_ip)*100)
+        count_used_ip = int(count_subnet_ip) - int(count_available_ip)
+        percent = int(int(count_used_ip)/int(count_subnet_ip)*100)
         datalist.append({
             'label': str(subnet),
             'y': percent,
-            'toolTipContent': f'{replace_characters(subnet)} - {percent}%'
+            'toolTipContent': f'{replace_characters(subnet)} - {percent}% - (Used: {count_used_ip} IPs)'
         })
     datalist = sorted(datalist, key=lambda x: x['y'], reverse=False)[-20:]
     return JsonResponse({'data': datalist})
