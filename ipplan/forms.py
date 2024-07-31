@@ -116,3 +116,8 @@ class IpAddressModelUpdatelForm(forms.ModelForm):
         model = IpAddressModel
         fields = ('ip', 'description', )
         
+        
+class IPPlanExportForm(forms.Form):
+    CHOICES = (
+        ('1', 'List subnets'),)
+    database_table = forms.ChoiceField(label='Select database to export', choices=CHOICES, required=False)

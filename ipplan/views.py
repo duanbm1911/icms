@@ -12,6 +12,7 @@ from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 from django.http import JsonResponse
+from excel_response import ExcelResponse
 from django.db.models import ProtectedError
 from ipplan.models import *
 from ipplan.forms import *
@@ -446,3 +447,39 @@ class LocationListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+    
+    
+@login_required()
+def ipplan_export(request):
+    form = IPPlanExportForm
+    data = {'form': form}
+    try:
+        if request.method == 'POST':
+            form = IPPlanExportForm(request.POST)
+            if form.is_valid():
+                select_id = form.data['database_table']
+                if select_id == '1':
+                    datalist = list()
+                    filename = "subnets"
+                    queryset = Subnet.objects.all()
+                    for item in queryset:
+                        datalist.append({
+                            'region': item.group.location.region,
+                            'location': item.group.location,
+                            'group': item.group.group,
+                            'group_subnet': item.group.group_subnet,
+                            'subnet': item.subnet,
+                            'name': item.name,
+                            'time_created': item.time_created,
+                            'user_created': item.user_created,
+                        })
+                    if datalist:
+                        return ExcelResponse(datalist, output_filename=filename, force_csv=True)
+                    else:
+                        messages.add_message(request, constants.ERROR, 'No data to export')
+                else:
+                    messages.add_message(request, constants.ERROR, 'Database selected is not valid')
+    except Exception as error:
+        messages.add_message(request, constants.ERROR, error)
+    return render(request, template_name='ipplan_export.html', context=data)

@@ -28,5 +28,6 @@ urlpatterns = [
     path('update-location/<int:pk>', LocationUpdateView.as_view(), name='update_location'),
     path('delete-location/<int:pk>', LocationDeleteView.as_view(), name='delete_location'),
     path('update-subnet-group/<int:pk>', SubnetGroupUpdateView.as_view(), name='update_subnet_group'),
-    path('delete-subnet-group/<int:pk>', SubnetGroupDeleteView.as_view(), name='delete_subnet_group')
+    path('delete-subnet-group/<int:pk>', SubnetGroupDeleteView.as_view(), name='delete_subnet_group'),
+    path('ipplan-export', views.ipplan_export, name='ipplan_export')
 ]
