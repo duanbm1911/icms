@@ -77,22 +77,28 @@ def check_create_multiple_subnet(item):
 
 
 def get_jenkins_crumb(url, jk_user, jk_passwd):
-    res = requests.get(url=url, auth=HTTPBasicAuth(jk_user, jk_passwd), verify=False)
-    if res.ok:
-        jk_crumb = json.loads(res.text)['crumb']
-        return {'status': 'success', 'jk_crumb': jk_crumb}
-    else:
-        error = res.text
+    try:
+        res = requests.get(url=url, auth=HTTPBasicAuth(jk_user, jk_passwd), verify=False)
+        if res.ok:
+            jk_crumb = json.loads(res.text)['crumb']
+            return {'status': 'success', 'jk_crumb': jk_crumb}
+        else:
+            error = res.text
+            return {'status': 'failed', 'error': error}
+    except Exception as error:
         return {'status': 'failed', 'error': error}
 
 
 def run_jenkins_job(url, jk_user, jk_passwd, jk_crumb):
-    headers = {
-        "Jenkins-Crumb": jk_crumb
-    }
-    res = requests.post(url=url, auth=HTTPBasicAuth(jk_user, jk_passwd), headers=headers, verify=False)
-    if res.ok:
-        return {'status': 'success'}
-    else:
-        error = res.text
+    try:
+        headers = {
+            "Jenkins-Crumb": jk_crumb
+        }
+        res = requests.post(url=url, auth=HTTPBasicAuth(jk_user, jk_passwd), headers=headers, verify=False)
+        if res.ok:
+            return {'status': 'success'}
+        else:
+            error = res.text
+            return {'status': 'failed', 'error': error}
+    except Exception as error:
         return {'status': 'failed', 'error': error}

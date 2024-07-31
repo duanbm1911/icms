@@ -8,8 +8,8 @@ $(document).ready(function() {
         var href = "/ipplan/list-ip/" + subnet_id + "/delete-ip/" + ip_id
         $('#delete-ip-from').attr('action', href)
       });
-    $('#btn-discovery').on('click', function() {
-      $('#btn-discovery').prop('disabled', true)
+    $('#btn-scan').on('click', function() {
+      $('#btn-scan').prop('disabled', true)
       subnet = $('#id-subnet').data('subnet')
       $.ajax({
         type: "POST",
@@ -24,7 +24,7 @@ $(document).ready(function() {
               text: response.message,
               icon: "success"
             }).then(function () {
-              $('#btn-discovery').prop('disabled', false)
+              $('#btn-scan').prop('disabled', false)
             })
           }
           else{
@@ -32,7 +32,7 @@ $(document).ready(function() {
               text: response.error,
               icon: "error"
             }).then(function () {
-              $('#btn-discovery').prop('disabled', false)
+              $('#btn-scan').prop('disabled', false)
             })
           }
         }

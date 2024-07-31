@@ -472,8 +472,8 @@ def update_device_check_monitor(request):
 def ipplan_scan_ip(request):
     if request.method == 'POST':
         subnet = request.POST.get('subnet')
-        jk_user = os.environ['JENKINS_USER']
-        jk_passwd = os.environ['JENKINS_TOKEN']
+        jk_user = os.environ.get('JENKINS_USER')
+        jk_passwd = os.environ.get('JENKINS_TOKEN')
         try:
             get_jenkins_crumb_result = get_jenkins_crumb(
                 url=os.getenv('JENKINS_CRUMB'), 
