@@ -343,7 +343,7 @@ def ipplan_dashboard_03(request):
     subnets = Subnet.objects.all().values_list('subnet', flat=True)
     for subnet in subnets:
         count_total_ip = len([str(i) for i in ip_network(subnet).hosts()])
-        count_used_ip = IpAddressModel.objects.filter(subnet__subnet=subnet, inused=False).count()
+        count_used_ip = IpAddressModel.objects.filter(subnet__subnet=subnet, inused=True).count()
         percent = round(int(count_used_ip)/int(count_total_ip)*100, 2)
         datalist.append({
             'label': str(subnet),
