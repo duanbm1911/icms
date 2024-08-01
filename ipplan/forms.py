@@ -64,7 +64,6 @@ class SubnetForm(forms.ModelForm):
             raise ValidationError("Subnet is invalid")
         elif ip_network(subnet).subnet_of(ip_network(group_subnet)) is False:
             raise ValidationError("Subnet is not in group subnet")
-        return subnet
 
 
 class SubnetUpdateForm(forms.ModelForm):
