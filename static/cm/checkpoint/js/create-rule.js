@@ -8,7 +8,7 @@ $(document).ready(function () {
     rowHeights: 100,
     // height: 600,
     stretchH: 'all',
-    height: 'auto',
+    height: '400',
     colHeaders: ['Policy', 'Name', 'Source', 'Destination', 'Protocol', 'section','Schedule'],
     manualColumnResize: true,
     columns: [
