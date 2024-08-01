@@ -33,9 +33,7 @@ ICMS | List IP Address
                         <td id="subnet">{{ obj.subnet }}</td>
                         <td id="subnet-name">{{ obj.subnet.name }}</td>
                         <td id="subnet-group">{{ obj.subnet.group }}</td>
-                        {% if obj.status == "" %}
-                        <td style="text-align: center;" id="ip-status">⚫️</td>
-                        {% elif obj.status == 'success' %}
+                        {% if obj.status == 'success' %}
                         <td style="text-align: center;" id="ip-status">🟢</td>
                         {% else %}
                         <td style="text-align: center;" id="ip-status">🔴</td>

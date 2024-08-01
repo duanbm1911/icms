@@ -96,6 +96,7 @@ def request_ip_form(request):
                     ip=ip,
                     defaults={
                     'subnet': Subnet.objects.get(subnet=subnet),
+                    'inused': True,
                     'description': description,
                     'user_created': str(request.user)
                     }
@@ -277,6 +278,7 @@ def request_multiple_ip(request):
                         ip_address=ip,
                         defaults={
                             'subnet': subnet_obj,
+                            'inused': True,
                             'description': description,
                             'user_created': str(request.user)
                         }
@@ -447,8 +449,6 @@ class LocationListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
-    
-    
     
 @login_required()
 def ipplan_export(request):
