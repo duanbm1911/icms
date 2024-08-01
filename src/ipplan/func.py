@@ -73,7 +73,7 @@ def check_create_multiple_subnet(item):
         status = False
     elif name == '':
         status = False
-    elif ip_network(subnet) not in (group_subnet):
+    elif ip_network(subnet).subnet_of(ip_network(group_subnet)) is False:
         status = False
     else:
         return status
