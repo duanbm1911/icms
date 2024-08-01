@@ -113,7 +113,7 @@ class IpAddressModelUpdatelForm(forms.ModelForm):
         """Meta definition for IpAddressModelUpdatelForm."""
 
         model = IpAddressModel
-        fields = ('ip', 'description', )
+        fields = ('ip', 'inused', 'description', )
         
         
 class IPPlanExportForm(forms.Form):
