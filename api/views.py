@@ -376,19 +376,30 @@ def ipplan_update_ip_status(request):
                     subnet_obj = Subnet.objects.get(subnet=subnet)
                     ip_check_count = IpAddressModel.objects.filter(ip=result['ip']).count()
                     if ip_check_count > 0:
-                        IpAddressModel.objects.update_or_create(
-                            ip=result['ip'],
-                            defaults={
-                                'subnet': subnet_obj,
-                                'status': result['status'],
-                            }
-                        )
+                        if result['status'] == 'success':
+                            IpAddressModel.objects.update_or_create(
+                                ip=result['ip'],
+                                defaults={
+                                    'subnet': subnet_obj,
+                                    'status': result['status'],
+                                    'inused': result['inused']
+                                }
+                            )
+                        else:
+                            IpAddressModel.objects.update_or_create(
+                                ip=result['ip'],
+                                defaults={
+                                    'subnet': subnet_obj,
+                                    'status': result['status']
+                                }
+                            )
                     else:
                         IpAddressModel.objects.update_or_create(
                             ip=result['ip'],
                             defaults={
                                 'subnet': subnet_obj,
                                 'status': result['status'],
+                                'inused': result['inused'],
                                 'description': 'Discovered automatically',
                                 'user_created': str(request.user)
                             }
