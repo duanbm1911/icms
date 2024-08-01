@@ -7,7 +7,7 @@ $(document).ready(function () {
     colWidths: 'auto',
     rowHeights: 100,
     // height: 600,
-    // stretchH: 'all',
+    stretchH: 'all',
     height: 'auto',
     colHeaders: ['Policy', 'Name', 'Source', 'Destination', 'Protocol', 'section','Schedule'],
     manualColumnResize: true,
