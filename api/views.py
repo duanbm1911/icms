@@ -342,7 +342,7 @@ def ipplan_dashboard_03(request):
     datalist = list()
     subnets = Subnet.objects.all().values_list('subnet', flat=True)
     for subnet in subnets:
-        count_total_ip = len([str(i) for i in ip_network(subnet).hosts()])
+        count_total_ip = len(ip_network(subnet).hosts())
         count_available_ip = IpAddressModel.objects.filter(subnet__subnet=subnet, status='failed', user_created='icms_api').count()
         count_used_ip = int(count_total_ip) - int(count_available_ip)
         percent = round(int(count_used_ip)/int(count_total_ip)*100, 2)

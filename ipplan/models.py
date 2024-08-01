@@ -62,6 +62,7 @@ class IpAddressModel(models.Model):
     ip = models.GenericIPAddressField(unique=True)
     subnet = models.ForeignKey('Subnet', on_delete=models.CASCADE)
     status = models.CharField(max_length=200, blank=True)
+    inused = models.BooleanField(default=False)
     description = models.CharField(max_length=200, blank=True)
     time_created = models.DateTimeField(auto_now=True)
     user_created = models.CharField(max_length=100)
