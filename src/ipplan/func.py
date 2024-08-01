@@ -49,7 +49,7 @@ def is_vlan(vlan):
             return False
     except:
         return False
-
+     
 def check_create_multiple_subnet(item):
     status = True
     region = item[0]
