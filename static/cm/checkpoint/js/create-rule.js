@@ -5,7 +5,7 @@ $(document).ready(function () {
     data: initData,
     rowHeaders: true,
     rowHeights: 100,
-    // stretchH: 'all',
+    stretchH: 'all',
     height: 'auto',
     colHeaders: ['Policy', 'Name', 'Source', 'Destination', 'Protocol', 'section','Schedule'],
     manualColumnResize: true,
