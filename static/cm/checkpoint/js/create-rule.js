@@ -4,7 +4,9 @@ $(document).ready(function () {
   var hot = new Handsontable(placeholder, {
     data: initData,
     rowHeaders: true,
+    colWidths: 'auto',
     rowHeights: 100,
+    // height: 600,
     stretchH: 'all',
     height: 'auto',
     colHeaders: ['Policy', 'Name', 'Source', 'Destination', 'Protocol', 'section','Schedule'],
