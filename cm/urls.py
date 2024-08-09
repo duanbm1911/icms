@@ -29,5 +29,14 @@ urlpatterns = [
     path('f5/objects/create-template', F5TemplateCreateView.as_view()),
     path('f5/objects/detail-template/<int:pk>', F5TemplateDetailView.as_view()),
     path('f5/objects/update-template/<int:pk>', F5TemplateUpdateView.as_view()),
-    path('f5/objects/delete-template/<int:pk>', F5TemplateDeleteView.as_view())
+    path('f5/objects/delete-template/<int:pk>', F5TemplateDeleteView.as_view()),
+    path('proxy/objects/update-section/<int:pk>', ProxyRuleSectionUpdateView.as_view(), name='proxy_update_section'),
+    path('proxy/objects/delete-section/<int:pk>', ProxyRuleSectionDeleteView.as_view(), name='proxy_delete_section'),
+    path('proxy/list-section', ProxyRuleSectionListView.as_view(), name='proxy_list_section'),
+    path('proxy/create-section', ProxyRuleSectionCreateView.as_view(), name='proxy_create_section'),
+    path('proxy/objects/update-bypass-url/<int:pk>', ProxyBypassUrlUpdateView.as_view(), name='proxy_update_bypass_url'),
+    path('proxy/objects/delete-bypass-url/<int:pk>', ProxyBypassUrlDeleteView.as_view(), name='proxy_delete_bypass_url'),
+    path('proxy/list-bypass-url', ProxyBypassUrlListView.as_view(), name='proxy_list_bypass_url'),
+    path('proxy/create-bypass-url', ProxyBypassUrlCreateView.as_view(), name='proxy_create_bypass_url'),
+    path('proxy/localDatabaseUrl.txt', views.proxy_local_database_url, name='proxy_local_database_url')
 ]

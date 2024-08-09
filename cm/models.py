@@ -132,3 +132,17 @@ class F5Template(models.Model):
     
     def __str__(self):
         return str(self.template_name)
+    
+    
+class ProxyRuleSection(models.Model):
+    section = models.CharField(max_length=200, unique=True)
+    
+    def __str__(self):
+        return str(self.section)
+    
+class ProxyBypassUrl(models.Model):
+    section = models.ForeignKey('ProxyRuleSection', on_delete=models.PROTECT)
+    url = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return str(self.url)

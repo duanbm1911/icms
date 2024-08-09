@@ -415,3 +415,142 @@ class F5TemplateDetailView(DetailView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+    
+class ProxyRuleSectionDeleteView(DeleteView):
+    model = ProxyRuleSection
+    template_name = 'proxy/list_section.html'
+    success_url = '/cm/proxy/list-section'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class ProxyRuleSectionListView(ListView):
+    model = ProxyRuleSection
+    context_object_name = 'objects'
+    template_name = "proxy/list_section.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+
+class ProxyRuleSectionCreateView(CreateView):
+    model = ProxyRuleSection
+    form_class = ProxyRuleSectionForm
+    template_name = "proxy/create_section.html"
+    success_url = '/cm/proxy/list-section'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+    
+
+class ProxyRuleSectionUpdateView(UpdateView):
+    model = ProxyRuleSection
+    form_class = ProxyRuleSectionForm
+    template_name = "proxy/update_section.html"
+    success_url = '/cm/proxy/list-section'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+    
+    
+    
+class ProxyBypassUrlDeleteView(DeleteView):
+    model = ProxyBypassUrl
+    template_name = 'proxy/list_bypass_url.html'
+    success_url = '/cm/proxy/list-bypass-url'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            super().post(request, *args, **kwargs)
+            messages.add_message(self.request, constants.SUCCESS, 'Delete success')
+        except ProtectedError:
+            messages.add_message(self.request, constants.ERROR, 'This object has been protected')
+        except Exception as error:
+            messages.add_message(self.request, constants.ERROR, error)
+        return redirect(self.success_url)
+
+class ProxyBypassUrlListView(ListView):
+    model = ProxyBypassUrl
+    context_object_name = 'objects'
+    template_name = "proxy/list_bypass_url.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+
+class ProxyBypassUrlCreateView(CreateView):
+    model = ProxyBypassUrl
+    form_class = ProxyBypassUrlForm
+    template_name = "proxy/create_bypass_url.html"
+    success_url = '/cm/proxy/list-bypass-url'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+    
+
+class ProxyBypassUrlUpdateView(UpdateView):
+    model = ProxyBypassUrl
+    form_class = ProxyBypassUrlForm
+    template_name = "proxy/update_bypass_url.html"
+    success_url = '/cm/proxy/list-bypass-url'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='ADMIN').exists():
+            return render(request, template_name='proxy/403.html')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.user_created = str(self.request.user)
+        messages.add_message(self.request, constants.SUCCESS, 'Update success')
+        return super().form_valid(form)
+    
+    
+def proxy_local_database_url(request):
+    filename = "whitelistUrl.txt"
+    content = str()
+    list_proxy_section = list(ProxyRuleSection.objects.values_list('section', flat=True))
+    for proxy_section in list_proxy_section:
+        list_bypass_url  = list(ProxyBypassUrl.objects.filter(section__section=proxy_section).values_list('url', flat=True))
+        content += f'define category {proxy_section}\n'
+        content += '\n'.join(list_bypass_url)
+        content += '\nend\n'
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+    return HttpResponse(content, content_type='text/plain')

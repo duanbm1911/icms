@@ -97,3 +97,16 @@ class F5TemplateForm(forms.ModelForm):
             'http_compression_profile',
             'web_acceleration_profile'
         ]
+        
+class ProxyRuleSectionForm(forms.ModelForm):
+    class Meta:
+        model = ProxyRuleSection
+        fields = ['section']
+        
+class ProxyBypassUrlForm(forms.ModelForm):
+    class Meta:
+        model = ProxyBypassUrl
+        fields = [
+            'section',
+            'url'
+        ]
