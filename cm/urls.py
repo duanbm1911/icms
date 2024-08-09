@@ -38,5 +38,6 @@ urlpatterns = [
     path('proxy/objects/delete-bypass-url/<int:pk>', ProxyBypassUrlDeleteView.as_view(), name='proxy_delete_bypass_url'),
     path('proxy/list-bypass-url', ProxyBypassUrlListView.as_view(), name='proxy_list_bypass_url'),
     path('proxy/create-bypass-url', ProxyBypassUrlCreateView.as_view(), name='proxy_create_bypass_url'),
-    path('proxy/localDatabaseUrl.txt', views.proxy_local_database_url, name='proxy_local_database_url')
+    path('proxy/localDatabaseUrl.txt', views.proxy_local_database_url, name='proxy_local_database_url'),
+    path('proxy/import-local-database-url', views.proxy_import_local_db_url, name='proxy_import_local_db_url')
 ]

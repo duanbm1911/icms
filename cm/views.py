@@ -554,3 +554,13 @@ def proxy_local_database_url(request):
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
     return HttpResponse(content, content_type='text/plain')
+
+
+def proxy_import_local_db_url(request):
+    content = request.FILES.get('upload-file')
+    if content is not None:
+        try:
+            content = content.read().decode()
+        except:
+            content = str()
+    return render(request, template_name='proxy/import_local_db_url.html')
